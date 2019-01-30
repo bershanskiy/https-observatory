@@ -1,0 +1,8 @@
+{
+	"credentials": {
+		"user": "server",
+		"password": "",
+		"server": "localhost",
+		"database": "project"
+	}
+}
