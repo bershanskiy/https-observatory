@@ -1,8 +1,13 @@
 {
-	"credentials": {
-		"user": "server",
-		"password": "",
-		"server": "localhost",
-		"database": "project"
+	"database": {
+		"credentials": {
+			"user": "server",
+			"password": "",
+			"server": "localhost",
+			"database": "project"
+			}
+	},
+	"express": {
+		"port": 3000
 	}
 }

@@ -28,38 +28,38 @@ CREATE TABLE users (
 CREATE TABLE rulesets (
 	rulesetid INT NOT NULL UNIQUE,
 	name VARCHAR(50) NOT NULL UNIQUE,
-	'file' VARCHAR(50) UNIQUE,
+	file VARCHAR(50) UNIQUE,
 	default_off VARCHAR(100),
-	'timestamp' TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	rules ENUM('trivial', 'nontrivial', 'both') NOT NULL DEFAULT 'trivial',
-	'comment' VARCHAR(255)
+	comment VARCHAR(255)
 );
 
 CREATE TABLE ruleset_targets (
 	rulesetid INT NOT NULL,	
 	target VARCHAR(255) NOT NULL UNIQUE COMMENT "ASCII case-insensitive",
 	wildcard ENUM('subdomains', 'no', 'domain_and_subdomains', 'right_side') NOT NULL,
-	'comment' VARCHAR(255)
+	`comment` VARCHAR(255)
 ) CHARACTER SET ascii;
 
 CREATE TABLE ruleset_rules (
 	rulesetid INT NOT NULL PRIMARY KEY,	
-	'from' VARCHAR(255) NOT NULL,
-	'to' VARCHAR(255) NOT NULL,
-	'comment' VARCHAR(255)
+	`from` VARCHAR(255) NOT NULL,
+	`to` VARCHAR(255) NOT NULL,
+	comment VARCHAR(255)
 );
 
 CREATE TABLE ruleset_exclussions (
 	rulesetid INT NOT NULL PRIMARY KEY,
 	pattern VARCHAR(255) NOT NULL,
-	'comment' VARCHAR(255)
+	comment VARCHAR(255)
 );
 
 CREATE TABLE ruleset_securecookies (
 	rulesetid INT NOT NULL PRIMARY KEY,
-	'host' VARCHAR(255) NOT NULL,
+	`host` VARCHAR(255) NOT NULL,
 	name VARCHAR(255) NOT NULL,
-	'comment' VARCHAR(255)
+	comment VARCHAR(255)
 );
 
 
