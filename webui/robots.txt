@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: README.md
+Disallow: put-here-any-other-file-that-should-no-be-indexed

@@ -5,7 +5,7 @@
 			"password": "",
 			"server": "localhost",
 			"database": "project"
-			}
+		}
 	},
 	"express": {
 		"port": 3000

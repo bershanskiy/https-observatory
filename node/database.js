@@ -3,6 +3,10 @@
 const sql = require("mysql")
 const credentials = require ("./configuration.json").database.credentials
 
+if (credentials.password == "" || credentials.password == "undefined"){
+	console.warn("YOU SHOULD SET A PASSWORD ON DATABASE")
+}
+
 const mssqlCredentials = "mssql://" + 
 	credentials.user + ":" +
 	credentials.password + "@" +

@@ -4,10 +4,16 @@ const express = require("express")
 const app = express()
 const configuration = require("./configuration").express
 
-app.get("/", (req, res) => {
+// Serve static content from webui folder
+app.use(express.static(__dirname + "/../webui"))
+
+// Serve dynamic content from "/search?" API endpoint
+app.get("/search?", (req, res) => {
 	database.queryCallback((resp) => {
+		console.log("Select")
 		console.log("Solution: " + resp[0].solution)
-		res.send('1 + 1 = ' + resp[0].solution)
+		res.setHeader("Content-Type", "application/json")
+		res.send(JSON.stringify(resp[0]))
 	})
 })
 
