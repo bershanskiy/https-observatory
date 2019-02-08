@@ -26,7 +26,8 @@ database.queryCallback((res) => {
 	console.log("Solution: " + res[0].solution)
 })
 
-console.log(typeof database.query)
+//console.log(typeof database.query)
+console.log("Load data", database.loadData())
 /*
 database.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
 		if (error) throw error

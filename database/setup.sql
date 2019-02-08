@@ -8,7 +8,7 @@ CREATE DATABASE project;
 -- Create user "server" with limited permissions
 -- Could setup password with IDENTIFIED BY '<hash>', but there is no need to use passwords because db is visible only from localhost
 CREATE USER 'server'@'localhost';
-GRANT SELECT ON project.* TO 'server'@'localhost';
+GRANT SELECT, INSERT, UPDATE ON `project`.* TO 'server'@'localhost';
 
 USE project;
 
@@ -31,14 +31,14 @@ CREATE TABLE rulesets (
 	file VARCHAR(50) UNIQUE,
 	default_off VARCHAR(100),
 	timestamp TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-	rules ENUM('trivial', 'nontrivial', 'both') NOT NULL DEFAULT 'trivial',
+--	rules ENUM('trivial', 'nontrivial', 'both') NOT NULL DEFAULT 'trivial',
 	comment VARCHAR(255)
 );
 
 CREATE TABLE ruleset_targets (
 	rulesetid INT NOT NULL,	
 	target VARCHAR(255) NOT NULL UNIQUE COMMENT "ASCII case-insensitive",
-	wildcard ENUM('subdomains', 'no', 'domain_and_subdomains', 'right_side') NOT NULL,
+--	wildcard ENUM('subdomains', 'no', 'domain_and_subdomains', 'right_side') NOT NULL,
 	`comment` VARCHAR(255)
 ) CHARACTER SET ascii;
 
@@ -62,5 +62,5 @@ CREATE TABLE ruleset_securecookies (
 	comment VARCHAR(255)
 );
 
-
 -- SHOW FULL COLUMNS FROM targets;
+
