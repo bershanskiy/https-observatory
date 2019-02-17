@@ -9,10 +9,13 @@ Some of these will require `sudo`.
 First, install SQL database, for example MySQL `mysql-server`, and Node.js `nodejs` and `npm`.
 
 ### Create the database and tables
-Start MySQL, for example with `service mysql start`.
 
-Setup the database `project` all projects in it and user `server` and grant it necessary permissions with `source setup.sql`.
-You can run it as `sudo mysql -e source ./setup.sql`.
+Run `./database/setup.sh` to set up the database (with some helpful messages).
+
+This script does the following:
+ - Start MySQL server with `service mysql start`.
+ - Drop user `'server'@'localhost'` and database `project`, if they exist.
+ - Setup the database `project` all tables in it and user `'server'@'localhost'` and grant it necessary permissions with `source setup.sql`.
 
 You shold grant yourself permissions to work on the `project` database:
 ```

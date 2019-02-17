@@ -22,49 +22,77 @@ connection.connect((error) => {
 		console.log(`Connected to database at ${mssqlCredentials}`)
 })
 
-module.exports.queryCallback = (callback) => {
+const queryCallback = (callback) => {
 	connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
 		if (error) throw error;
 		callback(results)
 	});
 }
 
-module.exports.query = connection.query
-
 // TODO: parse XML
-module.exports.loadData = () => {
+const loadData = () => {
+	console.log("Started loading data...")
 	const data = require("./default.rulesets")
 	console.log(data.length)
 	var rulesetid = 0
+	var formated_rulesets = []
+	var formated_targets = []
+	var formated_rules = []
 	for (const ruleset of data){
 		rulesetid += 1
 
-		connection.query("INSERT INTO rulesets (rulesetid, name, file, default_off) VALUES (?, ?, ?, ?)",
-			[rulesetid, ruleset.name, null, ruleset.default_off ? ruleset.default_off : null],
-			function (error, results, fields) {
-				console.log(error, results, fields)
-			})
-		var targets = []
+		// ruleset body
+		const formated = [rulesetid, ruleset.name, null, ruleset.default_off ? ruleset.default_off : null]
+		formated_rulesets.push(formated)
+
 		for (const target of ruleset.target)
-			targets.push([rulesetid, target])
-//		console.log(targets)
-		var rules = []
+			formated_targets.push([rulesetid, target])
+
 		for (const rule of ruleset.rule)
-			rules.push([rulesetid, rule.from, rule.to])
-//		console.log(rules)
+			formated_rules.push([rulesetid, rule.from, rule.to])
 		
 		if (ruleset.securecookie){
 			var securecookies = []
 			for (const securecookie of ruleset.securecookie)
 				securecookies.push([rulesetid, securecookie.host, securecookie.name])
 //			console.log(securecookies)
-		}		
+		}
 //		connection.query("INSERT INTO ruleset_targets (rulesetid, target) VALUES (?, ?)",
 //			[rulesetid, target], function (error, results, fields) {
 //				//console.log(error, results, fields)
 //			})
 			
-//console.log(rulesetid, ruleset)
-	}	
+	}
+	connection.query("INSERT INTO rulesets (rulesetid, name, file, default_off) VALUES ?", [formated_rulesets],
+		function (error, results, fields) {
+			if (error)
+				console.log(error, results, fields)
+			else
+				console.log("Inserted all rulesets")
+	})
+/* TODO: punycode
+	connection.query("INSERT INTO ruleset_targets (rulesetid, target) VALUES ?", [formated_targets],
+		function (error, results, fields) {
+			if (error)
+				console.log(error, results, fields)
+			else
+				console.log("Inserted all ruleset targets")
+	})
+	connection.query("INSERT INTO ruleset_rules (rulesetid, from, to) VALUES ?", [formated_rules],
+		function (error, results, fields) {
+			if (error)
+				console.log(error, results, fields)
+			else
+				console.log("Inserted all ruleset rules")
+	})
+*/
+
+	console.log (`Inserted ruleset ${rulesetid} records.`)
 	return 7
+}
+
+module.exports = {
+	queryCallback: queryCallback,
+	query: connection.query,
+	loadData: loadData
 }
