@@ -1,25 +1,26 @@
 "use strict"
 
 const sql = require("mysql")
-const credentials = require ("./configuration.json").database.credentials
+const credentials = require ("../configuration.json").database.credentials
 
 if (credentials.password == "" || credentials.password == "undefined"){
 	console.warn("YOU SHOULD SET A PASSWORD ON DATABASE")
 }
 
-const mssqlCredentials = "mssql://" + 
+// TODO: mysql://
+const mySQLCredentials = "mysql://" +
 	credentials.user + ":" +
 	credentials.password + "@" +
-	credentials.server + "/" + 
+	credentials.server + "/" +
 	credentials.database
 
-const connection = sql.createConnection(mssqlCredentials);
+const connection = sql.createConnection(mySQLCredentials);
 
 connection.connect((error) => {
 	if (error)
-		console.error(`Failed to connect to database at ${mssqlCredentials}`)
+		console.error(`Failed to connect to database at ${mySQLCredentials}`)
 	else
-		console.log(`Connected to database at ${mssqlCredentials}`)
+		console.log(`Connected to database at ${mySQLCredentials}`)
 })
 
 const queryCallback = (callback) => {
@@ -31,9 +32,9 @@ const queryCallback = (callback) => {
 
 // TODO: parse XML
 const loadData = () => {
+	const punycode = require("punycode")
 	console.log("Started loading data...")
 	const data = require("./default.rulesets")
-	console.log(data.length)
 	var rulesetid = 0
 	var formated_rulesets = []
 	var formated_targets = []
@@ -70,6 +71,7 @@ const loadData = () => {
 			else
 				console.log("Inserted all rulesets")
 	})
+
 /* TODO: punycode
 	connection.query("INSERT INTO ruleset_targets (rulesetid, target) VALUES ?", [formated_targets],
 		function (error, results, fields) {
@@ -86,9 +88,8 @@ const loadData = () => {
 				console.log("Inserted all ruleset rules")
 	})
 */
-
-	console.log (`Inserted ruleset ${rulesetid} records.`)
-	return 7
+	console.log (`Scheduled insertion of ${rulesetid} ruleset records.`)
+	return true
 }
 
 module.exports = {

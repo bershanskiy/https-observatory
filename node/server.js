@@ -4,6 +4,8 @@ const express = require("express")
 const app = express()
 const configuration = require("./configuration").express
 
+const database = require("./database/database")
+
 // Serve static content from webui folder
 app.use(express.static(__dirname + "/../webui"))
 
@@ -20,7 +22,6 @@ app.get("/search?", (req, res) => {
 app.listen(configuration.port, () =>
 	console.log(`Server listening on port ${configuration.port}`))
 
-const database = require("./database")
 
 database.queryCallback((res) => {
 	console.log("Solution: " + res[0].solution)
