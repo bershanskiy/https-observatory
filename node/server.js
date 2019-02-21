@@ -6,6 +6,9 @@ const configuration = require("./configuration").express
 
 const database = require("./database/database")
 
+/* This is the main function of the entire server.
+ * It is async so that we can use await inside of it.
+ */
 const main = async () => {
 	// First, load all data
 	const loaded = await database.loadData()
@@ -41,4 +44,5 @@ const main = async () => {
 */
 }
 
+// Start server
 main()

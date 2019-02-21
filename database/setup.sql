@@ -24,10 +24,11 @@ CREATE TABLE `users` (
 ) CHARACTER SET ascii;
 
 CREATE TABLE `rulesets` (
-	`rulesetid` INT NOT NULL UNIQUE,
-	`name` VARCHAR(100) NOT NULL,    -- Turns out, name is not unique
-	`file` VARCHAR(50) UNIQUE,       -- The file is unique because per docs file contains exactly one ruleset
-	`default_off` VARCHAR(100),
+	`rulesetid` INT NOT NULL UNIQUE AUTO_INCREMENT,
+	`name` VARCHAR(100) NOT NULL,    -- Turns out, name is not unique TODO: bring this to maintainers' attention
+	`file` VARCHAR(256) UNIQUE,      -- The file is unique because per docs file contains exactly one ruleset
+	`default_off` VARCHAR(100),      -- there are multiple possible values and their combinations
+	`mixedcontent` BIT NOT NULL,     -- True or 1 if and only if ruleset attribute platform="mixedcontent"
 	`timestamp` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 --	rules ENUM('trivial', 'nontrivial', 'both') NOT NULL DEFAULT 'trivial',
 	`comment` VARCHAR(255)
@@ -41,23 +42,35 @@ CREATE TABLE `ruleset_targets` (
 ) CHARACTER SET ascii;
 
 CREATE TABLE `ruleset_rules` (
-	`rulesetid` INT NOT NULL PRIMARY KEY,
-	`from` VARCHAR(255) NOT NULL,
+	`rulesetid` INT NOT NULL,
+	`rulesetruleid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- TODO: remove this
+	`from` VARCHAR(5000) NOT NULL,
 	`to` VARCHAR(255) NOT NULL,
 	`comment` VARCHAR(255)
+	-- PRIMARY KEY (`rulesetid`, rulesetruleid) -- (`rulesetid`, `from`)
+);
+
+CREATE TABLE `ruleset_tests` (
+	`rulesetid` INT NOT NULL,
+	`rulesettestid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- TODO: remove this
+	`url` VARCHAR(5000) NOT NULL,
+	`comment` VARCHAR(255)
+	-- PRIMARY KEY (`rulesetid`, `url`)
 );
 
 CREATE TABLE `ruleset_exclussions` (
-	`rulesetid` INT NOT NULL PRIMARY KEY,
+	`rulesetid` INT NOT NULL,
 	`pattern` VARCHAR(255) NOT NULL,
-	`comment` VARCHAR(255)
+	`comment` VARCHAR(255),
+	PRIMARY KEY (`rulesetid`, `pattern`)
 );
 
 CREATE TABLE `ruleset_securecookies` (
-	`rulesetid` INT NOT NULL PRIMARY KEY,
+	`rulesetid` INT NOT NULL,
 	`host` VARCHAR(255) NOT NULL,
 	`name` VARCHAR(255) NOT NULL,
-	`comment` VARCHAR(255)
+	`comment` VARCHAR(255),
+	PRIMARY KEY (`rulesetid`, `host`, `name`)
 );
 
 -- This table represents "entries" attribute from
