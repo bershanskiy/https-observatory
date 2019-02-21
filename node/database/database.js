@@ -1,13 +1,19 @@
 "use strict"
 
+const fs = require("fs")
 const sql = require("mysql")
-const credentials = require ("../configuration.json").database.credentials
+const configuration = require("../configuration.json").database
+const json5 = require("json5")
+
+// Where database state file is
+const state_file_path = __dirname + "/" + configuration.state
+
+const credentials = configuration.credentials
 
 if (credentials.password == "" || credentials.password == "undefined"){
 	console.warn("YOU SHOULD SET A PASSWORD ON DATABASE")
 }
 
-// TODO: mysql://
 const mySQLCredentials = "mysql://" +
 	credentials.user + ":" +
 	credentials.password + "@" +
@@ -30,8 +36,64 @@ const queryCallback = (callback) => {
 	});
 }
 
+
+const chromium_hsts_url = "https://cs.chromium.org/codesearch/f/chromium/src/net/http/transport_security_state_static.json"
+
+const loadHSTS = () => {
+	const path = __dirname + "/../../cache/transport_security_state_static.json"
+	// Can't just require(path) or "JSON.parse(...) because file contains coments
+	// Use JSON5 instead (that supports comments)
+	// Also, we care only about entries (not pinsets)
+	const data = json5.parse(fs.readFileSync(path)).entries
+
+	var formated_hsts = []
+	for (const record of data){
+		formated_hsts.push([
+			record.name,
+			record.policy,
+			record.include_subdomains,
+			record.include_subdomains_for_pinning,
+			record.mode === "force-https",
+			record.pins,
+			record.expect_ct_report_uri ? record.expect_ct_report_uri : null
+		])
+	}
+	connection.query("INSERT INTO evidence_hsts_preload (name, policy, include_subdomains, include_subdomains_for_pinning, force_https, pins, expect_ct_report_uri) VALUES ?", [formated_hsts],
+		function (error, results, fields) {
+			if (error)
+				console.log(error, results, fields)
+			else
+				console.log("Inserted all HSTS preload records")
+	})
+
+}
+
+
+
 // TODO: parse XML
 const loadData = () => {
+	// The tate of the database
+	var state
+	// Attempt to load the file state of the database, which might not exist
+	try {
+		state = require(state_file_path)
+		console.log(`Loaded database state file found at ${state_file_path}.`)
+	} catch(error) {
+		// State
+		// TODO: async to make sure all these returned before moving on
+		console.log(`No valid database state file found at ${state_file_path}, emptying the database and loading new data.`)
+		connection.query("DELETE FROM rulesets;")
+		connection.query("DELETE FROM ruleset_targets;")
+		connection.query("DELETE FROM ruleset_rules;")
+		connection.query("DELETE FROM ruleset_exclussions;")
+		connection.query("DELETE FROM ruleset_securecookies;")
+		connection.query("DELETE FROM evidence_hsts_preload;")
+		console.log("emptied everything")
+		// TODO
+	}
+
+	loadHSTS()
+
 	const punycode = require("punycode")
 	console.log("Started loading data...")
 	const data = require("./default.rulesets")
@@ -51,7 +113,7 @@ const loadData = () => {
 
 		for (const rule of ruleset.rule)
 			formated_rules.push([rulesetid, rule.from, rule.to])
-		
+
 		if (ruleset.securecookie){
 			var securecookies = []
 			for (const securecookie of ruleset.securecookie)
@@ -62,7 +124,7 @@ const loadData = () => {
 //			[rulesetid, target], function (error, results, fields) {
 //				//console.log(error, results, fields)
 //			})
-			
+
 	}
 	connection.query("INSERT INTO rulesets (rulesetid, name, file, default_off) VALUES ?", [formated_rulesets],
 		function (error, results, fields) {

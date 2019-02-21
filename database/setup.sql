@@ -8,7 +8,7 @@ CREATE DATABASE `project`;
 -- Create user "server" with limited permissions
 -- Could setup password with IDENTIFIED BY '<hash>', but there is no need to use passwords because db is visible only from localhost
 CREATE USER 'server'@'localhost';
-GRANT SELECT, INSERT, UPDATE ON `project`.* TO 'server'@'localhost';
+GRANT SELECT, INSERT, UPDATE, DELETE ON `project`.* TO 'server'@'localhost';
 
 USE project;
 
@@ -74,13 +74,14 @@ CREATE TABLE evidence_hsts_preload (
 	`name` VARCHAR(255) NOT NULL PRIMARY KEY,
 	-- The policy under which the domain is part of the
 	-- preload list. This field is used for list maintenance.
-	`policy` ENUM('test',                   -- test domains
-	            'google',                 -- Google-owned sites.
-	            'custom',                 -- entries without includeSubdomains or with HPKP/Expect-CT
-	            'bulk-legacy',            -- bulk entries preloaded before Chrome 50.
-	            'bulk-18-weeks',          -- bulk entries with max-age >= 18 weeks (Chrome 50-63).
-	            'bulk-1-year',            -- bulk entries with max-age >= 1 year (after Chrome 63).
-	            'public-suffix-requested' -- public suffixes preloaded at the owners request (manual).
+	`policy` ENUM('test',                  -- test domains
+	            'google',                  -- Google-owned sites.
+	            'custom',                  -- entries without includeSubdomains or with HPKP/Expect-CT
+	            'bulk-legacy',             -- bulk entries preloaded before Chrome 50.
+	            'bulk-18-weeks',           -- bulk entries with max-age >= 18 weeks (Chrome 50-63).
+	            'bulk-1-year',             -- bulk entries with max-age >= 1 year (after Chrome 63).
+	            'public-suffix-requested', -- public suffixes preloaded at the owners request (manual).
+	            'public-suffix'            -- this option is NOT DOCUMENTED, but appears to apply to Google's own TLDs (manual).
 	            ) NOT NULL,
 	-- This optional boolean tells if policy applies only to this domain or all its subdomains
 	-- This is for backwards-compatibility (new entries are required to have it set to "true").

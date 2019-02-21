@@ -5,7 +5,8 @@
 			"password": "",
 			"server": "localhost",
 			"database": "project"
-		}
+		},
+		"state" : "state.json"
 	},
 	"express": {
 		"port": 3000
