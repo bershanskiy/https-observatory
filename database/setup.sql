@@ -60,17 +60,19 @@ CREATE TABLE `ruleset_tests` (
 
 CREATE TABLE `ruleset_exclussions` (
 	`rulesetid` INT NOT NULL,
-	`pattern` VARCHAR(255) NOT NULL,
-	`comment` VARCHAR(255),
-	PRIMARY KEY (`rulesetid`, `pattern`)
+	`rulesetexclussionid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- TODO: remove this
+	`pattern` VARCHAR(5000) NOT NULL,
+	`comment` VARCHAR(255)
+	-- PRIMARY KEY (`rulesetid`, `pattern`)
 );
 
 CREATE TABLE `ruleset_securecookies` (
 	`rulesetid` INT NOT NULL,
-	`host` VARCHAR(255) NOT NULL,
-	`name` VARCHAR(255) NOT NULL,
-	`comment` VARCHAR(255),
-	PRIMARY KEY (`rulesetid`, `host`, `name`)
+	`rulesetsecurecookieid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- TODO: remove this
+	`host` VARCHAR(5000) NOT NULL,
+	`name` VARCHAR(5000) NOT NULL,
+	`comment` VARCHAR(255)
+	-- PRIMARY KEY (`rulesetid`, `host`, `name`)
 );
 
 -- This table represents "entries" attribute from

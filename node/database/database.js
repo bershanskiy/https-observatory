@@ -42,11 +42,13 @@ connection.connect((error) => {
 		console.log(`Connected to database at ${mySQLCredentials}`)
 })
 
-const queryCallback = (callback) => {
-	connection.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-		if (error) throw error;
-		callback(results)
-	});
+const queryPromise = async (query, args) => {
+	return new Promise((resolve, reject) => {
+		connection.query(query, args, function (error, results, fields) {
+			if (error) reject([error, results, fields])
+			else resolve(results)
+		})
+	})
 }
 
 /* Loads all HSTS records from a Chromium list */
@@ -150,15 +152,15 @@ const loadDataRules = async () => {
 	console.log(path)
 	const files = await globPromise(path)
 
-	var formated_rulesets = []
-	var formated_targets  = []
-	var formated_rules    = []
-	var formated_tests    = []
+	var formated_rulesets    = []
+	var formated_targets     = []
+	var formated_rules       = []
+	var formated_tests       = []
+	var formated_exclussions = []
+	var formated_cookies     = []
 
 	var rulesetid = 0
-	var c = 0
 	for (const file of files) {
-//		c += 1; if (c > 1000) break
 		const contents = await readFilePromise(file, "utf8")
 
 		const ruleset = (await parseStringPromise(contents)).ruleset
@@ -179,7 +181,7 @@ const loadDataRules = async () => {
 			formated_targets.push([rulesetid, host])	
 		}
 
-		for (const rule of ruleset.rule){		// Should fail if there are no rules
+		for (const rule of ruleset.rule){            // Should fail if there are no rules
 			// TODO: punycode, if there is any
 			formated_rules.push([ // Record attributes:
 				rulesetid,    // INT rulesetid
@@ -188,13 +190,27 @@ const loadDataRules = async () => {
 			])
 		}
 
-		for (const test of ruleset.test || []){        // Should move on if there are no tests
+		for (const test of ruleset.test || []){      // Should move on if there are no tests
 			formated_tests.push([ // Record attributes:
 				rulesetid,    // INT rulesetid
-				test.$.url    // VARCHAR 
+				test.$.url    // VARCHAR url
 			])
 		}
 
+		for (const exclusion of ruleset.exclusion || []){ // Should move on if there are no tests
+			formated_exclussions.push([ // Record attributes:
+				rulesetid,          // INT rulesetid
+				exclusion.$.pattern // VARCHAR url
+			])
+		}
+
+		for (const cookie of ruleset.securecookie || []){ // Should move on if there are no tests
+			formated_cookies.push([   // Record attributes:
+				rulesetid,        // INT rulesetid
+				cookie.$.host,    // VARCHAR url
+				cookie.$.name     // VARCHAR url
+			])
+		}
 	}
 
 	connection.query("INSERT INTO rulesets (`rulesetid`, `name`, `file`, `default_off`, `mixedcontent`) VALUES ?", [formated_rulesets],
@@ -211,7 +227,7 @@ const loadDataRules = async () => {
 			if (error)
 				console.log(error, results, fields, error)
 			else
-				console.log("Inserted all rulesets")
+				console.log("Inserted all rulesets' targets")
 		})
 
 	connection.query("INSERT INTO ruleset_rules (`rulesetid`, `from`, `to`) VALUES ?", [formated_rules],	
@@ -227,64 +243,27 @@ const loadDataRules = async () => {
 			if (error)
 				console.log(error, fields)
 			else
-				console.log("Inserted all rulesets' rules")
+				console.log("Inserted all rulesets' tests")
 		})
 
+
+	connection.query("INSERT INTO ruleset_exclussions (`rulesetid`, `pattern`) VALUES ?", [formated_exclussions],	
+		function (error, results, fields) {
+			if (error)
+				console.log(error, fields)
+			else
+				console.log("Inserted all rulesets' exclusions")
+		})
+
+	connection.query("INSERT INTO ruleset_securecookies (`rulesetid`, `host`, `name`) VALUES ?", [formated_cookies],	
+		function (error, results, fields) {
+			if (error)
+				console.log(error, fields)
+			else
+				console.log("Inserted all rulesets' securecookies")
+		})
 
 }
-
-/*
-		console.log("Started loading rules...")
-		const data = JSON.parse(fs.readFileSync(__dirname + "/../../cache/https-everywhere/src/chrome/content/rules/default.rulesets"))
-		var rulesetid = 0
-		var formated_rulesets = []
-		var formated_targets = []
-		var formated_rules = []
-		for (const ruleset of data){
-			rulesetid += 1
-
-
-			if (ruleset.securecookie){
-				var securecookies = []
-				for (const securecookie of ruleset.securecookie)
-					securecookies.push([rulesetid, securecookie.host, securecookie.name])
-//				console.log(securecookies)
-			}
-//			connection.query("INSERT INTO ruleset_targets (rulesetid, target) VALUES (?, ?)",
-//				[rulesetid, target], function (error, results, fields) {
-//					//console.log(error, results, fields)
-//				})
-
-		}
-		connection.query("INSERT INTO rulesets (rulesetid, name, file, default_off) VALUES ?", [formated_rulesets],
-			function (error, results, fields) {
-				if (error){
-					console.log(error, results, fields)
-					reject(false)
-				} else {
-					console.log("Inserted all rulesets")
-					resolve(true)
-				}
-		})
-
-/* TODO: punycode
-	connection.query("INSERT INTO ruleset_targets (rulesetid, target) VALUES ?", [formated_targets],
-		function (error, results, fields) {
-			if (error)
-				console.log(error, results, fields)
-			else
-				console.log("Inserted all ruleset targets")
-	})
-	connection.query("INSERT INTO ruleset_rules (rulesetid, from, to) VALUES ?", [formated_rules],
-		function (error, results, fields) {
-			if (error)
-				console.log(error, results, fields)
-			else
-				console.log("Inserted all ruleset rules")
-	})
-*/
-//		console.log (`Scheduled insertion of ${rulesetid} ruleset records.`)
-//	})
 
 const loadData = async () => {
 	// The tate of the database
@@ -317,7 +296,6 @@ const loadData = async () => {
 }
 
 module.exports = {
-	queryCallback: queryCallback,
-	query: connection.query,
+	query: queryPromise,
 	loadData: loadData
 }

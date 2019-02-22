@@ -18,8 +18,18 @@ const main = async () => {
 	app.use(express.static(__dirname + "/../webui"))
 
 	// Serve dynamic content from "/search?" API endpoint
-	app.get("/search?", (req, res) => {
-		database.queryCallback((resp) => {
+	app.get("/search?", (req, response) => {
+		database.query('SELECT 1 + 1 AS solution', []).then((result) => {
+			console.log("Select")
+			console.log("Solution: " + result[0].solution)
+			response.setHeader("Content-Type", "application/json")
+			response.send(JSON.stringify(result[0]))
+		})
+	})
+
+	// Serve dynamic content from "/search?" API endpoint
+	app.get("/stats", (req, res) => {
+		database.query((resp) => {
 			console.log("Select")
 			console.log("Solution: " + resp[0].solution)
 			res.setHeader("Content-Type", "application/json")
@@ -30,18 +40,8 @@ const main = async () => {
 	app.listen(configuration.port, () =>
 		console.log(`Server listening on port ${configuration.port}`))
 
-	database.queryCallback((res) => {
-		console.log("Solution: " + res[0].solution)
-	})
+	database.query('SELECT 1 + 1 AS solution', []).then((res) => console.log(res))
 
-	//console.log(typeof database.query)
-	/*
-	database.query('SELECT 1 + 1 AS solution', function (error, results, fields) {
-			if (error) throw error
-		console.log("Solution hormal: " + results[0].solution)
-	})
-
-*/
 }
 
 // Start server
