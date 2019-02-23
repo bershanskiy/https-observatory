@@ -64,6 +64,13 @@ function serialize(form) {
 	return q.join("&");
 }
 
+function loadFile(){
+	fetch('/data.txt')
+	.then(response => response.text())
+	.then((data) => {
+    	console.log(data)
+	})
+}
 
 // TODO: use DOMContentLoaded
 window.addEventListener("load", function(event){
@@ -89,7 +96,7 @@ window.addEventListener("load", function(event){
 			console.log(data)
 			const p = document.createElement("P")
 			p.innerText = "1 + 1 = " + data.solution
-			document.body.append(p)
+			document.getElementById("result").append(p)
 			// Create and append the li's to the ul
 		})
 		

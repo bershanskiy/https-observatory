@@ -1,5 +1,6 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
+  <link href="/css/build.css" rel="stylesheet">
   <head>
     <meta charset="UTF-8">
     <title>HTTPS Observatory</title>
@@ -17,4 +18,60 @@
     <div id="result">
     </div>
   </body>
+</html>
+ -->
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link href="/favicon.png" rel="icon">
+
+        <title>HTTPS Observatory</title>
+
+        <!-- Primer core CSS -->
+        <link href="/css/build.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="/css/starter-template.css" rel="stylesheet">
+        <script type="text/javascript" src="/script.js" async></script>
+    </head>
+    <body>
+        <header role="banner" class="masthead bg-gray-dark">
+            <div class="container">
+                <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
+                <nav role="navigation" class="masthead-nav">
+                    <a href="/submission/">Submit New PR</a>
+                    <a href="/about/">About Us</a>
+                    <a href="https://github.com/EFForg/https-everywhere">HTTPS Everywhere</a>
+                </nav>
+            </div>
+        </header>
+        <main role="main" class="container">
+            <form id="search" autocomplete="off">
+                <label for="target">
+                    Search by target:
+                </label>
+                <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com"></input>
+                <input type="submit" value="Search">
+            </form>            
+            <!-- <div id="searchbar" name="searchbar" class="TableObject">
+                <div class="TableObject-item TableObject-item--primary">
+                    <form id="search" autocomplete="off">
+                        <input class="input-block form-control" name="target" type="text" placeholder="example.com" aria-label="example.com">
+                    </form>
+                </div>
+                <div class="TableObject-item">
+                    <button class="btn ml-2" type="button">Search</button>
+                </div>
+            </div> -->
+            <div class="border" id="result" style="overflow-y: scroll; height:400px;">
+                <p>
+                    Pretend there are like 24000 rulesets here
+                </p>
+            </div>
+        </main>
+    </body>
 </html>

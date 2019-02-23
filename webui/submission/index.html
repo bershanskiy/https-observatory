@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link href="/favicon.png" rel="icon">
+
+        <title>HTTPS Observatory</title>
+
+        <!-- Primer core CSS -->
+        <link href="/css/build.css" rel="stylesheet">
+
+        <!-- Custom styles for this template -->
+        <link href="/css/starter-template.css" rel="stylesheet">
+        <script type="text/javascript" src="/script.js" async></script>
+    </head>
+    <body>
+        <header role="banner" class="masthead bg-gray-dark">
+            <div class="container">
+                <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
+                <nav role="navigation" class="masthead-nav">
+                    <a href="/submission/">Submit New PR</a>
+                    <a href="/about/">About Us</a>
+                    <a href="https://github.com/EFForg/https-everywhere">HTTPS Everywhere</a>
+                </nav>
+            </div>
+        </header>
+        <main role="main" class="container">
+            <div class="starter-template">
+                <h1>Submit a new pull request</h1>
+                <form>
+                    <label for="name">Domain</label>
+                    <input class="form-control" type="text" id="domain">
+
+                    <label>
+                        <input type="checkbox" checked> Not A Fake
+                    </label>
+
+                    <label>
+                        <input type="radio" id="content-type" name="active" checked> Active
+                    </label>
+                    <label>
+                        <input type="radio" id="content-type" name="passive"> Passive
+                    </label>
+                    <label>
+                        <input type="radio" id="content-type" name="mixed"> Mixed
+                    </label>
+
+                    <button class="btn" type="submit">Submit</button>
+                    </form>
+            </div>
+        </main>
+    </body>
+</html>
