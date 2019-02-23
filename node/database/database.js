@@ -9,11 +9,12 @@ const json5 = require("json5")
 const { parseString } = require("xml2js")
 const glob = require("glob")
 const punycode = require("punycode")
-
 // Wrap libraries into promisses
 const parseStringPromise = promisify(parseString)
 const globPromise = promisify(glob)
 const readFilePromise = promisify(fs.readFile)
+
+const updateRecords = require("./update_records.js")
 
 
 const configuration = require("../configuration.json").database
@@ -179,7 +180,7 @@ const loadDataRules = async () => {
 
 		for (const target of ruleset.target){
 			const host = punycode.toASCII(target.$.host) // Convert to punycode, if needed
-			formated_targets.push([rulesetid, host])	
+			formated_targets.push([rulesetid, host])
 		}
 
 		for (const rule of ruleset.rule){            // Should fail if there are no rules
@@ -221,9 +222,9 @@ const loadDataRules = async () => {
 			else
 				console.log("Inserted all rulesets' unique attributes")
 		})
-		
-		
-	connection.query("INSERT INTO ruleset_targets (`rulesetid`, `target`) VALUES ?", [formated_targets],	
+
+
+	connection.query("INSERT INTO ruleset_targets (`rulesetid`, `target`) VALUES ?", [formated_targets],
 		function (error, results, fields) {
 			if (error)
 				console.log(error, results, fields, error)
@@ -231,7 +232,7 @@ const loadDataRules = async () => {
 				console.log("Inserted all rulesets' targets")
 		})
 
-	connection.query("INSERT INTO ruleset_rules (`rulesetid`, `from`, `to`) VALUES ?", [formated_rules],	
+	connection.query("INSERT INTO ruleset_rules (`rulesetid`, `from`, `to`) VALUES ?", [formated_rules],
 		function (error, results, fields) {
 			if (error)
 				console.log(error, fields)
@@ -239,7 +240,7 @@ const loadDataRules = async () => {
 				console.log("Inserted all rulesets' rules")
 		})
 
-	connection.query("INSERT INTO ruleset_tests (`rulesetid`, `url`) VALUES ?", [formated_tests],	
+	connection.query("INSERT INTO ruleset_tests (`rulesetid`, `url`) VALUES ?", [formated_tests],
 		function (error, results, fields) {
 			if (error)
 				console.log(error, fields)
@@ -248,7 +249,7 @@ const loadDataRules = async () => {
 		})
 
 
-	connection.query("INSERT INTO ruleset_exclussions (`rulesetid`, `pattern`) VALUES ?", [formated_exclussions],	
+	connection.query("INSERT INTO ruleset_exclussions (`rulesetid`, `pattern`) VALUES ?", [formated_exclussions],
 		function (error, results, fields) {
 			if (error)
 				console.log(error, fields)
@@ -256,7 +257,7 @@ const loadDataRules = async () => {
 				console.log("Inserted all rulesets' exclusions")
 		})
 
-	connection.query("INSERT INTO ruleset_securecookies (`rulesetid`, `host`, `name`) VALUES ?", [formated_cookies],	
+	connection.query("INSERT INTO ruleset_securecookies (`rulesetid`, `host`, `name`) VALUES ?", [formated_cookies],
 		function (error, results, fields) {
 			if (error)
 				console.log(error, fields)
@@ -292,9 +293,11 @@ const loadData = async () => {
 		console.log("Database data: done loading data.")
 	}
 
-
+  updateRecords.checkOnTimer(connection);
 	return true
 }
+
+//updateRecords.updateRecords();
 
 module.exports = {
 	query: queryPromise,
