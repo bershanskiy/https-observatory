@@ -98,7 +98,7 @@ window.addEventListener("load", function(event){
 			let targetNames = ""
 			data.forEach(target_found => targetNames += (target_found.target + '\n'))
 			p.innerText = targetNames
-			document.getElementById("result").innerHTML = '<p>\n' + (p) + '</p>\n'
+			document.getElementById("result").appendChild(p) 
 			// Create and append the li's to the ul
 		})
 		
