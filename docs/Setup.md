@@ -31,4 +31,21 @@ SHOW FULL COLUMNS FROM <table>;
 ```
 
 ### Install node dependencies
-Go into the folder `node/` and run `npm install` to install all dependencies.
+Go into the folder `https-observatory/node/` and run `npm install` to install all dependencies.
+```
+cd https-observatory/node/
+npm install
+```
+
+### Download external data files
+Go into `https-observatory/cache/` and download HTTPS Everywhere files and Chromium HSTS preload list.
+
+#### HTTPS Everywhere Git repository
+Clone the official HTTPS verywhere git repository under `cache` directory so that it is in `https-observatory/cache/https-everywhere/`:
+```
+cd https-observatory/cache/
+git clone https://github.com/EFForg/https-everywhere.git
+```
+
+#### Chromium HSTS preload list
+Download Chromium HSTS preload list from `https://cs.chromium.org/chromium/src/net/http/transport_security_state_static.json`.
