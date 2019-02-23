@@ -148,7 +148,8 @@ const loadDataRulesFromJSON = async() => {
 }
 
 const loadDataRules = async () => {
-	const path = "/mnt/d/cs411/https-observatory/cache/https-everywhere/src/chrome/content/rules/*.xml"
+		//const path = __dirname + "/../../cache/transport_security_state_static.json"
+	const path = __dirname + "/../../cache/https-everywhere/src/chrome/content/rules/*.xml"
 	console.log(path)
 	const files = await globPromise(path)
 
