@@ -19,11 +19,15 @@ const main = async () => {
 
 	// Serve dynamic content from "/search?" API endpoint
 	app.get("/search?", (req, response) => {
-		database.query('SELECT 1 + 1 AS solution', []).then((result) => {
+    let targetName = req.url.replace("/search?target=", "")
+    let targetQuery = 'SELECT * FROM `ruleset_targets` WHERE `target` LIKE \'%' + targetName + '%\''
+		database.query(targetQuery, []).then((result) => {
 			console.log("Select")
-			console.log("Solution: " + result[0].solution)
+      //console.log(req)
+      //console.log(response)
+			console.log("Solution: " + result)
 			response.setHeader("Content-Type", "application/json")
-			response.send(JSON.stringify(result[0]))
+			response.send(JSON.stringify(result))
 		})
 	})
 
