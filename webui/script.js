@@ -93,12 +93,6 @@ window.addEventListener("load", function(event){
 			document.getElementById("result-box").innerHTML = ""
 
 			for (const target_found of data) {
-				// const target_found = data[targetIndex]
-				// console.log(taxrget_found)
-				// console.log(target_found.target)
-				// console.log(target_found.name)
-				// console.log(target_found.rulesetid)
-				// [rulesetid, target, name]
 				const row = document.createElement("div")
 				row.setAttribute("class", "Box-row d-flex flex-items-center")
 				row.setAttribute("id", "row")

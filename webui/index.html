@@ -18,7 +18,7 @@
     </head>
     <body>
         <header role="banner" class="masthead bg-gray-dark">
-            <div class="container">
+            <div class="container container-lg">
                 <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
                 <nav role="navigation" class="masthead-nav">
                     <a href="/submission/">Submit New PR</a>
@@ -27,31 +27,21 @@
                 </nav>
             </div>
         </header>
-        <main role="main" class="container">
-            <form id="search" autocomplete="off" style="margin:15px;">
-                <div class="box">
-                    <div class="box-header">
-                        <h2 class="box-title">
-                            Search by target:
-                        </h2>
+        <main role="main" class="container container-lg">
+            <div class="starter-template container-md">
+                <h1>Search by target</h1>
+                <form id="search" autocomplete="off" style="margin:15px;">
+                    <div class="box">
+                        <div class="box-body input-group">
+                            <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com"></input>
+                            <span class="input-group-button">
+                                <input class="btn text-right" type="submit" value="Search">
+                            </span>
+                        </div>
                     </div>
-                    <div class="box-body input-group">
-                        <!-- <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Username" aria-label="Username">
-                        <span class="input-group-button">
-                          <button class="btn" type="button" aria-label="Copy to clipboard">
-                            <%= octicon "clippy" %>
-                          </button>
-                        </span>
-                      </div> -->
-                        <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com"></input>
-                        <span class="input-group-button">
-                            <input class="btn text-right" type="submit" value="Search">
-                        </span>
-                    </div>
-                </div>
-            </form>
+                </form>
 
+            </div>
             <div class="border" id="result" style="overflow-y: scroll; height:500px; padding:5px; margin:15px;">
                 <div class="Box" id="result-box"> 
                 </div>
