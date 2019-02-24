@@ -119,7 +119,7 @@ var pushChanges = exec("git push", function(err, stdout_pre, stderr) {
 // now perform the PR using Github's API
 
 var jsonObject = '{"title: "Creating ruleset for ' + file + '"head": "irlbeck2:testing_branch", "base":"irlbeck2:head"}'
-var command1 = "curl -i -u 'irlbeck2:$Hs45295160' -d ";
+var command1 = "curl -i -u '' -d ";
 var entireString = command1 + jsonObject + ' https://api.github.com/repos/EFForg/https-everywhere/pulls';
 var execute = exec(entireString, function(err, stdout_pre, stderr) {
 
