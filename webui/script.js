@@ -93,7 +93,7 @@ window.addEventListener("load", function(event){
 			document.getElementById("result-box").innerHTML = ""
 			document.getElementById("lds-roller").style.display = "inline-block"
 
-			if (data[0].name == undefined) {
+			if (data.error) {
 				document.getElementById("lds-roller").style.display = "none"
 				return
 			}
