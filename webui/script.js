@@ -64,6 +64,10 @@ function serialize(form) {
 	return q.join("&");
 }
 
+function btnClick(value){
+	window.location.href = "/submission/"
+}
+
 // TODO: use DOMContentLoaded
 window.addEventListener("load", function(event){
 	console.log("page loaded")
@@ -85,21 +89,64 @@ window.addEventListener("load", function(event){
 				return Promise.reject(new Error("Search request failed"))
 		})
 		.then(function(data) {
-			document.getElementById("result").innerHTML = ""
 			// console.log(data)
-			const table = document.createElement("TABLE")
-			for (const target_found in data){
-				const entry = document.createElement("tr")
-				const attr1 = document.createElement('th')
-				const attr2 = document.createElement('th')
-				attr1.innerText = target_found.target
-				attr2.innerText = target_found.name
-				
+			document.getElementById("result-box").innerHTML = ""
+
+			for (const target_found of data) {
+				// const target_found = data[targetIndex]
+				// console.log(taxrget_found)
+				// console.log(target_found.target)
+				// console.log(target_found.name)
+				// console.log(target_found.rulesetid)
+				// [rulesetid, target, name]
+				const row = document.createElement("div")
+				row.setAttribute("class", "Box-row d-flex flex-items-center")
+				row.setAttribute("id", "row")
+
+				const row_title = document.createElement("div")
+				row_title.setAttribute("class", "flex-auto")
+				row_title.setAttribute("id", "row-title")
+
+				const title = document.createElement("strong")
+				title.innerText = target_found.target
+				const description = document.createElement("div")
+				description.setAttribute("class", "text-small text-gray-light")
+				description.innerText = target_found.name
+
+				row_title.appendChild(title)
+				row_title.appendChild(description)
+
+				const button = document.createElement("button")
+				button.setAttribute("onclick", "btnClick(value)")
+				button.setAttribute("type", "button")
+				button.setAttribute("class", "btn btn-sm")
+				button.setAttribute("name", "button")
+				button.setAttribute("id", "button")
+				button.setAttribute("value", target_found.rulesetid)
+				button.innerText = "View"
+
+				row.appendChild(row_title)
+				row.appendChild(button)
+				document.getElementById("result-box").appendChild(row)
 			}
-			let targetNames = ""
-			data.forEach(target_found => targetNames += (target_found.target + '\n'))
-			table.innerText = targetNames
-			document.getElementById("result").appendChild(table)
+
+			// document.getElementById("result-box").appendChild(newNode)
+			// // console.log(data)
+			// const table = document.createElement("TABLE")
+			// for (const target_found in data){
+			// 	const entry = document.createElement("tr")
+			// 	const attr1 = document.createElement('th')
+			// 	const attr2 = document.createElement('th')
+			// 	attr1.innerText = target_found.target
+			// 	attr2.innerText = target_found.name
+				
+			// }
+
+			// const p = document.createElement("P")
+			// let targetNames = ""
+			// data.forEach(target_found => targetNames += (target_found.target + '\n'))
+			// table.innerText = targetNames
+			// document.getElementById("result").appendChild(table)
 			// Create and append the li's to the ul
 		})
 		

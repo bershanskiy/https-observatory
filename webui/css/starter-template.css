@@ -34,37 +34,6 @@
   text-align: center;
 }
 
-/*.search-results {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-  flex: 1 1 auto;
-  overflow-y: scroll;
-  padding:5px;
-}*/
-
-.flex-box {
-  display: flex;
-  flex-flow: column;
-  height: 100%;
-}
-
-.flex-box .row {
-  border: 1px dotted grey;
-}
-
-.flex-box .row.header {
-  flex: 0 1 auto;
-}
-
-.flex-box .row.content {
-  flex: 1 1 auto;
-}
-
-.flex-box .row.footer {
-  flex: 0 1 40px;
-}
-
 #body {
   height: 100%;
   margin:0px;

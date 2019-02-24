@@ -1,25 +1,3 @@
-<!-- <!DOCTYPE html>
-<html>
-  <link href="/css/build.css" rel="stylesheet">
-  <head>
-    <meta charset="UTF-8">
-    <title>HTTPS Observatory</title>
-    <script type="text/javascript" src="/script.js" async></script>
-  </head>
-  <body>
-    <h1>HTTPS Observatory Explorer</h1>
-    <form id="search" autocomplete="off">
-      <label for="target">
-        Search by target:
-      </label>
-      <input type="text" name="target" placeholder="example.com"></input>
-      <input type="submit" value="Search">
-    </form>
-    <div id="result">
-    </div>
-  </body>
-</html>
- -->
 <!doctype html>
 <html lang="en">
     <head>
@@ -75,41 +53,8 @@
             </form>
 
             <div class="border" id="result" style="overflow-y: scroll; height:500px; padding:5px; margin:15px;">
-                <details>
-                    <summary class="btn btn-block text-left">Ruleset</summary>
-                    <div class="Box Box--condensed text-left">
-                        <div class="Box-row">
-                            <div class="d-flex flex-column flex-md-row flex-items-center flex-md-items-center">
-                                <div class="col-2 d-flex flex-items-center flex-items-center flex-md-items-start">
-                                    <h6>files:</h6>
-                                </div>
-                                <div class="col-12 col-md-10 d-flex flex-column flex-justify-center flex-items-center flex-md-items-start pl-md-4">
-                                    <code>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</code>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="Box-row">
-                            <div class="d-flex flex-column flex-md-row flex-items-center flex-md-items-center">
-                                <div class="col-2 d-flex flex-items-center flex-items-center flex-md-items-start">
-                                    <h6>targets:</h6>
-                                </div>
-                                <div class="col-12 col-md-10 d-flex flex-column flex-justify-center flex-items-center flex-md-items-start pl-md-4">
-                                    <code>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                                    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-                                    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-                                    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</code>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </details>
+                <div class="Box" id="result-box"> 
+                </div>
             </div>
         </main>
     </body>
