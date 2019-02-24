@@ -70,7 +70,6 @@ function defaultRuleset() {
 
     /* Targets */
     const targetP = document.getElementById("prototype-target")
-    targetP.remove()
     const targets = document.getElementById("targets")
     for (const data of ruleset_data.targets){
         const target = targetP.cloneNode(true)
@@ -82,7 +81,6 @@ function defaultRuleset() {
 
     /* Rules */
     const ruleP = document.getElementById("prototype-rule")
-    ruleP.remove()
     const rules = document.getElementById("rules")
     for (const data of ruleset_data.rules){
         const rule = ruleP.cloneNode(true)
@@ -94,7 +92,6 @@ function defaultRuleset() {
 
     /* Exclusions */
     const exclusionP = document.getElementById("prototype-exclusion")
-    exclusionP.remove()
     const exclusions = document.getElementById("exclusions")
     for (const data of ruleset_data.exclusions){
         const exclusion = exclusionP.cloneNode(true)
@@ -106,7 +103,6 @@ function defaultRuleset() {
 
     /* Securecookies */
     const cookieP = document.getElementById("prototype-cookie")
-    cookieP.remove()
     const cookies = document.getElementById("cookies")
     for (const data of ruleset_data.securecookies){
         const cookie = cookieP.cloneNode(true)
@@ -128,10 +124,21 @@ function deleteElement(button){
 	const li = button.parentNode
 	const ul = li.parentNode
 	minCount = ul.getAttribute("min-count")
-	if (ul.children.length > minCount){
+	if (ul.childElementCount > minCount){
 		li.parentNode.removeChild(li)
 		console.log("removed node")
 	}else{
 		console.log("Too few children")
 	}
+}
+
+function addElement(button){
+	console.log(button)
+	const dl = button.parentNode.parentNode.parentNode
+	console.log("DL", dl)
+	const ul = dl.getElementsByTagName("UL")[0]
+	console.log("UL", ul)
+	const node = ul.getElementsByTagName("LI")[0].cloneNode(true)
+	node.removeAttribute("id")
+	ul.appendChild(node)
 }
