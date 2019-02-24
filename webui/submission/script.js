@@ -39,11 +39,9 @@ const ruleset_data = {
 }
 
 const displayRuleset = (rulesetid) => {
-    if ((rulesetid == null) | (rulesetid == 0)) {
-        // defaultRuleset()
-    } else {
+    
+    if (!((rulesetid == null) | (rulesetid == 0))) {
         const url = "/ruleinfo?rulesetid=" + rulesetid
-
         // console.log(url)
 
         fetch(url)
@@ -61,52 +59,48 @@ const displayRuleset = (rulesetid) => {
             document.getElementById("file").value = data.rules[0].file
             document.getElementById("mixedcontent").checked = data.rules[0].mixedcontent.data[0]
 
-            if (data.targets[0].target != null) {
-                const targetList = document.getElementById("targets")
-                while (targetList.firstChild) {
-                    targetList.removeChild(targetList.firstChild);
-                }
-
-                for (const target of data.targets) {
-                    const newTarget = document.createElement("li")
-                    newTarget.setAttribute("class", "pr-elem")
-                    const targetInput = document.createElement("input")
-                    targetInput.setAttribute("class", "form-control")
-                    targetInput.setAttribute("type", "text")
-                    targetInput.setAttribute("autocomplete", "off")
-                    targetInput.setAttribute("value", target.target)
-
-                    newTarget.appendChild(targetInput)
-                    targetList.appendChild(newTarget)
-                }
+            const targetList = document.getElementById("targets")
+            while (targetList.firstChild) {
+                targetList.removeChild(targetList.firstChild);
             }
 
-            if (data.rules[0].from != null) {
-                const ruleList = document.getElementById("rules")
-                while (ruleList.firstChild) {
-                    ruleList.removeChild(ruleList.firstChild);
-                }
+            for (const target of data.targets) {
+                const newTarget = document.createElement("li")
+                newTarget.setAttribute("class", "pr-elem")
+                const targetInput = document.createElement("input")
+                targetInput.setAttribute("class", "form-control")
+                targetInput.setAttribute("type", "text")
+                targetInput.setAttribute("autocomplete", "off")
+                targetInput.setAttribute("value", target.target)
 
-                for (const rule of data.rules) {
-                    // console.log(rule)
-                    const newRule = document.createElement("li")
-                    newRule.setAttribute("class", "pr-elem")
-                    const ruleFrom = document.createElement("input")
-                    ruleFrom.setAttribute("class", "form-control")
-                    ruleFrom.setAttribute("type", "text")
-                    ruleFrom.setAttribute("autocomplete", "off")
-                    ruleFrom.setAttribute("value", rule.from)
-                    const ruleTo = document.createElement("input")
-                    ruleTo.setAttribute("class", "form-control")
-                    ruleTo.setAttribute("type", "text")
-                    ruleTo.setAttribute("autocomplete", "off")
-                    ruleTo.setAttribute("value", rule.to)
+                newTarget.appendChild(targetInput)
+                targetList.appendChild(newTarget)
+            }
+            
+            const ruleList = document.getElementById("rules")
+            while (ruleList.firstChild) {
+                ruleList.removeChild(ruleList.firstChild);
+            }
 
-                    newRule.appendChild(ruleFrom)
-                    newRule.appendChild(ruleTo)
+            for (const rule of data.rules) {
+                // console.log(rule)
+                const newRule = document.createElement("li")
+                newRule.setAttribute("class", "pr-elem")
+                const ruleFrom = document.createElement("input")
+                ruleFrom.setAttribute("class", "form-control")
+                ruleFrom.setAttribute("type", "text")
+                ruleFrom.setAttribute("autocomplete", "off")
+                ruleFrom.setAttribute("value", rule.from)
+                const ruleTo = document.createElement("input")
+                ruleTo.setAttribute("class", "form-control")
+                ruleTo.setAttribute("type", "text")
+                ruleTo.setAttribute("autocomplete", "off")
+                ruleTo.setAttribute("value", rule.to)
 
-                    ruleList.appendChild(newRule)
-                }
+                newRule.appendChild(ruleFrom)
+                newRule.appendChild(ruleTo)
+
+                ruleList.appendChild(newRule)
             }
 
             if (data.exclusions[0].pattern != null) {
@@ -159,7 +153,7 @@ const displayRuleset = (rulesetid) => {
                 }
             }
         })
-    } 
+    }
 }
 
 var url_string = window.location.href
