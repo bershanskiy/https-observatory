@@ -5,12 +5,16 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <meta name="description" content="">
         <meta name="author" content="">
+        <script type="text/javascript" src="./script.js" async></script>
+
+
         <link href="/favicon.png" rel="icon">
 
         <title>HTTPS Observatory</title>
 
         <!-- Primer core CSS -->
         <link href="/css/build.css" rel="stylesheet">
+        <link href="./style.css" rel="stylesheet">
 
         <!-- Custom styles for this template -->
         <link href="/css/starter-template.css" rel="stylesheet">
@@ -29,52 +33,77 @@
         </header>
         <main role="main" class="container">
             <div class="starter-template">
-                <!-- <h1>Submit a new pull request</h1> -->
+                <h1>Submit a new pull request</h1>
                 <form>
-                    <!-- <label for="name">Domain</label> -->
-                    <div class="Box Box--spacious col-12 mx-auto text-left">
-                        <div class="Box-header">
-                            <h3 class="Box-title">
-                                Submit a pull request
-                            </h3>
-                        </div>
-                        <form>
-                            <div class="Box-body text-left">
-                                <dl class="form-group mb-4">
-                                    <dt><label>Domain</label></dt>
-                                    <dd><input class="form-control" type="text" id="domain"></dd>
-                                </dl>
-
-                                <dl class="form-group mb-4">
-                                    <dt><label>Content type</label></dt>
-                                    <dd>
-                                        <input type="radio" id="active" name="content-type" checked> Active
-                                        <input type="radio" id="passive" name="content-type"> Passive
-                                        <input type="radio" id="mixed" name="content-type"> Mixed
-                                    </dd>
-                                </dl>
-                                <div class="text-right">
-                                    <button class="btn btn-primary">
-                                        Submit
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
+                    <dl class="form-group">
+                        <dt><label for="name">Ruleset Name</label></dt>
+                        <dd><input class="form-control" type="text" placeholder="Awesome Ruleset" id="name" autocomplete="off"></dd>
+                    </dl>
+                    <dl class="form-group">
+                        <dt><label for="file">File Name</label></dt>
+                        <dd><input class="form-control" type="text" placeholder="AwesomeRuleset.xml" id="file" autocomplete="off"></dd>
+                    </dl>
+                    <div class="form-checkbox">
+                        <label>
+                            <input type="checkbox" aria-describedby="help-text-for-checkbox" id="mixedcontent">
+                            Mixed content
+                        </label>
+                        <p class="note" id="help-text-for-checkbox">
+                            Read more about platform="mixedcontent" in the docs.
+                        </p>
                     </div>
+                    <dl class="form-group">
+                        <div class="Subhead">
+                            <div class="Subhead-heading">Targets</div>
+                            <div class="Subhead-description">These define the scope of the ruleset, they can be either fully-qualified domain names or wildcards.</div>
+                        </div>
+                        <ul id="targets">
+                            <li id="prototype-target"><input class="form-control" type="text" autocomplete="off" placeholder="example.com"></li>
+                        </ul>
+                        <br>
+                        <button class="btn" type="button">Add target</button>
+                    </dl>
+                    <dl class="form-group">
+                        <div class="Subhead">
+                            <div class="Subhead-heading">Rules</div>
+                            <div class="Subhead-description">These define the actual redirect behaviors.</div>
+                        </div>
+                        <ul id="rules">
+                            <li id="prototype-rule">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="^http://*">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="https://">
+                            </li>
+                        </ul>
+                   </dl>
 
-                    <!-- <input class="form-control" type="text" id="domain" placeholder="Domain">
+                    <dl class="form-group">
+                        <div class="Subhead">
+                            <div class="Subhead-heading">Exclussions</div>
+                            <div class="Subhead-description">These define the URLs that the rule should not apply to.</div>
+                        </div>
+                        <ul id="exclussions">
+                            <li id="prototype-exclussion">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="somthing">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="comment">
+                            </li>
+                        </ul>
+                    </dl>
 
-                    <label for="content-type">
-                        Content type:
-                    </label>
-                    <select class="form-select" if="content-type" aria-label="content-type">
-                        <option value="active">Active</option>
-                        <option value="passive">Passive</option>
-                        <option value="mixed">Mixed</option>
-                    </select>
 
-                    <button class="btn" type="submit">Submit</button> -->
-                    </form>
+                    <dl class="form-group">
+                        <div class="Subhead">
+                            <div class="Subhead-heading">Secure Cookies</div>
+                            <div class="Subhead-description">These define the cookies that should be secured.</div>
+                        </div>
+                        <ul id="cookies">
+                            <li id="prototype-cookie">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="somthing">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="somthing">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="comment">
+                            </li>
+                        </ul>
+                    </dl>
+                </form>
             </div>
         </main>
     </body>
