@@ -47,7 +47,10 @@ const main = async () => {
 		database.query(targetsQuery, []).then((tr_result) => {
 		var rulesetTestsQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_tests ON ruleset_tests.rulesetid=rulesets.rulesetid WHERE rulesets.rulesetid LIKE ' + ruleset_id + ';'
 		database.query(rulesetTestsQuery, []).then((rt_result) => {
+		var rulesetNameQuery = 'SELECT * FROM rulesets WHERE rulesets.rulesetid LIKE ' + ruleset_id + ';'
+		database.query(rulesetNameQuery, []).then((rn_result) => {
 			let combined_result = {
+				'ruleset_row': rn_result,
 				'securecookies': sc_result,
 				'rules': ru_result,
 				'exclusions': ex_result,
