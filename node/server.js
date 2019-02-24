@@ -60,8 +60,9 @@ const main = async () => {
 			console.log("All queries completed. ")
 			response.setHeader("Content-Type", "application/json")
 			response.send(JSON.stringify(combined_result))
-		})})})})});
 		})
+		})})})})})
+	})
 
 	// Serve dynamic content from "/search?" API endpoint
 	app.get("/stats", (req, res) => {
