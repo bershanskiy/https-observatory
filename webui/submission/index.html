@@ -19,7 +19,7 @@
         <link href="/css/starter-template.css" rel="stylesheet">
         <script type="text/javascript" src="/submission/script.js" async></script>
         <link href="./style.css" rel="stylesheet">
-        <script type="text/javascript" src="/script.js" async></script>
+        <!-- <script type="text/javascript" src="/script.js" async></script> -->
     </head>
     <body>
         <header role="banner" class="masthead bg-gray-dark">
@@ -53,56 +53,70 @@
                             Read more about platform="mixedcontent" in the docs.
                         </p>
                     </div>
-                    <dl class="form-group">
+                    <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Targets</div>
                             <div class="Subhead-description">These define the scope of the ruleset, they can be either fully-qualified domain names or wildcards.</div>
                         </div>
                         <ul id="targets">
-                            <li id="prototype-target"><input class="form-control" type="text" autocomplete="off" placeholder="example.com"></li>
+                            <li id="prototype-target" class="pr-elem"><input class="form-control" type="text" autocomplete="off" placeholder="example.com"></li>
                         </ul>
-                        <br>
-                        <button class="btn" type="button">Add target</button>
+                        <div class="BtnGroup pr-btn">
+                            <button onclick="addTarget()" class="btn BtnGroup-item btn-sm" type="button">+</button>
+                            <button onclick="removeTarget()" class="btn BtnGroup-item btn-sm" type="button">-</button>
+                        </div>
                     </dl>
-                    <dl class="form-group">
+                    <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Rules</div>
                             <div class="Subhead-description">These define the actual redirect behaviors.</div>
                         </div>
                         <ul id="rules">
-                            <li id="prototype-rule">
+                            <li id="prototype-rule" class="pr-elem">
                                 <input class="form-control" type="text" autocomplete="off" placeholder="^http://*">
                                 <input class="form-control" type="text" autocomplete="off" placeholder="https://">
                             </li>
                         </ul>
+                        <div class="BtnGroup pr-btn">
+                            <button onclick="addRule()" class="btn BtnGroup-item btn-sm" type="button">+</button>
+                            <button onclick="removeRule()" class="btn BtnGroup-item btn-sm" type="button">-</button>
+                        </div>
                    </dl>
 
-                    <dl class="form-group">
+                    <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Exclusions</div>
                             <div class="Subhead-description">These define the URLs that the rule should not apply to.</div>
                         </div>
-                        <ul id="exclussions">
-                            <li id="prototype-exclussion">
+                        <ul id="exclusions">
+                            <li id="prototype-exclusion" class="pr-elem">
                                 <input class="form-control" type="text" autocomplete="off" placeholder="somthing">
                                 <input class="form-control" type="text" autocomplete="off" placeholder="comment">
                             </li>
                         </ul>
+                        <div class="BtnGroup pr-btn">
+                            <button onclick="addExclusion()" class="btn BtnGroup-item btn-sm" type="button">+</button>
+                            <button onclick="removeExclusion()" class="btn BtnGroup-item btn-sm" type="button">-</button>
+                        </div>
                     </dl>
 
 
-                    <dl class="form-group">
+                    <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Secure Cookies</div>
                             <div class="Subhead-description">These define the cookies that should be secured.</div>
                         </div>
                         <ul id="cookies">
-                            <li id="prototype-cookie">
+                            <li id="prototype-cookie" class="pr-elem">
                                 <input class="form-control" type="text" autocomplete="off" placeholder="somthing">
                                 <input class="form-control" type="text" autocomplete="off" placeholder="somthing">
                                 <input class="form-control" type="text" autocomplete="off" placeholder="comment">
                             </li>
                         </ul>
+                        <div class="BtnGroup pr-btn">
+                            <button onclick="addCookie()" class="btn BtnGroup-item btn-sm" type="button">+</button>
+                            <button onclick="removeCookie()" class="btn BtnGroup-item btn-sm" type="button">-</button>
+                        </div>
                     </dl>
                 </form>
             </div>

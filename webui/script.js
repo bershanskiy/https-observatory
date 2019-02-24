@@ -65,7 +65,8 @@ function serialize(form) {
 }
 
 function btnClick(value){
-	window.location.href = "/submission/"
+	window.location.href = "/submission/?rulesetid=" + value
+	// rulesetIdReceiver(value)
 }
 
 // TODO: use DOMContentLoaded
@@ -83,32 +84,53 @@ window.addEventListener("load", function(event){
 
 		fetch(url)
 		.then((response) => {	// Check if fetch suceeded and extract the data
-			if (response.ok)
+			if (response.ok) {
+				// Start loader animation and results div and errors to invisible
+				document.getElementById("lds-roller").style.display = "inline-block"
+				document.getElementById("result-box").style.display = "none"
+				document.getElementById("invalid-input-short").style.display = "none"
+				document.getElementById("no-results-found").style.display = "none"
 				return response.json()
-			else
+			} else {
 				return Promise.reject(new Error("Search request failed"))
+			}
 		})
 		.then(function(data) {
-			console.log(data)
+			// console.log(data)
+			// console.log(data.length)
+			// Clear body of results field
 			document.getElementById("result-box").innerHTML = ""
-			document.getElementById("lds-roller").style.display = "inline-block"
 
+			// Error is true if the search query is less than 2 characters
 			if (data.error) {
 				document.getElementById("lds-roller").style.display = "none"
+				document.getElementById("result-box").style.display = "none"
+				document.getElementById("invalid-input-short").style.display = "block"
 				return
 			}
 
+			// Show error if there are no results
+			if (data.length == 0) {
+				document.getElementById("no-results-found").style.display = "block"
+			}
+
+			// Iterate through every target found and create row
 			for (const target_found of data) {
+				// Parent row div
 				const row = document.createElement("div")
 				row.setAttribute("class", "Box-row d-flex flex-items-center")
 				row.setAttribute("id", "row")
 
+				// Holds target and ruleset name
 				const row_title = document.createElement("div")
 				row_title.setAttribute("class", "flex-auto")
 				row_title.setAttribute("id", "row-title")
 
+				// target
 				const title = document.createElement("strong")
 				title.innerText = target_found.target
+
+				// ruleset name
 				const description = document.createElement("div")
 				description.setAttribute("class", "text-small text-gray-light")
 				description.innerText = target_found.name
@@ -116,6 +138,7 @@ window.addEventListener("load", function(event){
 				row_title.appendChild(title)
 				row_title.appendChild(description)
 
+				// Button to send ruleset id to pr form
 				const button = document.createElement("button")
 				button.setAttribute("onclick", "btnClick(value)")
 				button.setAttribute("type", "button")
@@ -131,8 +154,9 @@ window.addEventListener("load", function(event){
 				document.getElementById("result-box").appendChild(row)
 			}
 
-			document.getElementById("lds-roller").style.display = "none"
+			// Show results field and hide loading animation
 			document.getElementById("result-box").style.display = "block"
+			document.getElementById("lds-roller").style.display = "none"
 		})
 		
 		return false

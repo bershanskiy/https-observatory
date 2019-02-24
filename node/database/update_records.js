@@ -151,13 +151,15 @@ function makePulls() {
   console.log("Executing makePulls...")
   console.log('Starting directory: ' + process.cwd());
   try {
+    if (process.cwd().includes('https-everywhere') == 0) { 
     process.chdir('../cache/https-everywhere');
+  }
     console.log('New directory: ' + process.cwd());
   }
   catch (err) {
     console.log('error in makePulls: ' + err);
   }
-  var preCommit = exec("pwd && git rev-parse HEAD", function(err, stdout_pre, stderr) {
+  var preCommit = exec("git rev-parse HEAD", function(err, stdout_pre, stderr) {
     console.log(stdout_pre);
     var pulling = exec("git pull", function(err, stdout_pull, stderr) {
       console.log("Pulling...");

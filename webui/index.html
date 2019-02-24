@@ -31,19 +31,23 @@
             <div class="starter-template container-md">
                 <h1>Search by target</h1>
                 <form id="search" autocomplete="off" style="margin:15px;">
-                    <div class="box">
-                        <div class="box-body input-group">
-                            <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com"></input>
-                            <span class="input-group-button">
-                                <input class="btn text-right" type="submit" value="Search">
-                            </span>
-                        </div>
+                    <div class="box input-group">
+                        <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com"></input>
+                        <span class="input-group-button">
+                            <input class="btn text-right" type="submit" value="Search">
+                        </span>
                     </div>
+                    <dl class="form-group errored" style="display: none" id="invalid-input-short">
+                        <dd class="error">Invalid input: Query requires two or more characters</dd>
+                    </dl>
+                    <dl class="form-group errored" style="display: none" id="no-results-found">
+                        <dd class="error">No results found</dd>
+                    </dl>
                 </form>
 
             </div>
             <div class="border" id="result" style="overflow-y: scroll; height:500px; padding:5px; margin:15px;">
-                <div class="lds-roller" id="lds-roller" style="display: none"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
+                <div class="lds-roller text-center" id="lds-roller" style="display: none"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
                 <div class="Box" id="result-box" style="display:none"> 
 
                 </div>
