@@ -129,25 +129,6 @@ window.addEventListener("load", function(event){
 				row.appendChild(button)
 				document.getElementById("result-box").appendChild(row)
 			}
-
-			// document.getElementById("result-box").appendChild(newNode)
-			// // console.log(data)
-			// const table = document.createElement("TABLE")
-			// for (const target_found in data){
-			// 	const entry = document.createElement("tr")
-			// 	const attr1 = document.createElement('th')
-			// 	const attr2 = document.createElement('th')
-			// 	attr1.innerText = target_found.target
-			// 	attr2.innerText = target_found.name
-				
-			// }
-
-			// const p = document.createElement("P")
-			// let targetNames = ""
-			// data.forEach(target_found => targetNames += (target_found.target + '\n'))
-			// table.innerText = targetNames
-			// document.getElementById("result").appendChild(table)
-			// Create and append the li's to the ul
 		})
 		
 		return false
