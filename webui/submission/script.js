@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 window.addEventListener("load", function(event){
     console.log("submission page loaded")
 })
-=======
 "use strict"
 
 const ruleset_data = {
@@ -69,7 +67,7 @@ const displayRuleset = (ruleset_data) => {
 		rules.appendChild(rule)
 	}
 
-	/* Exclussions */
+	/* Exclusions */
 	const exclussionP = document.getElementById("prototype-exclussion")
 	exclussionP.remove()
 	const exclussions = document.getElementById("exclussions")
@@ -97,4 +95,3 @@ const displayRuleset = (ruleset_data) => {
 }
 
 displayRuleset(ruleset_data)
->>>>>>> 2979e640713ee713eb7384843602d33f27a5f8a7
