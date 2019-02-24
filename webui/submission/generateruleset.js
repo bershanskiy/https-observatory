@@ -1,5 +1,8 @@
 // var json = '{"result":true,"count":1}', // replace with the valid JSON data
 //     obj = JSON.parse(json);
+var exec = require('child_process').exec;
+const fetch = require("node-fetch");
+const request = require('request');
 
 var obj = {
     "rulesetid": 1,
@@ -32,14 +35,14 @@ var obj = {
 
 // store all variables
 var rulesetid = obj.rulesetid;
-var rulesetname = obj.name;
+var rulename = obj.name;
 var file = obj.file;
 var default_off = obj.default_off;
 var mixedcontent = obj.mixedcontent;
 var comment = obj.comment;
 var targets = obj.targets; // this is a list of targets (strings)
 var rules = obj.rules; // this is a list of rule pairs (JSON object)
-var exclusions = obj.exclusions; // this is a list of exclusion pairs(JSON object)
+var exclusions = obj.exclussions; // this is a list of exclusion pairs(JSON object)
 var securecookies = obj.securecookies; // this is a another list of JSON objects
 
 ////////// NEED TO PERFORM GIT INTEGRATION TO SET UP PR ///////////////////
@@ -81,12 +84,44 @@ for (rule of rules) {
 }
 finalOutput += "\n";
 finalOutput += "</ruleset>";
-
+// change the working directory to our fork of HTTPS-Everywhere to begin the PR
+try {
+  if (process.cwd().includes('https-everywhere') == 0) {
+  process.chdir('../../cache/https-everywhere/src/chrome/content/rules');
+}
+  console.log('New directory to write ruleset: ' + process.cwd());
+}
+catch (err) {
+  console.log('error in generateruleset: ' + err);
+}
+// now assume the file has been written to your fork of HTTPS-Everywhere
+var pullChanges = exec("git pull", function(err, stdout_pre, stderr) {
+});
 // write to a new file in the correct https-observatory directory
 fs.writeFile(file, finalOutput, (err) => {
     // throws an error, you could also catch it here
     if (err) throw err;
-
     // success case, the file was saved
     console.log('Output generations success!');
 });
+// need to commit and push changes to personal branch
+var addAndCommitChanges = exec('git add ' + file + ' && git commit -m "Adding ruleset for ' +  file + '"',
+  function(err, stdout_pre, stderr) {
+    if (!err) {
+      console.log("adding and committing...");
+    }
+  });
+var pushChanges = exec("git push", function(err, stdout_pre, stderr) {
+  if (!err) {
+    console.log("pushing...");
+  }
+});
+// now perform the PR using Github's API
+
+var jsonObject = '{"title: "Creating ruleset for ' + file + '"head": "irlbeck2:testing_branch", "base":"irlbeck2:head"}'
+var command1 = "curl -i -u 'irlbeck2:$Hs45295160' -d ";
+var entireString = command1 + jsonObject + ' https://api.github.com/repos/EFForg/https-everywhere/pulls';
+var execute = exec(entireString, function(err, stdout_pre, stderr) {
+
+});
+//curl -i -u 'irlbeck2:$Hs45295160' -d '{"title": "Creating ruleset for Example.xml", "head": "irlbeck2:master", "base": "master"}' https://api.github.com/repos/EFForg/https-everywhere/pulls
