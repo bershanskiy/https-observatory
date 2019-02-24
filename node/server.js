@@ -19,7 +19,10 @@ const main = async () => {
 
 	// Serve dynamic content from "/search?" API endpoint
 	app.get("/search?", (req, response) => {
-    let targetName = req.url.replace("/search?target=", "")
+	let targetName = req.url.replace("/search?target=", "")
+	if (targetName.length < 2){
+		response.send('{}')
+	}
     let targetQuery = 'SELECT * FROM `ruleset_targets` WHERE `target` LIKE \'%' + targetName + '%\''
     let joinQuery = 'SELECT * FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE \'%' +targetName +'%\';'
 		database.query(joinQuery, []).then((result) => {
@@ -28,6 +31,17 @@ const main = async () => {
 			response.send(JSON.stringify(result))
 		})
 	})
+
+	app.get("/search?", (req, response) => {
+		let targetName = req.url.replace("/search?target=", "")
+		let targetQuery = 'SELECT * FROM `ruleset_targets` WHERE `target` LIKE \'%' + targetName + '%\''
+		let joinQuery = 'SELECT * FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE \'%' +targetName +'%\';'
+			database.query(joinQuery, []).then((result) => {
+				console.log("Search Query Served. ")
+				response.setHeader("Content-Type", "application/json")
+				response.send(JSON.stringify(result))
+			})
+		})
 
 	// Serve dynamic content from "/search?" API endpoint
 	app.get("/stats", (req, res) => {
