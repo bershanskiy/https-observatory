@@ -89,8 +89,14 @@ window.addEventListener("load", function(event){
 				return Promise.reject(new Error("Search request failed"))
 		})
 		.then(function(data) {
-			// console.log(data)
+			console.log(data)
 			document.getElementById("result-box").innerHTML = ""
+			document.getElementById("lds-roller").style.display = "inline-block"
+
+			if (data[0].name == undefined) {
+				document.getElementById("lds-roller").style.display = "none"
+				return
+			}
 
 			for (const target_found of data) {
 				const row = document.createElement("div")
@@ -121,8 +127,12 @@ window.addEventListener("load", function(event){
 
 				row.appendChild(row_title)
 				row.appendChild(button)
+
 				document.getElementById("result-box").appendChild(row)
 			}
+
+			document.getElementById("lds-roller").style.display = "none"
+			document.getElementById("result-box").style.display = "block"
 		})
 		
 		return false
