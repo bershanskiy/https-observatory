@@ -20,18 +20,18 @@ const parseStringPromise = promisify(parseString)
 const globPromise = promisify(glob)
 const readFilePromise = promisify(fs.readFile)
 
-const updateRecord = async (ruleset, connection) => {
+const updateRecord = async (path_, connection) => {
 		//const path = __dirname + "/../../cache/transport_security_state_static.json"
-	const path = __dirname + "/../../cache/https-everywhere/" + ruleset; // THIS MIGHT NOT BE THE RIGHT RELATIVE PATH
+	const path = __dirname + "/../../cache/https-everywhere/" + path_; // THIS MIGHT NOT BE THE RIGHT RELATIVE PATH
 	console.log(path)
 	const files = await globPromise(path)
 
-	var formated_rulesets    = []
-	var formated_targets     = []
-	var formated_rules       = []
-	var formated_tests       = []
-	var formated_exclussions = []
-	var formated_cookies     = []
+	var formated_rulesets   = []
+	var formated_targets    = []
+	var formated_rules      = []
+	var formated_tests      = []
+	var formated_exclusions = []
+	var formated_cookies    = []
 
 	var rulesetid = 0
 	for (const file of files) {
@@ -72,7 +72,7 @@ const updateRecord = async (ruleset, connection) => {
 		}
 
 		for (const exclusion of ruleset.exclusion || []){ // Should move on if there are no tests
-			formated_exclussions.push([ // Record attributes:
+			formated_exclusions.push([ // Record attributes:
 				rulesetid,          // INT rulesetid
 				exclusion.$.pattern // VARCHAR url
 			])
@@ -121,7 +121,7 @@ const updateRecord = async (ruleset, connection) => {
 		})
 
 
-	connection.query("INSERT INTO ruleset_exclussions (`rulesetid`, `pattern`) VALUES ?", [formated_exclussions],
+	connection.query("INSERT INTO ruleset_exclusions (`rulesetid`, `pattern`) VALUES ?", [formated_exclusions],
 		function (error, results, fields) {
 			if (error)
 				console.log(error, fields)

@@ -58,9 +58,9 @@ CREATE TABLE `ruleset_tests` (
 	-- PRIMARY KEY (`rulesetid`, `url`)
 );
 
-CREATE TABLE `ruleset_exclussions` (
+CREATE TABLE `ruleset_exclusions` (
 	`rulesetid` INT NOT NULL,
-	`rulesetexclussionid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- TODO: remove this
+	`rulesetexclusionid` INT NOT NULL AUTO_INCREMENT PRIMARY KEY, -- TODO: remove this
 	`pattern` VARCHAR(5000) NOT NULL,
 	`comment` VARCHAR(255)
 	-- PRIMARY KEY (`rulesetid`, `pattern`)

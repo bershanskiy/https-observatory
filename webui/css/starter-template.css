@@ -130,3 +130,7 @@ body {
   height: 100%;
   margin:0px;
 }
+
+header {
+  padding: 16px;
+}

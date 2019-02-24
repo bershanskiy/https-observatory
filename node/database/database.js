@@ -148,18 +148,17 @@ const loadDataRulesFromJSON = async() => {
 	})
 }
 
-const loadDataRules = async () => {
+const loadDataRules = async (path) => {
 		//const path = __dirname + "/../../cache/transport_security_state_static.json"
-	const path = __dirname + "/../../cache/https-everywhere/src/chrome/content/rules/*.xml"
 	console.log(path)
 	const files = await globPromise(path)
 
-	var formated_rulesets    = []
-	var formated_targets     = []
-	var formated_rules       = []
-	var formated_tests       = []
-	var formated_exclussions = []
-	var formated_cookies     = []
+	var formated_rulesets   = []
+	var formated_targets    = []
+	var formated_rules      = []
+	var formated_tests      = []
+	var formated_exclusions = []
+	var formated_cookies    = []
 
 	var rulesetid = 0
 	for (const file of files) {
@@ -200,7 +199,7 @@ const loadDataRules = async () => {
 		}
 
 		for (const exclusion of ruleset.exclusion || []){ // Should move on if there are no tests
-			formated_exclussions.push([ // Record attributes:
+			formated_exclusions.push([ // Record attributes:
 				rulesetid,          // INT rulesetid
 				exclusion.$.pattern // VARCHAR url
 			])
@@ -249,7 +248,7 @@ const loadDataRules = async () => {
 		})
 
 
-	connection.query("INSERT INTO ruleset_exclussions (`rulesetid`, `pattern`) VALUES ?", [formated_exclussions],
+	connection.query("INSERT INTO ruleset_exclusions (`rulesetid`, `pattern`) VALUES ?", [formated_exclusions],
 		function (error, results, fields) {
 			if (error)
 				console.log(error, fields)
@@ -270,6 +269,8 @@ const loadDataRules = async () => {
 const loadData = async () => {
 	// The tate of the database
 	var state
+	const path_data = __dirname + "/../../cache/https-everywhere/src/chrome/content/rules/*.xml"
+
 	// Attempt to load the file state of the database, which might not exist
 	try {
 		state = require(state_file_path)
@@ -281,7 +282,7 @@ const loadData = async () => {
 		connection.query("DELETE FROM rulesets;")
 		connection.query("DELETE FROM ruleset_targets;")
 		connection.query("DELETE FROM ruleset_rules;")
-		connection.query("DELETE FROM ruleset_exclussions;")
+		connection.query("DELETE FROM ruleset_exclusions;")
 		connection.query("DELETE FROM ruleset_securecookies;")
 		connection.query("DELETE FROM evidence_hsts_preload;")
 		console.log("emptied everything")
@@ -289,7 +290,7 @@ const loadData = async () => {
 
 		console.log("Database data: Started loading data...")
 		await loadDataHSTS()
-		await loadDataRules()
+		await loadDataRules(path_data)
 		console.log("Database data: done loading data.")
 	}
 
