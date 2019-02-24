@@ -46,7 +46,12 @@ connection.connect((error) => {
 const queryPromise = async (query, args) => {
 	return new Promise((resolve, reject) => {
 		connection.query(query, args, function (error, results, fields) {
-			if (error) reject([error, results, fields])
+			if (error){
+				console.log(error)
+				console.log(results)
+				console.log(fields)
+				reject([error, results, fields])
+			}
 			else resolve(results)
 		})
 	})

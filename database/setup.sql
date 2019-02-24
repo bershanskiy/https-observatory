@@ -8,6 +8,9 @@ CREATE DATABASE `project`;
 -- Create user "server" with limited permissions
 -- Could setup password with IDENTIFIED BY '<hash>', but there is no need to use passwords because db is visible only from localhost
 CREATE USER 'server'@'localhost';
+-- Set up a password:
+-- ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY 'password';
+-- ALTER USER 'root'@'localhost' IDENTIFIED BY 'password';
 GRANT SELECT, INSERT, UPDATE, DELETE ON `project`.* TO 'server'@'localhost';
 
 USE project;
