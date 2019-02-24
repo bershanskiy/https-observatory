@@ -41,7 +41,9 @@
 /* Loading animation */
 .lds-roller {
   display: inline-block;
-  position: relative;
+  position: absolute;
+  top: 50%;
+  left: 50%;
   width: 64px;
   height: 64px;
 }
