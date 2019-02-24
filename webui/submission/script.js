@@ -93,15 +93,15 @@ function defaultRuleset() {
     }
 
     /* Exclusions */
-    const exclussionP = document.getElementById("prototype-exclussion")
-    exclussionP.remove()
+    const exclusionP = document.getElementById("prototype-exclusion")
+    exclusionP.remove()
     const exclusions = document.getElementById("exclusions")
     for (const data of ruleset_data.exclusions){
-        const exclussion = exclussionP.cloneNode(true)
-        exclussion.removeAttribute("id")
-        exclussion.getElementsByTagName("input")[0].value = data.pattern
-        exclussion.getElementsByTagName("input")[1].value = data.comment
-        exclusions.appendChild(exclussion)
+        const exclusion = exclusionP.cloneNode(true)
+        exclusion.removeAttribute("id")
+        exclusion.getElementsByTagName("input")[0].value = data.pattern
+        exclusion.getElementsByTagName("input")[1].value = data.comment
+        exclusions.appendChild(exclusion)
     }
 
     /* Securecookies */
@@ -123,3 +123,76 @@ var url = new URL(url_string)
 var rulesetid = url.searchParams.get("rulesetid")
 console.log(rulesetid)
 displayRuleset(rulesetid)
+
+function addTarget() {
+    const targetList = document.getElementById("targets")
+    const newTarget = document.createElement("li")
+    newTarget.setAttribute("class", "pr-elem")
+    const targetInput = document.createElement("input")
+    targetInput.setAttribute("class", "form-control")
+    targetInput.setAttribute("type", "text")
+    targetInput.setAttribute("autocomplete", "off")
+    targetInput.setAttribute("placeholder", "example.com")
+
+    newTarget.appendChild(targetInput)
+    targetList.appendChild(newTarget)
+}
+
+function removeTarget() {
+    const targetList = document.getElementById("targets")
+    if (targetList.childElementCount < 2) {
+        return
+    }
+    targetList.lastChild.remove()
+}
+// <ul id="rules">
+//     <li id="prototype-rule" class="pr-elem">
+//         <input class="form-control" type="text" autocomplete="off" placeholder="^http://*">
+//         <input class="form-control" type="text" autocomplete="off" placeholder="https://">
+//     </li>
+// </ul>
+
+function addRule() {
+    const ruleList = document.getElementById("rules")
+    const newRule = document.createElement("li")
+    newRule.setAttribute("class", "pr-elem")
+    const ruleFrom = document.createElement("input")
+    ruleFrom.setAttribute("class", "form-control")
+    ruleFrom.setAttribute("type", "text")
+    ruleFrom.setAttribute("autocomplete", "off")
+    ruleFrom.setAttribute("placeholder", "[from]")
+    const ruleTo = document.createElement("input")
+    ruleTo.setAttribute("class", "form-control")
+    ruleTo.setAttribute("type", "text")
+    ruleTo.setAttribute("autocomplete", "off")
+    ruleTo.setAttribute("placeholder", "[from]")
+
+    newRule.appendChild(ruleFrom)
+    newRule.appendChild(ruleTo)
+
+    ruleList.appendChild(newRule)
+}
+
+function removeRule() {
+    const targetList = document.getElementById("rules")
+    if (targetList.childElementCount < 2) {
+        return
+    }
+    targetList.lastChild.remove()
+}
+
+function removeExclusion() {
+    const targetList = document.getElementById("exclusions")
+    if (targetList.childElementCount < 2) {
+        return
+    }
+    targetList.lastChild.remove()
+}
+
+function removeCookie() {
+    const targetList = document.getElementById("cookies")
+    if (targetList.childElementCount < 2) {
+        return
+    }
+    targetList.lastChild.remove()
+}
