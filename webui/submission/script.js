@@ -23,7 +23,7 @@ const ruleset_data = {
 			,
 		}
 	],
-	"exclussions": [
+	"exclusions": [
 		{
 			"pattern": "example.com/example",
 			"comment": "insecure urls"
@@ -38,60 +38,88 @@ const ruleset_data = {
 	]
 }
 
-const displayRuleset = (ruleset_data) => {
-	document.getElementById("name").value = ruleset_data.name
-	document.getElementById("file").value = ruleset_data.file
-	document.getElementById("mixedcontent").checked = ruleset_data.mixedcontent
+const displayRuleset = (rulesetid) => {
+    if ((rulesetid == null) | (rulesetid == 0)) {
+        defaultRuleset()
+    } else {
+        const url = "/ruleinfo?" + rulesetid
 
-	/* Targets */
-	const targetP = document.getElementById("prototype-target")
-	targetP.remove()
-	const targets = document.getElementById("targets")
-	for (const data of ruleset_data.targets){
-		const target = targetP.cloneNode(true)
-		target.removeAttribute("id")
-		target.getElementsByTagName("input")[0].value = data
-		console.log(target)
-		targets.appendChild(target)
-	}
+        console.log(url)
 
-	/* Rules */
-	const ruleP = document.getElementById("prototype-rule")
-	ruleP.remove()
-	const rules = document.getElementById("rules")
-	for (const data of ruleset_data.rules){
-		const rule = ruleP.cloneNode(true)
-		rule.removeAttribute("id")
-		rule.getElementsByTagName("input")[0].value = data.from
-		rule.getElementsByTagName("input")[1].value = data.to
-		rules.appendChild(rule)
-	}
-
-	/* Exclusions */
-	const exclussionP = document.getElementById("prototype-exclussion")
-	exclussionP.remove()
-	const exclussions = document.getElementById("exclussions")
-	for (const data of ruleset_data.exclussions){
-		const exclussion = exclussionP.cloneNode(true)
-		exclussion.removeAttribute("id")
-		exclussion.getElementsByTagName("input")[0].value = data.pattern
-		exclussion.getElementsByTagName("input")[1].value = data.comment
-		exclussions.appendChild(exclussion)
-	}
-
-	/* Securecookies */
-	const cookieP = document.getElementById("prototype-cookie")
-	cookieP.remove()
-	const cookies = document.getElementById("cookies")
-	for (const data of ruleset_data.securecookies){
-		const cookie = cookieP.cloneNode(true)
-		cookie.removeAttribute("id")
-		cookie.getElementsByTagName("input")[0].value = data.host
-		cookie.getElementsByTagName("input")[1].value = data.name
-		cookie.getElementsByTagName("input")[2].value = data.comment
-		cookies.appendChild(cookie)
-	}
-
+        fetch(url)
+        .then((response) => {   // Check if fetch suceeded and extract the data
+            console.log("Inside first callback")
+            if (response.ok) {
+                console.log("Respone received")
+                return response.json()
+            } else {
+                return Promise.reject(new Error("Search request failed"))
+            }
+        })
+        .then(function(data) {
+            console.log(data)
+        })
+    } 
 }
 
-displayRuleset(ruleset_data)
+function defaultRuleset() {
+    console.log("Rulesetid argument empty, filling in default values")
+    document.getElementById("name").value = ruleset_data.name
+    document.getElementById("file").value = ruleset_data.file
+    document.getElementById("mixedcontent").checked = ruleset_data.mixedcontent
+
+    /* Targets */
+    const targetP = document.getElementById("prototype-target")
+    targetP.remove()
+    const targets = document.getElementById("targets")
+    for (const data of ruleset_data.targets){
+        const target = targetP.cloneNode(true)
+        target.removeAttribute("id")
+        target.getElementsByTagName("input")[0].value = data
+        console.log(target)
+        targets.appendChild(target)
+    }
+
+    /* Rules */
+    const ruleP = document.getElementById("prototype-rule")
+    ruleP.remove()
+    const rules = document.getElementById("rules")
+    for (const data of ruleset_data.rules){
+        const rule = ruleP.cloneNode(true)
+        rule.removeAttribute("id")
+        rule.getElementsByTagName("input")[0].value = data.from
+        rule.getElementsByTagName("input")[1].value = data.to
+        rules.appendChild(rule)
+    }
+
+    /* Exclusions */
+    const exclussionP = document.getElementById("prototype-exclussion")
+    exclussionP.remove()
+    const exclusions = document.getElementById("exclusions")
+    for (const data of ruleset_data.exclusions){
+        const exclussion = exclussionP.cloneNode(true)
+        exclussion.removeAttribute("id")
+        exclussion.getElementsByTagName("input")[0].value = data.pattern
+        exclussion.getElementsByTagName("input")[1].value = data.comment
+        exclusions.appendChild(exclussion)
+    }
+
+    /* Securecookies */
+    const cookieP = document.getElementById("prototype-cookie")
+    cookieP.remove()
+    const cookies = document.getElementById("cookies")
+    for (const data of ruleset_data.securecookies){
+        const cookie = cookieP.cloneNode(true)
+        cookie.removeAttribute("id")
+        cookie.getElementsByTagName("input")[0].value = data.host
+        cookie.getElementsByTagName("input")[1].value = data.name
+        cookie.getElementsByTagName("input")[2].value = data.comment
+        cookies.appendChild(cookie)
+    }
+}
+
+var url_string = window.location.href
+var url = new URL(url_string)
+var rulesetid = url.searchParams.get("rulesetid")
+console.log(rulesetid)
+displayRuleset(rulesetid)

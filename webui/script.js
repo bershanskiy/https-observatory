@@ -65,8 +65,8 @@ function serialize(form) {
 }
 
 function btnClick(value){
-	window.location.href = "/submission/"
-	console.log(value)
+	window.location.href = "/submission/?rulesetid=" + value
+	// rulesetIdReceiver(value)
 }
 
 // TODO: use DOMContentLoaded
