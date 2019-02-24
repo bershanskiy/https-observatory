@@ -36,30 +36,32 @@
             <div class="starter-template">
                 <h1>Submit a new pull request</h1>
                 <form>
+                    <div class="Subhead">
+                        <div class="Subhead-heading">Name</div>
+                        <div class="Subhead-description">Ruleset name and file name</div>
+                    </div>
                     <dl class="form-group">
                         <dt><label for="name">Ruleset Name</label></dt>
-                        <dd><input class="form-control" type="text" placeholder="Awesome Ruleset" id="name" autocomplete="off"></dd>
+                        <dd><input class="form-control" type="text" placeholder="Ruleset Name" id="name" autocomplete="off"></dd>
                     </dl>
                     <dl class="form-group">
                         <dt><label for="file">File Name</label></dt>
-                        <dd><input class="form-control" type="text" placeholder="AwesomeRuleset.xml" id="file" autocomplete="off"></dd>
+                        <dd><input class="form-control" type="text" placeholder="ruleset.xml" id="file" autocomplete="off"></dd>
                     </dl>
                     <div class="form-checkbox">
                         <label>
                             <input type="checkbox" aria-describedby="help-text-for-checkbox" id="mixedcontent">
                             Mixed content
                         </label>
-                        <p class="note" id="help-text-for-checkbox">
-                            Read more about platform="mixedcontent" in the docs.
-                        </p>
+                        <p><button onclick="window.location.href ='https://developer.mozilla.org/en-US/docs/Web/Security/Mixed_content';" class="btn-link note" id="help-text-for-checkbox"type="button">What's this?</button></p>
                     </div>
                     <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Targets</div>
-                            <div class="Subhead-description">These define the scope of the ruleset, they can be either fully-qualified domain names or wildcards.</div>
+                            <div class="Subhead-description">These define the scope of the ruleset, they can be either fully-qualified domain names or wildcards</div>
                         </div>
                         <ul id="targets">
-                            <li id="prototype-target" class="pr-elem"><input class="form-control" type="text" autocomplete="off" placeholder="example.com"></li>
+                            <li id="prototype-target" class="pr-elem"><input class="form-control" type="text" autocomplete="off" placeholder="[target] example.com"></li>
                         </ul>
                         <div class="BtnGroup pr-btn">
                             <button onclick="addTarget()" class="btn BtnGroup-item btn-sm" type="button">+</button>
@@ -69,12 +71,12 @@
                     <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Rules</div>
-                            <div class="Subhead-description">These define the actual redirect behaviors.</div>
+                            <div class="Subhead-description">These define the actual redirect behaviors</div>
                         </div>
                         <ul id="rules">
                             <li id="prototype-rule" class="pr-elem">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="^http://*">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="https://">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="[from]: ^http://*">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="[to]: https://">
                             </li>
                         </ul>
                         <div class="BtnGroup pr-btn">
@@ -86,12 +88,11 @@
                     <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Exclusions</div>
-                            <div class="Subhead-description">These define the URLs that the rule should not apply to.</div>
+                            <div class="Subhead-description">These define the URLs that the rule should not apply to</div>
                         </div>
                         <ul id="exclusions">
                             <li id="prototype-exclusion" class="pr-elem">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="somthing">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="comment">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="[pattern]">
                             </li>
                         </ul>
                         <div class="BtnGroup pr-btn">
@@ -104,13 +105,12 @@
                     <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Secure Cookies</div>
-                            <div class="Subhead-description">These define the cookies that should be secured.</div>
+                            <div class="Subhead-description">These define the cookies that should be secured</div>
                         </div>
                         <ul id="cookies">
                             <li id="prototype-cookie" class="pr-elem">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="somthing">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="somthing">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="comment">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="[host] example.com">
+                                <input class="form-control" type="text" autocomplete="off" placeholder="[name] ">
                             </li>
                         </ul>
                         <div class="BtnGroup pr-btn">

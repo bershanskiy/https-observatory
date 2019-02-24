@@ -8,31 +8,31 @@ const ruleset_data = {
 	"name": "Example ruleset",
 	"file": "ExampleRuleset.xml",
 	"default_off": "",
-	"mixedcontent": true,
+	"mixedcontent": false,
 	"comment": "",
 	"targets": ["example.com", "*.example.com"],
 //	"timestamp": TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
 	"rules": [
 		{
-			"from": "^http://",
-			"to": "https://"
+			"from": "from: ^http://",
+			"to": "to: https://"
 		},
 		{
-			"from": "http://www.example.com",
-			"to": "https://example.com"
+			"from": "from: http://www.example.com",
+			"to": "to: https://example.com"
 			,
 		}
 	],
 	"exclusions": [
 		{
-			"pattern": "example.com/example",
+			"pattern": "pattern: example.com/example",
 			"comment": "insecure urls"
 		}
 	],
 	"securecookies": [
 		{
-			"host":"example.com",
-			"name":".+",
+			"host":"host: example.com",
+			"name":"name: .+",
 			"comment":"all"
 		}
 	]
@@ -40,88 +40,186 @@ const ruleset_data = {
 
 const displayRuleset = (rulesetid) => {
     if ((rulesetid == null) | (rulesetid == 0)) {
-        defaultRuleset()
+        // defaultRuleset()
     } else {
         const url = "/ruleinfo?rulesetid=" + rulesetid
 
-        console.log(url)
+        // console.log(url)
 
         fetch(url)
         .then((response) => {   // Check if fetch suceeded and extract the data
-            console.log("Inside first callback")
             if (response.ok) {
-                console.log("Respone received")
+                console.log("Response received")
                 return response.json()
             } else {
                 return Promise.reject(new Error("Search request failed"))
             }
         })
         .then(function(data) {
-            console.log(data)
+            // console.log(data)
+            document.getElementById("name").value = ruleset_data.name
+            document.getElementById("file").value = data.rules[0].file
+            document.getElementById("mixedcontent").checked = data.rules[0].mixedcontent.data[0]
+
+            if (data.targets[0].target != null) {
+                const targetList = document.getElementById("targets")
+                while (targetList.firstChild) {
+                    targetList.removeChild(targetList.firstChild);
+                }
+
+                for (const target of data.targets) {
+                    const newTarget = document.createElement("li")
+                    newTarget.setAttribute("class", "pr-elem")
+                    const targetInput = document.createElement("input")
+                    targetInput.setAttribute("class", "form-control")
+                    targetInput.setAttribute("type", "text")
+                    targetInput.setAttribute("autocomplete", "off")
+                    targetInput.setAttribute("value", target.target)
+
+                    newTarget.appendChild(targetInput)
+                    targetList.appendChild(newTarget)
+                }
+            }
+
+            if (data.rules[0].from != null) {
+                const ruleList = document.getElementById("rules")
+                while (ruleList.firstChild) {
+                    ruleList.removeChild(ruleList.firstChild);
+                }
+
+                for (const rule of data.rules) {
+                    // console.log(rule)
+                    const newRule = document.createElement("li")
+                    newRule.setAttribute("class", "pr-elem")
+                    const ruleFrom = document.createElement("input")
+                    ruleFrom.setAttribute("class", "form-control")
+                    ruleFrom.setAttribute("type", "text")
+                    ruleFrom.setAttribute("autocomplete", "off")
+                    ruleFrom.setAttribute("value", rule.from)
+                    const ruleTo = document.createElement("input")
+                    ruleTo.setAttribute("class", "form-control")
+                    ruleTo.setAttribute("type", "text")
+                    ruleTo.setAttribute("autocomplete", "off")
+                    ruleTo.setAttribute("value", rule.to)
+
+                    newRule.appendChild(ruleFrom)
+                    newRule.appendChild(ruleTo)
+
+                    ruleList.appendChild(newRule)
+                }
+            }
+
+            if (data.exclusions[0].pattern != null) {
+                const exclusionList = document.getElementById("exclusions")
+                while (exclusionList.firstChild) {
+                    exclusionList.removeChild(exclusionList.firstChild);
+                }
+
+                for (const exclusion of data.exclusions) {
+                    // console.log(exclusion)
+                    const newExclusion = document.createElement("li")
+                    newExclusion.setAttribute("class", "pr-elem")
+                    const exclusionPattern = document.createElement("input")
+                    exclusionPattern.setAttribute("class", "form-control")
+                    exclusionPattern.setAttribute("type", "text")
+                    exclusionPattern.setAttribute("autocomplete", "off")
+                    exclusionPattern.setAttribute("value", exclusion.pattern)
+
+                    newExclusion.appendChild(exclusionPattern)
+
+                    exclusionList.appendChild(newExclusion)
+                }
+            }
+
+            if (data.securecookies[0].host != null) {
+                const cookieList = document.getElementById("cookies")
+                while (cookieList.firstChild) {
+                    cookieList.removeChild(cookieList.firstChild);
+                }
+
+                for (const cookie of data.securecookies) {
+                    // console.log(cookie)
+                    const newCookie = document.createElement("li")
+                    newCookie.setAttribute("class", "pr-elem")
+                    const cookieHost = document.createElement("input")
+                    cookieHost.setAttribute("class", "form-control")
+                    cookieHost.setAttribute("type", "text")
+                    cookieHost.setAttribute("autocomplete", "off")
+                    cookieHost.setAttribute("value", cookie.host)
+                    const cookieName = document.createElement("input")
+                    cookieName.setAttribute("class", "form-control")
+                    cookieName.setAttribute("type", "text")
+                    cookieName.setAttribute("autocomplete", "off")
+                    cookieName.setAttribute("value", cookie.name)
+
+                    newCookie.appendChild(cookieHost)
+                    newCookie.appendChild(cookieName)
+
+                    cookieList.appendChild(newCookie)
+                }
+            }
         })
     } 
 }
 
-function defaultRuleset() {
-    console.log("Rulesetid argument empty, filling in default values")
-    document.getElementById("name").value = ruleset_data.name
-    document.getElementById("file").value = ruleset_data.file
-    document.getElementById("mixedcontent").checked = ruleset_data.mixedcontent
+// function defaultRuleset() {
+//     console.log("Rulesetid argument empty, filling in default values")
+//     document.getElementById("name").value = ruleset_data.name
+//     document.getElementById("file").value = ruleset_data.file
+//     document.getElementById("mixedcontent").checked = ruleset_data.mixedcontent
 
     /* Targets */
-    const targetP = document.getElementById("prototype-target")
-    targetP.remove()
-    const targets = document.getElementById("targets")
-    for (const data of ruleset_data.targets){
-        const target = targetP.cloneNode(true)
-        target.removeAttribute("id")
-        target.getElementsByTagName("input")[0].value = data
-        console.log(target)
-        targets.appendChild(target)
-    }
+    // const targetP = document.getElementById("prototype-target")
+    // targetP.remove()
+    // const targets = document.getElementById("targets")
+    // for (const data of ruleset_data.targets){
+    //     const target = targetP.cloneNode(true)
+    //     target.removeAttribute("id")
+    //     target.getElementsByTagName("input")[0].value = data
+    //     console.log(target)
+    //     targets.appendChild(target)
+    // }
 
-    /* Rules */
-    const ruleP = document.getElementById("prototype-rule")
-    ruleP.remove()
-    const rules = document.getElementById("rules")
-    for (const data of ruleset_data.rules){
-        const rule = ruleP.cloneNode(true)
-        rule.removeAttribute("id")
-        rule.getElementsByTagName("input")[0].value = data.from
-        rule.getElementsByTagName("input")[1].value = data.to
-        rules.appendChild(rule)
-    }
+    // /* Rules */
+    // const ruleP = document.getElementById("prototype-rule")
+    // ruleP.remove()
+    // const rules = document.getElementById("rules")
+    // for (const data of ruleset_data.rules){
+    //     const rule = ruleP.cloneNode(true)
+    //     rule.removeAttribute("id")
+    //     rule.getElementsByTagName("input")[0].value = data.from
+    //     rule.getElementsByTagName("input")[1].value = data.to
+    //     rules.appendChild(rule)
+    // }
 
-    /* Exclusions */
-    const exclusionP = document.getElementById("prototype-exclusion")
-    exclusionP.remove()
-    const exclusions = document.getElementById("exclusions")
-    for (const data of ruleset_data.exclusions){
-        const exclusion = exclusionP.cloneNode(true)
-        exclusion.removeAttribute("id")
-        exclusion.getElementsByTagName("input")[0].value = data.pattern
-        exclusion.getElementsByTagName("input")[1].value = data.comment
-        exclusions.appendChild(exclusion)
-    }
+    // /* Exclusions */
+    // const exclusionP = document.getElementById("prototype-exclusion")
+    // exclusionP.remove()
+    // const exclusions = document.getElementById("exclusions")
+    // for (const data of ruleset_data.exclusions){
+    //     const exclusion = exclusionP.cloneNode(true)
+    //     exclusion.removeAttribute("id")
+    //     exclusion.getElementsByTagName("input")[0].value = data.pattern
+    //     exclusions.appendChild(exclusion)
+    // }
 
-    /* Securecookies */
-    const cookieP = document.getElementById("prototype-cookie")
-    cookieP.remove()
-    const cookies = document.getElementById("cookies")
-    for (const data of ruleset_data.securecookies){
-        const cookie = cookieP.cloneNode(true)
-        cookie.removeAttribute("id")
-        cookie.getElementsByTagName("input")[0].value = data.host
-        cookie.getElementsByTagName("input")[1].value = data.name
-        cookie.getElementsByTagName("input")[2].value = data.comment
-        cookies.appendChild(cookie)
-    }
-}
+    // /* Securecookies */
+    // const cookieP = document.getElementById("prototype-cookie")
+    // cookieP.remove()
+    // const cookies = document.getElementById("cookies")
+    // for (const data of ruleset_data.securecookies){
+    //     const cookie = cookieP.cloneNode(true)
+    //     cookie.removeAttribute("id")
+    //     cookie.getElementsByTagName("input")[0].value = data.host
+    //     cookie.getElementsByTagName("input")[1].value = data.name
+    //     cookies.appendChild(cookie)
+    // }
+// }
 
 var url_string = window.location.href
 var url = new URL(url_string)
 var rulesetid = url.searchParams.get("rulesetid")
-console.log(rulesetid)
+// console.log(rulesetid)
 displayRuleset(rulesetid)
 
 function addTarget() {
@@ -132,7 +230,7 @@ function addTarget() {
     targetInput.setAttribute("class", "form-control")
     targetInput.setAttribute("type", "text")
     targetInput.setAttribute("autocomplete", "off")
-    targetInput.setAttribute("placeholder", "example.com")
+    targetInput.setAttribute("placeholder", "[target] example.com")
 
     newTarget.appendChild(targetInput)
     targetList.appendChild(newTarget)
@@ -145,12 +243,6 @@ function removeTarget() {
     }
     targetList.lastChild.remove()
 }
-// <ul id="rules">
-//     <li id="prototype-rule" class="pr-elem">
-//         <input class="form-control" type="text" autocomplete="off" placeholder="^http://*">
-//         <input class="form-control" type="text" autocomplete="off" placeholder="https://">
-//     </li>
-// </ul>
 
 function addRule() {
     const ruleList = document.getElementById("rules")
@@ -160,12 +252,13 @@ function addRule() {
     ruleFrom.setAttribute("class", "form-control")
     ruleFrom.setAttribute("type", "text")
     ruleFrom.setAttribute("autocomplete", "off")
-    ruleFrom.setAttribute("placeholder", "[from]")
+    ruleFrom.setAttribute("placeholder", "[from]: ^http://*")
     const ruleTo = document.createElement("input")
     ruleTo.setAttribute("class", "form-control")
     ruleTo.setAttribute("type", "text")
     ruleTo.setAttribute("autocomplete", "off")
-    ruleTo.setAttribute("placeholder", "[from]")
+    ruleTo.setAttribute("style", "margin-left: 4px")
+    ruleTo.setAttribute("placeholder", "[to]: https://")
 
     newRule.appendChild(ruleFrom)
     newRule.appendChild(ruleTo)
@@ -174,25 +267,62 @@ function addRule() {
 }
 
 function removeRule() {
-    const targetList = document.getElementById("rules")
-    if (targetList.childElementCount < 2) {
+    const ruleList = document.getElementById("rules")
+    if (ruleList.childElementCount < 2) {
         return
     }
-    targetList.lastChild.remove()
+    ruleList.lastChild.remove()
+}
+
+function addExclusion() {
+    const exclusionList = document.getElementById("exclusions")
+    const newExclusion = document.createElement("li")
+    newExclusion.setAttribute("class", "pr-elem")
+    const exclusionPattern = document.createElement("input")
+    exclusionPattern.setAttribute("class", "form-control")
+    exclusionPattern.setAttribute("type", "text")
+    exclusionPattern.setAttribute("autocomplete", "off")
+    exclusionPattern.setAttribute("placeholder", "[pattern]")
+
+    newExclusion.appendChild(exclusionPattern)
+
+    exclusionList.appendChild(newExclusion)
 }
 
 function removeExclusion() {
-    const targetList = document.getElementById("exclusions")
-    if (targetList.childElementCount < 2) {
+    const exclusionList = document.getElementById("exclusions")
+    if (exclusionList.childElementCount < 2) {
         return
     }
-    targetList.lastChild.remove()
+    exclusionList.lastChild.remove()
+}
+
+function addCookie() {
+    const cookieList = document.getElementById("cookies")
+    const newCookie = document.createElement("li")
+    newCookie.setAttribute("class", "pr-elem")
+    const cookieHost = document.createElement("input")
+    cookieHost.setAttribute("class", "form-control")
+    cookieHost.setAttribute("type", "text")
+    cookieHost.setAttribute("autocomplete", "off")
+    cookieHost.setAttribute("placeholder", "[host] example.com")
+    const cookieName = document.createElement("input")
+    cookieName.setAttribute("class", "form-control")
+    cookieName.setAttribute("type", "text")
+    cookieName.setAttribute("autocomplete", "off")
+    cookieName.setAttribute("style", "margin-left: 4px")
+    cookieName.setAttribute("placeholder", "[name]")
+
+    newCookie.appendChild(cookieHost)
+    newCookie.appendChild(cookieName)
+
+    cookieList.appendChild(newCookie)
 }
 
 function removeCookie() {
-    const targetList = document.getElementById("cookies")
-    if (targetList.childElementCount < 2) {
+    const cookieList = document.getElementById("cookies")
+    if (cookieList.childElementCount < 2) {
         return
     }
-    targetList.lastChild.remove()
+    cookieList.lastChild.remove()
 }
