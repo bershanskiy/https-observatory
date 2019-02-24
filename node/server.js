@@ -32,8 +32,8 @@ const main = async () => {
 		})
 	})
 
-	app.get("/search?", (req, response) => {
-		let targetName = req.url.replace("/search?target=", "")
+	app.get("/ruleinfo?", (req, response) => {
+		let targetName = req.url.replace("/ruleinfo?ruleid=", "")
 		let targetQuery = 'SELECT * FROM `ruleset_targets` WHERE `target` LIKE \'%' + targetName + '%\''
 		let joinQuery = 'SELECT * FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE \'%' +targetName +'%\';'
 			database.query(joinQuery, []).then((result) => {
