@@ -55,13 +55,13 @@
                     <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Targets</div>
-                            <div class="Subhead-description">These define the scope of the ruleset, they can be either fully-qualified domain names or wildcards</div>
-                            <button onclick="addTarget()" class="btn btn-sm" type="button">+</button>
+                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm" role="button" onclick="addElement(this)">Add</a></div>
+                            <div class="Subhead-description">These define the scope of the ruleset, they can be either fully-qualified domain names or wildcards.</div>
                         </div>
                         <div class="border box-shadow pr-field" id="targets-field"> 
-                            <ul id="targets">
+                            <ul id="targets" min-count="1">
                                 <li id="prototype-target" class="pr-elem">
-                                    <input class="form-control" type="text" autocomplete="off" placeholder="[target] example.com"></li>
+                                    <input class="form-control" type="text" autocomplete="off" placeholder="example.com">
                                     <button onclick="deleteElement(this)" class="btn btn-sm" type="button">Delete</button>
                                 </li>
                             </ul>
@@ -70,26 +70,25 @@
                     <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Rules</div>
-                            <div class="Subhead-description">These define the actual redirect behaviors</div>
+                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm" role="button" onclick="addElement(this)">Add</a></div>
+                            <div class="Subhead-description">These define the actual redirect behaviors.</div>
                         </div>
                         <div class="border box-shadow pr-field" id="rules-field"> 
                             <ul id="rules" min-count="1">
                                 <li id="prototype-rule" class="pr-elem">
-                                    <input class="form-control" type="text" autocomplete="off" placeholder="[from]: ^http://*">
-                                    <input class="form-control" type="text" autocomplete="off" placeholder="[to]: https://">
+                                    <input class="form-control" type="text" autocomplete="off" placeholder="^http://*">
+                                    <input class="form-control" type="text" autocomplete="off" placeholder="https://">
                                     <button onclick="deleteElement(this)" class="btn btn-sm" type="button">Delete</button>
                                 </li>
                             </ul>
-                        </div>
-                        <div class="BtnGroup pr-btn">
-                            <button onclick="addRule()" class="btn BtnGroup-item btn-sm" type="button">+</button>
                         </div>
                    </dl>
 
                     <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Exclusions</div>
-                            <div class="Subhead-description">These define the URLs that the rule should not apply to</div>
+                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm" role="button" onclick="addElement(this)">Add</a></div>
+                            <div class="Subhead-description">These define the URLs that the rule should not apply to.</div>
                         </div>
                         <ul id="exclusions" min-count="0">
                             <li id="prototype-exclusion" class="pr-elem">
@@ -98,14 +97,12 @@
                                 <button onclick="deleteElement(this)" class="btn btn-sm" type="button">Delete</button>
                             </li>
                         </ul>
-                        <div class="BtnGroup pr-btn">
-                            <button onclick="addExclusion()" class="btn BtnGroup-item btn-sm" type="button">+</button>
-                        </div>
                     </dl>
 
                     <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Tests</div>
+                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm" role="button" onclick="addElement(this)">Add</a></div>
                             <div class="Subhead-description">These will be checked by the automated scripts.</div>
                         </div>
                         <ul id="exclusions" min-count="0">
@@ -113,16 +110,14 @@
                                 <input class="form-control" type="text" autocomplete="off" placeholder="[pattern]">
                             </li>
                         </ul>
-                        <div class="BtnGroup pr-btn">
-                            <button onclick="addExclusion()" class="btn BtnGroup-item btn-sm" type="button">+</button>
-                        </div>
                     </dl>
 
 
                     <dl class="form-group pr-block">
                         <div class="Subhead">
                             <div class="Subhead-heading">Secure Cookies</div>
-                            <div class="Subhead-description">These define the cookies that should be secured</div>
+                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm" role="button" onclick="addElement(this)">Add</a></div>
+                            <div class="Subhead-description">These define the cookies that should be secured.</div>
                         </div>
                         <ul id="cookies" min-count="0">
                             <li id="prototype-cookie" class="pr-elem">
@@ -131,9 +126,6 @@
                                 <button onclick="deleteElement(this)" class="btn btn-sm" type="button">Delete</button>
                             </li>
                         </ul>
-                        <div class="BtnGroup pr-btn">
-                            <button onclick="addCookie class="btn BtnGroup-item btn-sm" type="button">+</button>
-                        </div>
                     </dl>
                     <button class="btn btn-primary" type="button">Submit Pull Request</button>
                 </form>

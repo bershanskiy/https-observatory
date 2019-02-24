@@ -271,10 +271,21 @@ function deleteElement(button){
 	const li = button.parentNode
 	const ul = li.parentNode
 	minCount = ul.getAttribute("min-count")
-	if (ul.children.length > minCount){
+	if (ul.childElementCount > minCount){
 		li.parentNode.removeChild(li)
 		console.log("removed node")
 	}else{
 		console.log("Too few children")
 	}
+}
+
+function addElement(button){
+	console.log(button)
+	const dl = button.parentNode.parentNode.parentNode
+	console.log("DL", dl)
+	const ul = dl.getElementsByTagName("UL")[0]
+	console.log("UL", ul)
+	const node = ul.getElementsByTagName("LI")[0].cloneNode(true)
+	node.removeAttribute("id")
+	ul.appendChild(node)
 }

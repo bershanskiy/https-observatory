@@ -13,3 +13,9 @@ li {
 form {
   text-align: left;
 }
+
+[id^="prototype-"] {
+  display: none;
+}
+
+
