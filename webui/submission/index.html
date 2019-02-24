@@ -29,26 +29,51 @@
         </header>
         <main role="main" class="container">
             <div class="starter-template">
-                <h1>Submit a new pull request</h1>
+                <!-- <h1>Submit a new pull request</h1> -->
                 <form>
-                    <label for="name">Domain</label>
-                    <input class="form-control" type="text" id="domain">
+                    <!-- <label for="name">Domain</label> -->
+                    <div class="Box Box--spacious col-12 mx-auto text-left">
+                        <div class="Box-header">
+                            <h3 class="Box-title">
+                                Submit a pull request
+                            </h3>
+                        </div>
+                        <form>
+                            <div class="Box-body text-left">
+                                <dl class="form-group mb-4">
+                                    <dt><label>Domain</label></dt>
+                                    <dd><input class="form-control" type="text" id="domain"></dd>
+                                </dl>
 
-                    <label>
-                        <input type="checkbox" checked> Not A Fake
-                    </label>
+                                <dl class="form-group mb-4">
+                                    <dt><label>Content type</label></dt>
+                                    <dd>
+                                        <input type="radio" id="active" name="content-type" checked> Active
+                                        <input type="radio" id="passive" name="content-type"> Passive
+                                        <input type="radio" id="mixed" name="content-type"> Mixed
+                                    </dd>
+                                </dl>
+                                <div class="text-right">
+                                    <button class="btn btn-primary">
+                                        Submit
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
 
-                    <label>
-                        <input type="radio" id="content-type" name="active" checked> Active
-                    </label>
-                    <label>
-                        <input type="radio" id="content-type" name="passive"> Passive
-                    </label>
-                    <label>
-                        <input type="radio" id="content-type" name="mixed"> Mixed
-                    </label>
+                    <!-- <input class="form-control" type="text" id="domain" placeholder="Domain">
 
-                    <button class="btn" type="submit">Submit</button>
+                    <label for="content-type">
+                        Content type:
+                    </label>
+                    <select class="form-select" if="content-type" aria-label="content-type">
+                        <option value="active">Active</option>
+                        <option value="passive">Passive</option>
+                        <option value="mixed">Mixed</option>
+                    </select>
+
+                    <button class="btn" type="submit">Submit</button> -->
                     </form>
             </div>
         </main>

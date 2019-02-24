@@ -38,7 +38,7 @@
         <link href="/css/starter-template.css" rel="stylesheet">
         <script type="text/javascript" src="/script.js" async></script>
     </head>
-    <body>
+    <body style="margin: 0;">
         <header role="banner" class="masthead bg-gray-dark">
             <div class="container">
                 <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
@@ -51,26 +51,65 @@
         </header>
         <main role="main" class="container">
             <form id="search" autocomplete="off">
-                <label for="target">
-                    Search by target:
-                </label>
-                <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com"></input>
-                <input type="submit" value="Search">
-            </form>            
-            <!-- <div id="searchbar" name="searchbar" class="TableObject">
-                <div class="TableObject-item TableObject-item--primary">
-                    <form id="search" autocomplete="off">
-                        <input class="input-block form-control" name="target" type="text" placeholder="example.com" aria-label="example.com">
-                    </form>
+                <div class="box">
+                    <div class="box-header">
+                        <h2 class="box-title">
+                            Search by target:
+                        </h2>
+                    </div>
+                    <div class="box-body input-group">
+                        <!-- <div class="input-group">
+                        <input class="form-control" type="text" placeholder="Username" aria-label="Username">
+                        <span class="input-group-button">
+                          <button class="btn" type="button" aria-label="Copy to clipboard">
+                            <%= octicon "clippy" %>
+                          </button>
+                        </span>
+                      </div> -->
+                        <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com"></input>
+                        <span class="input-group-button">
+                            <input class="btn text-right" type="submit" value="Search">
+                        </span>
+                    </div>
                 </div>
-                <div class="TableObject-item">
-                    <button class="btn ml-2" type="button">Search</button>
-                </div>
-            </div> -->
-            <div class="border" id="result" style="overflow-y: scroll; height:400px;">
-                <p>
-                    Pretend there are like 24000 rulesets here
-                </p>
+            </form>
+
+            <div class="border" id="result" style="overflow-y: scroll; height:400px; padding:5px;">
+                        <details>
+                            <summary class="btn btn-block text-left">Ruleset</summary>
+                            <div class="Box Box--condensed text-left">
+                                <div class="Box-row">
+                                    <div class="d-flex flex-column flex-md-row flex-items-center flex-md-items-center">
+                                        <div class="col-2 d-flex flex-items-center flex-items-center flex-md-items-start">
+                                            <h6>files:</h6>
+                                        </div>
+                                        <div class="col-12 col-md-10 d-flex flex-column flex-justify-center flex-items-center flex-md-items-start pl-md-4">
+                                            <code>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</code>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="Box-row">
+                                    <div class="d-flex flex-column flex-md-row flex-items-center flex-md-items-center">
+                                        <div class="col-2 d-flex flex-items-center flex-items-center flex-md-items-start">
+                                            <h6>targets:</h6>
+                                        </div>
+                                        <div class="col-12 col-md-10 d-flex flex-column flex-justify-center flex-items-center flex-md-items-start pl-md-4">
+                                            <code>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                                            tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                                            quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                            consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                                            cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                                            proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</code>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </details>
             </div>
         </main>
     </body>

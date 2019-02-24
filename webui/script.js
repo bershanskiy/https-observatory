@@ -93,7 +93,8 @@ window.addEventListener("load", function(event){
 				return Promise.reject(new Error("Search request failed"))
 		})
 		.then(function(data) {
-			console.log(data)
+			document.getElementById("result").innerHTML = ""
+			// console.log(data)
 			const p = document.createElement("P")
 			let targetNames = ""
 			data.forEach(target_found => targetNames += (target_found.target + '\n'))
