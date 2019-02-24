@@ -21,7 +21,7 @@ const main = async () => {
 	app.get("/search?", (req, response) => {
 	let targetName = req.url.replace("/search?target=", "")
 	if (targetName.length < 2){
-		response.send('{}')
+		response.send(JSON.stringify({"error" : true}))
 	}
     let targetQuery = 'SELECT * FROM `ruleset_targets` WHERE `target` LIKE \'%' + targetName + '%\''
     let joinQuery = 'SELECT * FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE \'%' +targetName +'%\';'

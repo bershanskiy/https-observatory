@@ -89,16 +89,16 @@ window.addEventListener("load", function(event){
 				return Promise.reject(new Error("Search request failed"))
 		})
 		.then(function(data) {
-			// console.log(data)
+			console.log(data)
 			document.getElementById("result-box").innerHTML = ""
+			document.getElementById("lds-roller").style.display = "inline-block"
+
+			if (data.error) {
+				document.getElementById("lds-roller").style.display = "none"
+				return
+			}
 
 			for (const target_found of data) {
-				// const target_found = data[targetIndex]
-				// console.log(taxrget_found)
-				// console.log(target_found.target)
-				// console.log(target_found.name)
-				// console.log(target_found.rulesetid)
-				// [rulesetid, target, name]
 				const row = document.createElement("div")
 				row.setAttribute("class", "Box-row d-flex flex-items-center")
 				row.setAttribute("id", "row")
@@ -127,8 +127,12 @@ window.addEventListener("load", function(event){
 
 				row.appendChild(row_title)
 				row.appendChild(button)
+
 				document.getElementById("result-box").appendChild(row)
 			}
+
+			document.getElementById("lds-roller").style.display = "none"
+			document.getElementById("result-box").style.display = "block"
 		})
 		
 		return false
