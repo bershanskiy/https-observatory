@@ -149,33 +149,35 @@ function updateDatabase(file_differences) {
 
 function makePulls() {
   console.log("Executing makePulls...")
-  var dir = exec("cd ../cache/https-everywhere", function(err, stdout, stderr) {
-    if (err) {
-      console.log("Error has occurred in makePulls!");
-    } else {
-      var preCommit = exec("git rev-parse HEAD", function(err, stdout_pre, stderr) {
-        console.log(stdout_pre);
-        var pulling = exec("git pull", function(err, stdout_pull, stderr) {
-          console.log("Pulling...");
-          var postCommit = exec("git rev-parse HEAD", function(err, stdout_post, stderr) {
-            console.log(stdout_post)
-            fileDifferences = exec("git diff" + preCommit + " " + postCommit + "--name-only",
-              function(err, stdout_differences, stderr) {
-                // this function will update the database in the case of differences
-                if (stdout_differences != "") {
-                  updateDatabase(stdout_difference);
-                } else {
-                  console.log("No file differences...");
-                }
-              });
+  console.log('Starting directory: ' + process.cwd());
+  try {
+    process.chdir('../cache/https-everywhere');
+    console.log('New directory: ' + process.cwd());
+  }
+  catch (err) {
+    console.log('error in makePulls: ' + err);
+  }
+  var preCommit = exec("pwd && git rev-parse HEAD", function(err, stdout_pre, stderr) {
+    console.log(stdout_pre);
+    var pulling = exec("git pull", function(err, stdout_pull, stderr) {
+      console.log("Pulling...");
+      var postCommit = exec("git rev-parse HEAD", function(err, stdout_post, stderr) {
+        console.log(stdout_post)
+        fileDifferences = exec("git diff" + preCommit + " " + postCommit + "--name-only",
+          function(err, stdout_differences, stderr) {
+            // this function will update the database in the case of differences
+            if (stdout_differences != "") {
+              updateDatabase(stdout_difference);
+            } else {
+              console.log("No file differences...");
+            }
           });
-        });
-
       });
-      console.log("");
-      }
     });
-};
+
+  });
+  console.log("");
+  }
 //var testList = "AdBlock.xml\nAdButler.xml\nAdExcite.xml";
 //updateDatabase(testList);
 
