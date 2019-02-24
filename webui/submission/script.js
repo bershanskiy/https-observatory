@@ -42,7 +42,7 @@ const displayRuleset = (rulesetid) => {
     if ((rulesetid == null) | (rulesetid == 0)) {
         defaultRuleset()
     } else {
-        const url = "/ruleinfo?" + rulesetid
+        const url = "/ruleinfo?rulesetid=" + rulesetid
 
         console.log(url)
 

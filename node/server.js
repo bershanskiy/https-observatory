@@ -33,19 +33,19 @@ const main = async () => {
 	})
 
 	app.get("/ruleinfo?", (req, response) => {
-		let ruleset_id = req.url.replace("/ruleinfo?ruleid=", "")
-		let secureCookiesQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_securecookies ON ruleset_securecookies.rulesetid=rulesets.rulesetid WHERE rulesets.rulesetid LIKE \'%' + ruleset_id +'%\';'
-		let rulesQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_rules ON ruleset_rules.rulesetid=rulesets.rulesetid WHERE rulesets.rulesetid LIKE \'%' + ruleset_id +'%\';'
-		let exclusionsQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_exclussions ON ruleset_exclussions.rulesetid=rulesets.rulesetid WHERE rulesets.rulesetid LIKE \'%' + ruleset_id +'%\';'
 		//targetsQuery also gets the data about if the target supports hsts
-		let targetsQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_targets ON ruleset_targets.rulesetid=rulesets.rulesetid LEFT JOIN evidence_hsts_preload ON ruleset_targets.target=evidence_hsts_preload.name WHERE rulesets.rulesetid LIKE \'%' + ruleset_id +'%\';'
-		let rulesetTestsQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_tests ON ruleset_tests.rulesetid=rulesets.rulesetid WHERE rulesets.rulesetid LIKE \'%' + ruleset_id +'%\';'
 		
-		
+		console.log(JSON.stringify(req.query))
+		var ruleset_id = req.query.rulesetid
+		var secureCookiesQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_securecookies ON ruleset_securecookies.rulesetid=rulesets.rulesetid WHERE rulesets.rulesetid LIKE ' + ruleset_id + ';'
 		database.query(secureCookiesQuery, []).then((sc_result) => {
+		var rulesQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_rules ON ruleset_rules.rulesetid=rulesets.rulesetid WHERE rulesets.rulesetid LIKE ' + ruleset_id + ';'
 		database.query(rulesQuery, []).then((ru_result) => {
+		var exclusionsQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_exclusions ON ruleset_exclusions.rulesetid=rulesets.rulesetid WHERE rulesets.rulesetid LIKE ' + ruleset_id + ';'
 		database.query(exclusionsQuery, []).then((ex_result) => {
+		var targetsQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_targets ON ruleset_targets.rulesetid=rulesets.rulesetid LEFT JOIN evidence_hsts_preload ON ruleset_targets.target=evidence_hsts_preload.name WHERE rulesets.rulesetid LIKE ' + ruleset_id + ';'
 		database.query(targetsQuery, []).then((tr_result) => {
+		var rulesetTestsQuery = 'SELECT * FROM rulesets LEFT JOIN ruleset_tests ON ruleset_tests.rulesetid=rulesets.rulesetid WHERE rulesets.rulesetid LIKE ' + ruleset_id + ';'
 		database.query(rulesetTestsQuery, []).then((rt_result) => {
 			let combined_result = {
 				'securecookies': sc_result,
