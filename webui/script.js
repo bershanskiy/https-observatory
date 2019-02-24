@@ -64,14 +64,6 @@ function serialize(form) {
 	return q.join("&");
 }
 
-function loadFile(){
-	fetch('/data.txt')
-	.then(response => response.text())
-	.then((data) => {
-    	console.log(data)
-	})
-}
-
 // TODO: use DOMContentLoaded
 window.addEventListener("load", function(event){
 	console.log("page loaded")
