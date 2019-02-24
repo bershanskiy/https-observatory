@@ -87,11 +87,19 @@ window.addEventListener("load", function(event){
 		.then(function(data) {
 			document.getElementById("result").innerHTML = ""
 			// console.log(data)
-			const p = document.createElement("P")
+			const table = document.createElement("TABLE")
+			for (const target_found in data){
+				const entry = document.createElement("tr")
+				const attr1 = document.createElement('th')
+				const attr2 = document.createElement('th')
+				attr1.innerText = target_found.target
+				attr2.innerText = target_found.name
+				
+			}
 			let targetNames = ""
 			data.forEach(target_found => targetNames += (target_found.target + '\n'))
-			p.innerText = targetNames
-			document.getElementById("result").appendChild(p) 
+			table.innerText = targetNames
+			document.getElementById("result").appendChild(table)
 			// Create and append the li's to the ul
 		})
 		

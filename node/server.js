@@ -21,11 +21,9 @@ const main = async () => {
 	app.get("/search?", (req, response) => {
     let targetName = req.url.replace("/search?target=", "")
     let targetQuery = 'SELECT * FROM `ruleset_targets` WHERE `target` LIKE \'%' + targetName + '%\''
-		database.query(targetQuery, []).then((result) => {
-			console.log("Select")
-      //console.log(req)
-      //console.log(response)
-			console.log("Solution: " + result)
+    let joinQuery = 'SELECT * FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE \'%' +targetName +'%\';'
+		database.query(joinQuery, []).then((result) => {
+			console.log("Search Query Served. ")
 			response.setHeader("Content-Type", "application/json")
 			response.send(JSON.stringify(result))
 		})
