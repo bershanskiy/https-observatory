@@ -35,7 +35,8 @@
     </header>
     <main role="main" class="container container-lg">
       <div class="starter-template">
-        <h1>Submit a new pull request</h1>
+        <h1>Wiew a ruleset</h1>
+        <a id="button-fork" class="btn btn-outline" href="#url" role="button">Edit This Ruleset</a>
         <form>
           <div class="Subhead">
             <div class="Subhead-heading">Name</div>
@@ -57,11 +58,11 @@
             <p class="note" id="help-text-for-mixedcontent-checkbox">
               Read more about <code>platform="mixedcontent"</code> in the <a href="https://github.com/EFForg/https-everywhere/blob/master/docs/en_US/rulesets.md#mixed-content-blocking-mcb" target="_blank" rel="noopener nofollow">docs</a>.
             </p>
-          </div><!--
+          </div>
           <dl class="form-group">
             <dt><label for="name">Disable by default?</label></dt>
             <dd><input class="form-control" type="text" autocomplete="off" placeholder="Write here if this should be disabled by default" id="default_off" required></dd>
-          </dl>-->
+          </dl>
           <dl class="form-group pr-block">
             <div class="Subhead">
               <div class="Subhead-heading">Targets</div>
@@ -117,8 +118,8 @@
             </div>
             <ul id="tests" min-count="0">
               <li id="prototype-exclusion" class="pr-elem">
-                <input class="form-control" type="text" autocomplete="off" placeholder="[pattern] name=" name="pattern">
-                <input class="form-control" type="text" autocomplete="off" placeholder="[comment]" name="comment">
+                <input class="form-control" type="text" autocomplete="off" placeholder="test URL" name="url">
+                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
                 <button class="btn btn-sm btn-delete" type="button">Delete</button>
               </li>
             </ul>

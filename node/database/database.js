@@ -1,3 +1,8 @@
+/** Database glue code
+ * This code abstracts away the database schema and
+ * handles conversion between SQL and JavaScript objects.
+ */
+
 "use strict"
 
 /* Node.js standard libraries */
@@ -53,6 +58,7 @@ const isOnline = async (query, args) => {
 
 const queryPromise = async (query, args) => {
   return new Promise((resolve, reject) => {
+    args = args || []
     connection.query(query, args, function (error, results, fields) {
       if (error){
         console.log(error)
@@ -120,7 +126,7 @@ const loadDataRules = async (path) => {
 
     if (ruleset.$.platform && ruleset.$.platform !== "mixedcontent")
       console.error(`Unknown platform ${ruleset.$.platform}, ignored it`)
-    formated_rulesets.push([                       // Record attributes:
+    formated_rulesets.push([                 // Record attributes:
       rulesetid,                             // INT rulesetid
       ruleset.$.name,                        // VARCHAR name
       basename(file),                        // VARCHAR file
@@ -254,8 +260,126 @@ const loadData = async () => {
   return true
 }
 
+const getRulesetById = async (rulesetid) => {
+  const longList  = [rulesetid, rulesetid, rulesetid, rulesetid, rulesetid, rulesetid]
+  const longQuery = "SELECT * FROM rulesets WHERE rulesets.rulesetid=?; \
+    SELECT * FROM ruleset_targets WHERE ruleset_targets.rulesetid=?; \
+    SELECT * FROM ruleset_rules WHERE ruleset_rules.rulesetid=?; \
+    SELECT * FROM ruleset_exclusions WHERE ruleset_exclusions.rulesetid=?; \
+    SELECT * FROM ruleset_securecookies WHERE ruleset_securecookies.rulesetid=?; \
+    SELECT * FROM ruleset_tests WHERE  ruleset_tests.rulesetid=?;"
+
+  const data = await queryPromise (longQuery, longList)
+
+  // Convert response into a neat object
+  const ruleset = {
+    "rulesetid": rulesetid,
+    "name": data[0][0]["name"],
+    "file": data[0][0]["file"],
+    "default_off": data[0][0]["default_off"],
+    "mixedcontent": data[0][0]["mixedcontent"][0] === 1, // This converts a buffer to boolean
+    "comment": data[0][0]["comment"],
+    "targets": data[1],
+    "rules": data[2],
+    "exclusions": data[3],
+    "securecookies": data[4],
+    "tests": data[5]
+  }
+
+  return ruleset
+}
+
+const searchRulesetsByTarget = async (target) => {
+  const  joinQuery = 'SELECT * FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE ?;'
+  const targetName = ["\%" + target + "\%"]
+
+  const data = await queryPromise (joinQuery, targetName)
+
+  let matches = []
+  for (const record of data){
+    let index = -1
+    for (const i in matches)
+      if (matches[i].name === record.name){
+        index = i
+        break
+      }
+    if (index === -1){
+      index = matches.length
+      let formatted = {}
+      formatted["name"] = record.name
+      formatted["file"] = record.file
+      formatted["rulesetid"] = record.rulesetid
+      if (record.default_off)
+        formatted["default_off"] = record.default_off
+      if (record.comment)
+        formatted["comment"] = record.comment
+      if (record.mixedcontent[0] === 1)
+        formatted["mixedcontent"] = true
+      formatted["targets"] = [record.target]
+      matches.push(formatted)
+    } else {
+      matches[index].targets.push(record.target)
+    }
+  }
+  return matches
+}
+
+const newProposal = async (fork) => {
+  // NOTE: Very important to avoid off-by-one error.
+  // proposalid must be set BEFORE proposal insertion
+  const proposalidQuery = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE  TABLE_NAME = 'proposal_rulesets';"
+  const proposalidQuerydata = await queryPromise (proposalidQuery)
+  const proposalid = proposalidQuerydata[0]["AUTO_INCREMENT"]
+  console.log(proposalid)
+
+  const query = "INSERT INTO `proposal_rulesets` (`rulesetid`, `author`, `pullrequest`, `name`, `file`, `default_off`, `mixedcontent`, `comment`) VALUES ?"
+  const formatted_proposal = [[[
+    proposal.rulesetid,
+    proposal.author,
+    proposal.pullrequest,
+    proposal.ruleset.name,
+    proposal.ruleset.file,
+    proposal.ruleset.default_off,
+    proposal.ruleset.mixedcontent,
+    proposal.ruleset.comment
+  ]]]
+
+  const data = await queryPromise (query, formatted_proposal)
+  // TODO: extract proposalid from result of this query to avoid the first query and handle erorrs
+
+  return proposalid
+}
+
+const saveProposal = async (proposal) => {
+  console.log(proposal)
+
+  const ruleset = proposal.ruleset
+  const author = proposal.author
+
+
+
+
+  const longQuery = "\
+    SELECT * FROM rulesets WHERE rulesets.rulesetid=?; \
+    SELECT * FROM ruleset_targets WHERE ruleset_targets.rulesetid=?; \
+    SELECT * FROM ruleset_rules WHERE ruleset_rules.rulesetid=?; \
+    SELECT * FROM ruleset_exclusions WHERE ruleset_exclusions.rulesetid=?; \
+    SELECT * FROM ruleset_securecookies WHERE ruleset_securecookies.rulesetid=?; \
+    SELECT * FROM ruleset_tests WHERE  ruleset_tests.rulesetid=?;"
+
+//INSERT INTO table (name)
+//OUTPUT Inserted.ID
+//VALUES('bob');
+
+}
+
 module.exports = {
   isOnline: isOnline,
-  query: queryPromise,
-  loadData: loadData
+  // 
+  // query: queryPromise,
+  loadData: loadData,
+  getRulesetById: getRulesetById,
+  searchByTarget: searchRulesetsByTarget,
+  saveProposal: saveProposal,
+  newProposal: newProposal
 }
