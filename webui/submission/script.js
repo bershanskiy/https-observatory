@@ -1,17 +1,27 @@
 "use strict"
 
 let state = {
-  rulesetid: null, // This is null iff the currently displayed data might be incorrect
-                   // E.g., nothing is displayed or data is being loaded
-  user: "TODO"     // This is null iff user is not logged in
+  rulesetid: undefined, // This is null iff the currently displayed data might be incorrect
+                        // E.g., nothing is displayed or data is being loaded
+  user: "TODO",         // This is null iff the user is not logged in
+  proposalid: undefined // This is null iff the page displays official ruleset version, form is not editable
+                        // Otherwise it's an integer id proposalid
 }
 
-const strings = {
-  "securecookies": {
-    "title": "Secure Cookies",
-    "subtitle": "These define the cookies that should be secured"
+const debug = {
+  login: () => {
+    state.user = "TODO"
+    document.getElementById("button-fork-create").classList.remove("hidden")
+    document.getElementById("title").innerText = "Logged in, wiewing ruleset"
+    document.querySelectorAll("INPUT").forEach((a) => a.disabled = false)
+    document.querySelectorAll(".btn").forEach((a) => a.disabled = false)
+  },
+  logout: () => {
+    document.querySelectorAll("INPUT").forEach((a) => a.disabled = true)
+    document.querySelectorAll(".btn").forEach((a) => a.disabled = true)
   }
 }
+
 
 const types = ["targets", "rules", "exclusions", "tests", "securecookies"]
 
@@ -164,11 +174,28 @@ const addElement = (ul) => {
   }
 }
 
+const hideButtons = () => {
+  document.getElementById("button-fork-create").classList.add("hidden")
+  document.getElementById("button-fork-delete").classList.add("hidden")
+  document.getElementById("button-fork-delete").classList.add("submit")
+  // TODO hide submi
+}
+
+const editMode = () => {
+  hideButtons()
+  document.getElementById("button-fork-delete").classList.remove("hidden")
+  
+  console.log("Edit mode", state)
+}
+
 /* Initialize the document with event handlers */
 const init = () => {
+  debug.logout()
+
   document.addEventListener("click", (event) => {
     /* "Add" button */
     if (event.target.classList.contains("btn-add")){
+      event.preventDefault()
       const dl = event.target.parentNode.parentNode.parentNode
       const ul = dl.getElementsByTagName("UL")[0]
       addElement(ul)
@@ -178,8 +205,13 @@ const init = () => {
       deleteElement(event.target)
   })
 
-  /* New Fork button */
-  document.getElementById("button-fork").addEventListener("click", (event) => {
+  document.getElementById("button-fork-delete").addEventListener("click", (event) => {
+    console.log("Delete!")
+    
+  })
+
+  /* Fork button */
+  document.getElementById("button-fork-create").addEventListener("click", (event) => {
     console.log("Fork!")
     const proposal = {
       author: state.user,
@@ -191,9 +223,7 @@ const init = () => {
      */
     fetch("/new/", {
       method: "POST",
-//    mode: "cors", // no-cors, cors, *same-origin
-//    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-//    credentials: "same-origin", // include, *same-origin, omit
+      cache: "no-cache",
       headers: {
             "Content-Type": "application/json",
       },
@@ -205,15 +235,45 @@ const init = () => {
       if (response.ok)
         return response.json()
       else
-        return Promise.reject(new Error("Failed to submit data"))
+        return Promise.reject(new Error("Failed to create new fork"))
     })
     .then((data) => {
-//      displayData(data)
-//      if (data.file)
-//        queryXML(data.file)
+      console.log(data)
+      state.proposalid = data.proposalid
+      editMode()
     })
-    .catch((error) => console.error("Pull request failed", error))
+    .catch((error) => console.error("Failed to create new fork", error))
   })
+
+  /* Fork Delete button */
+  document.getElementById("button-fork-delete").addEventListener("click", (event) => {
+    console.log("Fork delete!")
+    if (!state.proposalid)
+      return
+
+    const url = "/delete?proposalid=" + state.proposalid
+
+    /* Submit query in URL encoded form.
+     */
+    fetch(url, {
+      method: "DELETE",
+//    mode: "cors", // no-cors, cors, *same-origin
+      cache: "no-cache",
+//    credentials: "same-origin", // include, *same-origin, omit
+      headers: {
+            "Content-Type": "application/json",
+      },
+      referrer: "no-referrer" // no-referrer, *client
+    })
+    .then(response => {
+      if (response.ok)
+        console.log("Deleted")
+      else
+        return Promise.reject(new Error("Failed to delete"))
+    })
+    .catch((error) => console.error("Failed to delete", error))
+  })
+
 
   /* Submit button */
   document.getElementById("submit").addEventListener("click", (event) => {
@@ -268,3 +328,4 @@ if( document.readyState !== "loading" ) {
 } else {
   document.addEventListener("DOMContentLoaded", init)
 }
+

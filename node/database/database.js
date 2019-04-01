@@ -324,7 +324,7 @@ const searchRulesetsByTarget = async (target) => {
   return matches
 }
 
-const newProposal = async (fork) => {
+const newProposal = async (proposal) => {
   // NOTE: Very important to avoid off-by-one error.
   // proposalid must be set BEFORE proposal insertion
   const proposalidQuery = "SELECT AUTO_INCREMENT FROM information_schema.TABLES WHERE  TABLE_NAME = 'proposal_rulesets';"
@@ -332,22 +332,32 @@ const newProposal = async (fork) => {
   const proposalid = proposalidQuerydata[0]["AUTO_INCREMENT"]
   console.log(proposalid)
 
+console.log("proposal database",proposal)
+
   const query = "INSERT INTO `proposal_rulesets` (`rulesetid`, `author`, `pullrequest`, `name`, `file`, `default_off`, `mixedcontent`, `comment`) VALUES ?"
   const formatted_proposal = [[[
     proposal.rulesetid,
     proposal.author,
     proposal.pullrequest,
-    proposal.ruleset.name,
-    proposal.ruleset.file,
-    proposal.ruleset.default_off,
-    proposal.ruleset.mixedcontent,
-    proposal.ruleset.comment
+    null,
+    null,
+    null,
+    null,
+    null
   ]]]
 
   const data = await queryPromise (query, formatted_proposal)
   // TODO: extract proposalid from result of this query to avoid the first query and handle erorrs
 
   return proposalid
+}
+
+
+
+const deleteProposal = async (proposalid) => {
+  const query = "DELETE FROM `proposal_rulesets` WHERE `proposalid` = ?;"
+
+  const data = await queryPromise (query, [proposalid])
 }
 
 const saveProposal = async (proposal) => {
@@ -378,8 +388,13 @@ module.exports = {
   // 
   // query: queryPromise,
   loadData: loadData,
+
+  // Get ruleset data
   getRulesetById: getRulesetById,
   searchByTarget: searchRulesetsByTarget,
+
+  // Store and retreive proposals
   saveProposal: saveProposal,
-  newProposal: newProposal
+  newProposal: newProposal,
+  deleteProposal: deleteProposal
 }

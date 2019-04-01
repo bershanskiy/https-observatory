@@ -121,22 +121,49 @@ const main = async () => {
 
   // 
   server.post("/new/", (request, response) => {
+    // TODO: check authorization
+
     // Proposal contains the rulesetid of rule that is to be forked as well as info about its author
     const new_proposal = request.body
 
-    console.log(JSON.stringify(proposal))
-    response.setHeader("Content-Type", "application/json")
-    response.status(201)
-    response.send(JSON.stringify({'message': 'Created'}))
-
     database.newProposal(new_proposal)
+    .then(result => {
+      console.log(JSON.stringify(result))
+      response.setHeader("Content-Type", "application/json")
+      response.status(201)
+      response.send(JSON.stringify({
+        "message": "Created",
+        "proposalid": result
+      }))
+    })
+
+  })
+
+  server.delete("/delete?", (request, response) => {
+    // TODO: check authorization
+    const proposalid = request.query.proposalid
+
+    database.deleteProposal(proposalid)
+    .then(() => {
+      response.setHeader("Content-Type", "application/json")
+      response.status(200)
+      response.send(JSON.stringify({'message': 'Deleted'}))
+    })
+    .catch(error => {
+      response.setHeader("Content-Type", "application/json")
+      response.status(404)
+      response.send(JSON.stringify({'message': 'You are being weird.'}))
+    })
   })
 
   server.put("/save/", (request, response) => {
+    // TODO: check authorization
+
     // Proposal contains the proposed ruleset as well as info about its author
     const proposal = request.body
 
     console.log(JSON.stringify(proposal))
+    // TODO: handle database errors
     database.saveProposal(proposal)
     response.setHeader("Content-Type", "application/json")
     response.status(200)

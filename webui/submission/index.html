@@ -27,7 +27,7 @@
       <div class="container container-lg">
         <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
         <nav role="navigation" class="masthead-nav">
-          <a href="/submission/">Submit New PR</a>
+          <a href="/submission/">Propose Ruleset</a>
           <a href="/about/">About Us</a>
           <a href="https://github.com/EFForg/https-everywhere">HTTPS Everywhere</a>
         </nav>
@@ -35,8 +35,9 @@
     </header>
     <main role="main" class="container container-lg">
       <div class="starter-template">
-        <h1>Wiew a ruleset</h1>
-        <a id="button-fork" class="btn btn-outline" href="#url" role="button">Edit This Ruleset</a>
+        <h1 id="title">Wiew a ruleset</h1>
+        <a id="button-fork-create" class="btn btn-outline hidden" href="#url" role="button">Create New Proposal</a>
+        <a id="button-fork-delete" class="btn btn-outline hidden" href="#url" role="button">Delete This Proposal</a>
         <form>
           <div class="Subhead">
             <div class="Subhead-heading">Name</div>
@@ -66,7 +67,7 @@
           <dl class="form-group pr-block">
             <div class="Subhead">
               <div class="Subhead-heading">Targets</div>
-              <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
               <div class="Subhead-description">These define the scope of the ruleset, they can be either fully-qualified domain names or wildcards.</div>
             </div>
               <ul id="targets" min-count="1">
@@ -80,7 +81,7 @@
           <dl class="form-group pr-block">
             <div class="Subhead">
               <div class="Subhead-heading">Rules</div>
-              <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
               <div class="Subhead-description">These define the actual redirect behaviors.</div>
             </div>
             <div class="border box-shadow pr-field" id="rules-field"> 
@@ -98,7 +99,7 @@
           <dl class="form-group pr-block">
             <div class="Subhead">
               <div class="Subhead-heading">Exclusions</div>
-              <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
               <div class="Subhead-description">These define the URLs that the rule should not apply to.</div>
             </div>
             <ul id="exclusions" min-count="0">
@@ -113,7 +114,7 @@
           <dl class="form-group pr-block">
             <div class="Subhead">
               <div class="Subhead-heading">Tests</div>
-              <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
               <div class="Subhead-description">These will be checked by the automated scripts.</div>
             </div>
             <ul id="tests" min-count="0">
@@ -129,7 +130,7 @@
           <dl class="form-group pr-block">
             <div class="Subhead">
               <div class="Subhead-heading">Secure Cookies</div>
-              <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
               <div class="Subhead-description">These define the cookies that should be secured.</div>
             </div>
             <ul id="securecookies" min-count="0">
@@ -141,7 +142,7 @@
               </li>
             </ul>
           </dl>
-          <button class="btn btn-primary" type="button" id="submit">Submit Pull Request</button>
+          <button class="btn btn-primary hidden" type="button" id="submit">Submit Pull Request</button>
         </form>
       </div>
       <div id="xml-section">
