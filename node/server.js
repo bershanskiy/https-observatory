@@ -22,6 +22,12 @@ const database = require("./database/database.js")
 /* Configuration */
 const configuration = require("./configuration.json").express
 
+/* Make Node crash on unhandled promise rejection
+ * Unhandled promise rejection is deprecated
+ * Source: https://medium.com/@dtinth/making-unhandled-promise-rejections-crash-the-node-js-process-ffc27cfcc9dd
+ */
+process.on("unhandledRejection", up => { throw up })
+
 /**
  * This is the main function of the entire server.
  * It is async so that we can use await inside of it.
@@ -139,7 +145,7 @@ const main = async () => {
 
   // This is unnecessary if Express "env" is set to "production"
   // Do not leak details about internal errors
-  if (app.get("env") !== "production")
+  if (server.get("env") !== "production")
     server.use((error, request, response, next) => {
       // Log error message for later review
       console.error("Prevented sending this error to client:\n", error)
