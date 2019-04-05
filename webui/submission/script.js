@@ -8,20 +8,27 @@ let state = {
                         // Otherwise it's an integer id proposalid
 }
 
-const debug = {
-  login: () => {
-    state.user = "TODO"
-    document.getElementById("button-fork-create").classList.remove("hidden")
-    document.getElementById("title").innerText = "Logged in, wiewing ruleset"
-    document.querySelectorAll("INPUT").forEach((a) => a.disabled = false)
-    document.querySelectorAll(".btn").forEach((a) => a.disabled = false)
-  },
-  logout: () => {
-    document.querySelectorAll("INPUT").forEach((a) => a.disabled = true)
-    document.querySelectorAll(".btn").forEach((a) => a.disabled = true)
-  }
+const login = () => {
+  state.user = "TODO"
+  document.getElementById("button-fork-create").classList.remove("hidden")
+  document.getElementById("title").innerText = "Logged in, wiewing ruleset"
 }
 
+const logout = () => {
+  document.getElementById("submit").disabled = true
+  document.getElementById("save").disabled = true
+  document.querySelectorAll("INPUT").forEach((a) => a.disabled = true)
+  document.querySelectorAll(".btn").forEach((a) => a.disabled = true)
+}
+
+const edit = () => {
+  document.querySelectorAll("INPUT").forEach((a) => a.disabled = false)
+  document.querySelectorAll(".btn").forEach((a) => a.disabled = false)
+  document.getElementById("submit").disabled = false
+  document.getElementById("save").disabled = false
+  document.getElementById("button-fork-create").classList.add("hidden")
+  document.getElementById("button-fork-delete").classList.remove("hidden")
+}
 
 const types = ["targets", "rules", "exclusions", "tests", "securecookies"]
 
@@ -174,23 +181,9 @@ const addElement = (ul) => {
   }
 }
 
-const hideButtons = () => {
-  document.getElementById("button-fork-create").classList.add("hidden")
-  document.getElementById("button-fork-delete").classList.add("hidden")
-  document.getElementById("button-fork-delete").classList.add("submit")
-  // TODO hide submi
-}
-
-const editMode = () => {
-  hideButtons()
-  document.getElementById("button-fork-delete").classList.remove("hidden")
-  
-  console.log("Edit mode", state)
-}
-
 /* Initialize the document with event handlers */
 const init = () => {
-  debug.logout()
+  logout()
 
   document.addEventListener("click", (event) => {
     /* "Add" button */
@@ -240,7 +233,7 @@ const init = () => {
     .then((data) => {
       console.log(data)
       state.proposalid = data.proposalid
-      editMode()
+      edit()
     })
     .catch((error) => console.error("Failed to create new fork", error))
   })
