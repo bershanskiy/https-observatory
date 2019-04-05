@@ -181,6 +181,47 @@ const addElement = (ul) => {
   }
 }
 
+/* Submit the ruleset as a JSON.
+ * JSON represents the nested structures and arrays which are impossible to represent in URL params
+ * JSON can handle large payloads while URLs are limited in length
+ */
+const save = () => {
+  const ruleset = readForm()
+  if (!ruleset)
+    return // TODO: display error
+
+  console.log(ruleset)
+
+  const proposal = {
+    author: state.user,
+    rulesetid: state.rulesetid,
+    ruleset: ruleset
+  }
+
+  fetch("/save/", {
+    method: "PUT",
+    cache: "no-cache",
+    headers: {
+        "Content-Type": "application/json",
+    },
+    referrer: "origin",
+    body: JSON.stringify(proposal),
+  })
+  .then(response => {
+    if (response.ok)
+      return response.json()
+    else
+      return Promise.reject(new Error("Failed to submit data"))
+    })
+  .then((data) => {
+//    displayData(data)
+//    if (data.file)
+//      queryXML(data.file)
+  })
+  .catch((error) => console.error("Pull request failed", error))
+}
+
+
 /* Initialize the document with event handlers */
 const init = () => {
   logout()
@@ -220,8 +261,7 @@ const init = () => {
       headers: {
             "Content-Type": "application/json",
       },
-//        redirect: "follow", // manual, *follow, error
-      referrer: "no-referrer", // no-referrer, *client
+      referrer: "origin",
       body: JSON.stringify(proposal),
     })
     .then(response => {
@@ -250,13 +290,11 @@ const init = () => {
      */
     fetch(url, {
       method: "DELETE",
-//    mode: "cors", // no-cors, cors, *same-origin
       cache: "no-cache",
-//    credentials: "same-origin", // include, *same-origin, omit
       headers: {
-            "Content-Type": "application/json",
+        "Content-Type": "application/json",
       },
-      referrer: "no-referrer" // no-referrer, *client
+      referrer: "origin"
     })
     .then(response => {
       if (response.ok)
@@ -270,46 +308,13 @@ const init = () => {
 
   /* Submit button */
   document.getElementById("submit").addEventListener("click", (event) => {
-    const ruleset = readForm()
-    if (!ruleset)
-      return // TODO: display error
+    console.log("Submit! Not implemented yet...")
+    save()
+  })
 
-    console.log(ruleset)
-
-    const proposal = {
-      author: state.user,
-      rulesetid: state.rulesetid,
-      ruleset: ruleset
-    }
-
-    /* Submit the ruleset as a JSON.
-     * JSON represents the nested structures and arrays which are impossible to represent in URL params
-     * JSON can handle large payloads while URLs are limited in length
-     */
-    fetch("/save/", {
-      method: "PUT",
-//    mode: "cors", // no-cors, cors, *same-origin
-//    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-//    credentials: "same-origin", // include, *same-origin, omit
-      headers: {
-            "Content-Type": "application/json",
-      },
-//        redirect: "follow", // manual, *follow, error
-      referrer: "no-referrer", // no-referrer, *client
-      body: JSON.stringify(proposal),
-    })
-    .then(response => {
-      if (response.ok)
-        return response.json()
-      else
-        return Promise.reject(new Error("Failed to submit data"))
-    })
-    .then((data) => {
-//      displayData(data)
-//      if (data.file)
-//        queryXML(data.file)
-    })
-    .catch((error) => console.error("Pull request failed", error))
+  document.getElementById("save").addEventListener("click", (event) => {
+    console.log("Save!")
+    save()
   })
 }
 
