@@ -17,6 +17,7 @@ const login = () => {
 const logout = () => {
   document.getElementById("submit").disabled = true
   document.getElementById("save").disabled = true
+  document.getElementById("button-fork-delete").classList.add("hidden")
   document.querySelectorAll("INPUT").forEach((a) => a.disabled = true)
   document.querySelectorAll(".btn").forEach((a) => a.disabled = true)
 }
@@ -118,6 +119,7 @@ const fetchData = (rulesetid) => {
   })
   .then((data) => {
     displayData(data)
+    console.log("DATA: ", data)
     if (data.file)
       queryXML(data.file)
   })
@@ -195,6 +197,7 @@ const save = () => {
   const proposal = {
     author: state.user,
     rulesetid: state.rulesetid,
+    proposalid: state.proposalid,
     ruleset: ruleset
   }
 
@@ -266,7 +269,7 @@ const init = () => {
 
   document.getElementById("button-fork-delete").addEventListener("click", (event) => {
     console.log("Delete!")
-    
+    logout()
   })
 
   /* Fork button */
