@@ -105,7 +105,7 @@ const main = async () => {
   server.get("/rulesetinfo?", (request, response) => {
     console.log("Request: /rulesetinfo? query:", JSON.stringify(request.query))
 
-    const rulesetid = request.query.rulesetid
+    const rulesetid = parseInt(request.query.rulesetid)
 
     database.getRulesetById(rulesetid)
     .then ((ruleset) => {

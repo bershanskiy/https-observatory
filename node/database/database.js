@@ -92,15 +92,11 @@ const loadDataHSTS = async() => {
         record.expect_ct_report_uri ? record.expect_ct_report_uri : null
       ])
     }
-    connection.query("INSERT INTO evidence_hsts_preload (name, policy, include_subdomains, include_subdomains_for_pinning, force_https, pins, expect_ct_report_uri) VALUES ?", [formated_hsts],
-    function (error, results, fields) {
-      if (error){
-        console.log(error, results, fields)
-        reject(false)
-      } else {
-        console.log("Database: Inserted all HSTS preload records")
-        resolve(true)
-      }
+    queryPromise("INSERT INTO evidence_hsts_preload (name, policy, include_subdomains, include_subdomains_for_pinning, force_https, pins, expect_ct_report_uri) VALUES ?", [formated_hsts])
+    .catch(e => {reject(false)})
+    .then(() => {
+      console.log("Database: Inserted all HSTS preload records.")
+      resolve(true)
     })
   })
 }
@@ -171,56 +167,17 @@ const loadDataRules = async (path) => {
     }
   }
 
-  connection.query("INSERT INTO rulesets (`rulesetid`, `name`, `file`, `default_off`, `mixedcontent`) VALUES ?", [formated_rulesets],
-    function (error, results, fields) {
-      if (error)
-        console.log(error, results, fields)
-      else
-        console.log("Database: Inserted all rulesets' unique attributes")
-    })
+  await queryPromise("INSERT INTO rulesets (`rulesetid`, `name`, `file`, `default_off`, `mixedcontent`) VALUES ?", [formated_rulesets])
 
+  await queryPromise("INSERT INTO ruleset_targets (`rulesetid`, `target`) VALUES ?", [formated_targets])
 
-  connection.query("INSERT INTO ruleset_targets (`rulesetid`, `target`) VALUES ?", [formated_targets],
-    function (error, results, fields) {
-      if (error)
-        console.log(error, results, fields, error)
-      else
-        console.log("Database: Inserted all rulesets' targets")
-    })
+  await queryPromise("INSERT INTO ruleset_rules (`rulesetid`, `from`, `to`) VALUES ?", [formated_rules])
 
-  connection.query("INSERT INTO ruleset_rules (`rulesetid`, `from`, `to`) VALUES ?", [formated_rules],
-    function (error, results, fields) {
-      if (error)
-        console.log(error, fields)
-      else
-        console.log("Database: Inserted all rulesets' rules")
-    })
+  await queryPromise("INSERT INTO ruleset_tests (`rulesetid`, `url`) VALUES ?", [formated_tests])
 
-  connection.query("INSERT INTO ruleset_tests (`rulesetid`, `url`) VALUES ?", [formated_tests],
-    function (error, results, fields) {
-      if (error)
-        console.log(error, fields)
-      else
-        console.log("Database: Inserted all rulesets' tests")
-    })
+  await queryPromise("INSERT INTO ruleset_exclusions (`rulesetid`, `pattern`) VALUES ?", [formated_exclusions])
 
-
-  connection.query("INSERT INTO ruleset_exclusions (`rulesetid`, `pattern`) VALUES ?", [formated_exclusions],
-    function (error, results, fields) {
-      if (error)
-        console.log(error, fields)
-      else
-        console.log("Database: Inserted all rulesets' exclusions")
-    })
-
-  connection.query("INSERT INTO ruleset_securecookies (`rulesetid`, `host`, `name`) VALUES ?", [formated_cookies],
-    function (error, results, fields) {
-      if (error)
-        console.log(error, fields)
-      else
-        console.log("Database: Inserted all rulesets' securecookies")
-    })
-
+  await queryPromise("INSERT INTO ruleset_securecookies (`rulesetid`, `host`, `name`) VALUES ?", [formated_cookies])
 }
 
 const loadData = async () => {
@@ -352,8 +309,6 @@ console.log("proposal database",proposal)
   return proposalid
 }
 
-
-
 const deleteProposal = async (proposalid) => {
   const query = "DELETE FROM `proposal_rulesets` WHERE `proposalid` = ?;"
 
@@ -363,30 +318,65 @@ const deleteProposal = async (proposalid) => {
 const saveProposal = async (proposal) => {
   console.log(proposal)
 
-  const ruleset = proposal.ruleset
-  const author = proposal.author
+  const queryProposal = "UPDATE `proposal_rulesets` SET `rulesetid`=?, `author`=?, `pullrequest`=?, `name`=?, `file`=?, `default_off`=?, `mixedcontent`=?, `comment`=? WHERE `proposalid`=?;"
+
+  const formattedProposal = [
+    proposal.rulesetid,
+    proposal.author,
+    proposal.pullrequest,
+    proposal.ruleset.name,
+    proposal.ruleset.file,
+    proposal.ruleset.default_off,
+    proposal.ruleset.mixedcontent,
+    proposal.ruleset.comment,
+    proposal.proposalid
+  ]
+
+  await queryPromise (queryProposal, formattedProposal)
+
+  const queryTargets = "DELETE FROM `proposal_ruleset_targets` WHERE `proposalid`=?;\
+    INSERT INTO `proposal_ruleset_targets` (`proposalid`, `target`, `comment`) VALUES ?;"
+
+  let formattedTargetsArray = []
+  for (const target of proposal.ruleset.targets)
+    formattedTargetsArray.push([
+      proposal.proposalid,
+      target.target,
+      target.comment
+    ])
+
+  const formattedTargets = [
+    proposal.proposalid,
+    formattedTargetsArray
+  ]
+
+  await queryPromise (queryTargets, formattedTargets)
 
 
+  const queryRules = "DELETE FROM `proposal_ruleset_rules` WHERE `proposalid`=?;\
+    INSERT INTO `proposal_ruleset_rules` (`proposalid`, `from`, `to`, `comment`) VALUES ?;"
 
+  let formattedRulesArray = []
+  for (const rule of proposal.ruleset.rules)
+    formattedRulesArray.push([
+      proposal.proposalid,
+      rule.from,
+      rule.to,
+      rule.comment
+    ])
 
-  const longQuery = "\
-    SELECT * FROM rulesets WHERE rulesets.rulesetid=?; \
-    SELECT * FROM ruleset_targets WHERE ruleset_targets.rulesetid=?; \
-    SELECT * FROM ruleset_rules WHERE ruleset_rules.rulesetid=?; \
-    SELECT * FROM ruleset_exclusions WHERE ruleset_exclusions.rulesetid=?; \
-    SELECT * FROM ruleset_securecookies WHERE ruleset_securecookies.rulesetid=?; \
-    SELECT * FROM ruleset_tests WHERE  ruleset_tests.rulesetid=?;"
+  const formattedRules = [
+    proposal.proposalid,
+    formattedRulesArray
+  ]
 
-//INSERT INTO table (name)
-//OUTPUT Inserted.ID
-//VALUES('bob');
+  await queryPromise (queryRules, formattedRules)
 
 }
 
 module.exports = {
   isOnline: isOnline,
-  // 
-  // query: queryPromise,
+
   loadData: loadData,
 
   // Get ruleset data
