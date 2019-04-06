@@ -43,9 +43,10 @@
   display: inline-block;
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 48%;
   width: 64px;
   height: 64px;
+  z-index: 9999;
 }
 .lds-roller div {
   animation: lds-roller 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
@@ -172,6 +173,22 @@ header {
   overflow: auto;
 }
 
+.overlay {
+  background: #e9e9e9;
+  display: block;
+  position: absolute;
+  opacity: 0.7;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+}
+
 .hidden {
   display: none;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }

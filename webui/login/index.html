@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tool for creating and maintaining HTTPS Everywhere rulesets.">
+    <meta name="author" content="Anton Bershanskiy, Christopher Settles, Dylan Irlbeck, Joshua Park">
+    <link href="/favicon.png" rel="icon">
+
+    <title>HTTPS Observatory</title>
+
+    <!-- Primer core CSS -->
+    <link href="/css/primer.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/css/custom.css" rel="stylesheet">
+
+    <!-- Custom scripts for this page -->
+    <script type="text/javascript" src="/login/script.js" async></script>
+  </head>
+
+  <body>
+    <header role="banner" class="masthead bg-gray-dark">
+      <div class="container container-lg">
+        <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
+        <nav role="navigation" class="masthead-nav">
+          <a href="/submission/">Propose Ruleset</a>
+          <a href="/about/">About Us</a>
+          <a href="https://github.com/EFForg/https-everywhere" target="_blank" rel="noopener nofollow">HTTPS Everywhere</a>
+        </nav>
+      </div>
+    </header>
+
+    <main role="main" class="container container-lg">
+      <div class="Box Box--spacious col-6 mx-auto text-center">
+        <div class="lds-roller text-center hidden" id="lds-roller">
+          <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+        </div>
+        <div class="overlay hidden" id="overlay"></div>
+        <form id="login">
+          <div class="Box-header">
+            <img src="/github-logo.png" alt="GitHub Logo" height="100px" width="100px">
+            <h2 class="f2-light">
+              Sign in through GitHub
+            </h2>
+          </div>
+
+          <div class="Box-body text-left">
+            <div class="flash flash-success hidden" id="login_success">
+              Login successful.
+            </div>
+            <div class="flash flash-error hidden" id="login_error">
+            </div>
+            <span id="credentials">
+              <dl class="form-group mb-4">
+                <dt><label for="username">Username</label></dt>
+                <dd><input class="form-control" type="text" id="username" required></dd>
+              </dl>
+              <dl class="form-group mb-4">
+                <dt><label for="username">Password</label></dt>
+                <dd><input class="form-control" type="password" id="password" required></dd>
+              </dl>
+              <button class="btn btn-primary" type="submit">
+                Submit
+              </button>
+            </span>
+          </div>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>
