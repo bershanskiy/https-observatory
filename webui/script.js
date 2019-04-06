@@ -102,11 +102,12 @@ window.addEventListener("load", (event) => {
 
     // Error is true if the search query is less than 3 characters
     const target = document.querySelector("INPUT[name='target']").value
+    const page_num = document.querySelector(".current.selected").innerText
 
     // Show loading animation after a short delay (see commend above for explanation)
     const loadingAnimationTimer = setTimeout(showLoadingAnimation, loadingAnimationDelay)
 
-    const url = "/search?" + serialize(event.target)
+    const url = "/search?" + serialize(event.target) + "&page_num=" + page_num
 
     fetch(url)
     .then(async (response) => {  // Check if fetch suceeded and extract the data
@@ -131,6 +132,8 @@ window.addEventListener("load", (event) => {
         showSearchError("No results found.")
         return
       }
+      
+
 
       // Iterate through every target found and create row
       for (const ruleset of data) {

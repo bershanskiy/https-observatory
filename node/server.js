@@ -77,10 +77,12 @@ const main = async () => {
       return
     }
 
-    const  joinQuery = 'SELECT * FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE ?;'
+    const   page_num = parseInt(request.query.page_num)
+    const BATCH_SIZE = 50
+    const  joinQuery = 'SELECT * FROM (SELECT name, file, rulesets.rulesetid, default_off, rulesets.comment, mixedcontent, target FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE ?) AS T LIMIT ?,?;'
     const targetName = "\%" + request.query.target + "\%"
 
-    database.query(joinQuery, [targetName]).then((result) => {
+    database.query(joinQuery, [targetName, (page_num - 1)*BATCH_SIZE , BATCH_SIZE ]).then((result) => {
       var data = []
       for (const record of result){
         var index = -1
