@@ -118,7 +118,7 @@ const main = async () => {
     console.log("Request: /rulesetinfo? query:", JSON.stringify(request.query))
 
     const rulesetid = request.query.rulesetid
-    const longList  = [rulesetid, rulesetid, rulesetid, rulesetid, rulesetid, rulesetid]
+    const longList  = [rulesetid, rulesetid, rulesetid, rulesetid, rulesetid, rulesetid] 
     const longQuery = "SELECT * FROM rulesets WHERE rulesets.rulesetid=?; \
       SELECT * FROM ruleset_targets WHERE ruleset_targets.rulesetid=?; \
       SELECT * FROM ruleset_rules WHERE ruleset_rules.rulesetid=?; \

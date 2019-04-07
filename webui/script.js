@@ -95,6 +95,9 @@ const showSearchError = (message) => {
 // TODO: use DOMContentLoaded
 window.addEventListener("load", (event) => {
   document.getElementById("search").addEventListener("submit", (event) => {
+
+  })
+  document.getElementById("search").addEventListener("submit", (event) => {
     event.preventDefault()
 
     // Hide all messages that are currently displayed
