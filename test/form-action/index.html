@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+
+    <title>HTTPS Observatory Test: </title>
+
+    <script type="text/javascript" src="./script.js" async></script>
+  </head>
+
+  <body>
+    <p><a href="./http/">HTTP</a></p>
+    <p><a href="./https/">HTTPS</a></p>
+    <p><a href="./relative/">relative</a></p>
+    <section>
+      <p>
+        This form uses HTML form action attribute to submit the form with relative path.
+      </p>
+      <form id="relative" action="./index.html" method="get">
+        First name: <input type="text" name="firstName" value="Joe"><br>
+        Last name: <input type="text" name="lastName" value="Average"><br>
+        Password: <input type="password" name="password"><br>
+        <input type="submit" value="Submit">
+      </form>
+    </section>
+
+    <section>
+      <p>
+        This form uses HTML form action attribute to submit the form with basolute HTTP path.
+      </p>
+      <form id="http" action="http://form-action/index.html" method="get">
+        First name: <input type="text" name="firstName" value="Joe"><br>
+        Last name: <input type="text" name="lastName" value="Average"><br>
+        Password: <input type="password" name="password"><br>
+        <input type="submit" value="Submit">
+      </form>
+    </section>
+
+    <section>
+      <p>
+        This form uses HTML form action attribute to submit the form with basolute HTTP path.
+      </p>
+      <form id="https" action="https://form-action/index.html" method="get">
+        First name: <input type="text" name="firstName" value="Joe"><br>
+        Last name: <input type="text" name="lastName" value="Average"><br>
+        Password: <input type="password" name="password"><br>
+        <input type="submit" value="Submit">
+      </form>
+    </section>
+  </body>
+</html>
