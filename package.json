@@ -9,7 +9,8 @@
     "build-webui-sass": "node-sass --output-style compressed --include-path node_modules webui/scss/search.scss webui/css/search.css; node-sass --output-style compressed --include-path node_modules webui/scss/submission.scss webui/css/submission.css; node-sass --output-style compressed --include-path node_modules webui/scss/about.scss webui/css/about.css;",
     "build-webui-uncss": "uncss --htmlroot webui/ webui/index.html > webui/css/min.search.css; mv webui/css/min.search.css webui/css/search.css; uncss --htmlroot webui/ webui/submission/index.html > webui/css/min.submission.css; mv webui/css/min.submission.css webui/css/submission.css; uncss --htmlroot webui/ webui/about/index.html > webui/css/min.about.css; mv webui/css/min.about.css webui/css/about.css;",
     "server": "node node/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "npm run test-simplifier",
+    "test-simplifier": "jasmine JASMINE_CONFIG_PATH=jasmine.json"
   },
   "author": "",
   "license": "MIT",
@@ -20,13 +21,17 @@
     "helmet": "^3.16.0",
     "json5": "^2.1.0",
     "mysql": "^2.16.0",
+    "node-fetch": "^2.4.1",
     "punycode": "^2.1.1",
+    "regexp-tree": "^0.1.6",
     "uncss": "^0.16.2",
     "util": "^0.11.1",
     "xml2js": "^0.4.19"
   },
   "devDependencies": {
     "@primer/css": "^12.2.3",
-    "node-sass": "^4.11.0"
+    "jasmine": "^3.4.0",
+    "node-sass": "^4.11.0",
+    "sass": "^1.19.0"
   }
 }
