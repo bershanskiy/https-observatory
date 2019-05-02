@@ -99,9 +99,27 @@ const explode = (regexp) => {
               }
 	    )
             break
+          case "Range":
+            console.log()
+            break
+          // Cases that can not be easily enumerated
+          case "*":
+            // fallthrough
+          case "+":
+            return "Failed"
           default:
             console.log("Repetition UNKNOWN KIND", expression.quantifier.kind)
         }
+        break
+
+      case "Alternative":
+	stack.push({
+            prefix: elem.prefix,
+            expressions: [expression.expression].concat(elem.expressions)
+        })
+        break
+      case "CharacterClass":
+        console.log("\n\n", expression.type, "\n", JSON.stringify(regexp), "\n", JSON.stringify(elem))
         break
       default:
         console.log("TYPE", expression.type)
@@ -109,7 +127,6 @@ const explode = (regexp) => {
   }
   return output
 }
-
 
 
 module.exports = {

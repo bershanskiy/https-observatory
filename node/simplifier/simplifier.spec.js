@@ -68,13 +68,20 @@ describe("A suite is just a function", () => {
   })
 
   it("stress test", function() {
-    const data = require("./default.json")
-    const list = simplifier.explode("1(?:2)?3")
+    const rulesets = require("./default.json")
 
+let expanded = 0
 
-    expect(list.length).toBe(2)
-    expect(list[0]).toBe("13")
-    expect(list[1]).toBe("123")
+    for (const ruleset of rulesets){
+      for (const rule of ruleset.rule){
+        const list = simplifier.explode(rule.from)
+        if (list === "Failed")
+          continue
+        if (list.length > 1)
+          expanded += 1
+      }
+    }
+console.log(expanded)
   })
 
 
