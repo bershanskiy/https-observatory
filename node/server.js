@@ -81,36 +81,45 @@ const main = async () => {
     const BATCH_SIZE = 50
     const  joinQuery = 'SELECT * FROM (SELECT name, file, rulesets.rulesetid, default_off, rulesets.comment, mixedcontent, target FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE ?) AS T LIMIT ?,?;'
     const targetName = "\%" + request.query.target + "\%"
+    
+    const countQuery = 'SELECT count(rulesetid) AS total_count FROM (SELECT rulesetid FROM (SELECT name, file, rulesets.rulesetid, default_off, rulesets.comment, mixedcontent, target FROM ruleset_targets INNER JOIN rulesets ON ruleset_targets.rulesetid=rulesets.rulesetid WHERE ruleset_targets.target LIKE ?) AS T GROUP BY rulesetid) AS Q;'
 
-    database.query(joinQuery, [targetName, (page_num - 1)*BATCH_SIZE , BATCH_SIZE ]).then((result) => {
-      var data = []
-      for (const record of result){
-        var index = -1
-        for (const i in data)
-          if (data[i].name === record.name){
-            index = i
-            break
+    database.query(countQuery, [targetName]).then((result) => {
+      const count = result[0].total_count
+      var dataWithCount = {}
+      dataWithCount['count'] = count
+
+      database.query(joinQuery, [targetName, (page_num - 1)*BATCH_SIZE , BATCH_SIZE ]).then((result) => {
+        var data = []
+        for (const record of result){
+          var index = -1
+          for (const i in data)
+            if (data[i].name === record.name){
+              index = i
+              break
+            }
+          if (index === -1){
+            index = data.length
+            var formatted = {}
+            formatted["name"] = record.name
+            formatted["file"] = record.file
+            formatted["rulesetid"] = record.rulesetid
+            if (record.default_off)
+              formatted["default_off"] = record.default_off
+            if (record.comment)
+              formatted["comment"] = record.comment
+            if (record.mixedcontent[0] === 1)
+              formatted["mixedcontent"] = true
+            formatted["targets"] = [record.target]
+            data.push(formatted)
+          } else {
+            data[index].targets.push(record.target)
           }
-        if (index === -1){
-          index = data.length
-          var formatted = {}
-          formatted["name"] = record.name
-          formatted["file"] = record.file
-          formatted["rulesetid"] = record.rulesetid
-          if (record.default_off)
-            formatted["default_off"] = record.default_off
-          if (record.comment)
-            formatted["comment"] = record.comment
-          if (record.mixedcontent[0] === 1)
-            formatted["mixedcontent"] = true
-          formatted["targets"] = [record.target]
-          data.push(formatted)
-        } else {
-          data[index].targets.push(record.target)
         }
-      }
-      response.setHeader("Content-Type", "application/json")
-      response.send(JSON.stringify(data))
+        dataWithCount['data'] = data
+        response.setHeader("Content-Type", "application/json")
+        response.send(JSON.stringify(dataWithCount))
+      })
     })
   })
 

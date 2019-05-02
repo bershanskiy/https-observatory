@@ -92,108 +92,183 @@ const showSearchError = (message) => {
   document.getElementById("invalid-input").classList.remove("hidden")
 }
 
+const generateButtonChars = (page_idx, pages) => {
+  page_idx = Math.ceil(page_idx)
+  pages = Math.ceil(pages)
+  if (pages === 1){
+    return [1]
+  }
+  let firstFew = [1]
+  let lastFew = [pages]
+  let middleThree = [page_idx - 1, page_idx, page_idx + 1]
+  let all_elems = firstFew.concat(middleThree).concat(lastFew)
+  let uniqueArray = all_elems.filter(function(item, pos) {
+    return all_elems.indexOf(item) == pos;
+})
+  var indiciesToRemove = [uniqueArray.indexOf(0), uniqueArray.indexOf(pages+1)];
+  for (const index of indiciesToRemove) {
+    if (index > -1) {
+      uniqueArray.splice(index, 1);
+    }
+  }
+
+
+  return uniqueArray.sort()
+}
+
 // TODO: use DOMContentLoaded
 window.addEventListener("load", (event) => {
-  document.getElementById("search").addEventListener("submit", (event) => {
+  document.getElementById("pager").addEventListener("click", (event) => {
+    //Set event.target attributes to selected
+    //if we changed the page selected, loop through all the attributes and 
+    const newPageNum = event.target.innerText
+    const pagerChildren = document.getElementById("pager").childNodes
+    if (event.target.class !== "current selected"){
 
-  })
-  document.getElementById("search").addEventListener("submit", (event) => {
-    event.preventDefault()
-
-    // Hide all messages that are currently displayed
-    hideFeedback()
-
-    // Error is true if the search query is less than 3 characters
-    const target = document.querySelector("INPUT[name='target']").value
-    const page_num = document.querySelector(".current.selected").innerText
-
-    // Show loading animation after a short delay (see commend above for explanation)
-    const loadingAnimationTimer = setTimeout(showLoadingAnimation, loadingAnimationDelay)
-
-    const url = "/search?" + serialize(event.target) + "&page_num=" + page_num
-
-    fetch(url)
-    .then(async (response) => {  // Check if fetch suceeded and extract the data
-      // Don"t show loading animation
-      clearTimeout(loadingAnimationTimer)
-
-      if (response.ok) {
-        return response.json()
-      } else {
-        const data = await response.json()
-        return Promise.reject(new Error(data.message))
-      }
-    })
-    .then((data) => {
-      // Clear body of results field
-      document.getElementById("result-box").innerHTML = ""
-
-      // Show error if there are no results
-      if (data.length === 0){
-        // TODO: Design thing: should we have different UIs for
-        // errors and empty result set?
-        showSearchError("No results found.")
-        return
-      }
       
 
+      //Go through all the page buttons and reset their attributes. 
+      for (const page_button of pagerChildren) {
+        //Remove all attributes of the current button 
+        for (let i = page_button.attributes.length - 1; i >= 0; i--){
+          element.removeAttribute(page_button.attributes[i].name);
+        }
 
-      // Iterate through every target found and create row
-      for (const ruleset of data) {
-        // Parent row div
-        const result = document.createElement("div")
-        result.setAttribute("class", "Box-row")
-
-        const header = document.createElement("div")
-        header.setAttribute("class", "d-flex flex-items-center")
-
-
-        // Holds ruleset name and file name
-        const row_title = document.createElement("div")
-        row_title.setAttribute("class", "flex-auto")
-
-        // ruleset name
-        const name = document.createElement("strong")
-        name.innerText = ruleset.name
-
-        // ruleset file name
-        const file = document.createElement("div")
-        file.setAttribute("class", "text-small text-gray-light")
-        file.innerText = ruleset.file
-
-        const targets = document.createElement("div")
-        targets.setAttribute("class", "text-small text-gray-light")
-        targets.innerText = ruleset.targets.join(", ")
-
-        // Button to send ruleset id to pr form
-        const button = document.createElement("button")
-        button.addEventListener("click", (e) => btnClick(ruleset.rulesetid))
-        button.setAttribute("type", "button")
-        button.setAttribute("class", "btn btn-sm")
-        button.setAttribute("name", "button")
-        button.innerText = "View"
-
-        header.appendChild(row_title)
-        header.appendChild(button)
-        result.appendChild(header)
-        row_title.appendChild(name)
-        row_title.appendChild(file)
-        result.appendChild(targets)
-
-        document.getElementById("result-box").appendChild(result)
+        const buttonChar = page_button.innerText
+        if(buttonChar.innerText == newPageNum){
+          page_button.setAttribute("class", "current selected")
+          page_button.setAttribute("aria-current", "true")
+        }
+        else{
+          page_button.setAttribute("aria-label", "Page " + buttonChar)
+        }
       }
-
-      // Show results field and hide loading animation
-      document.getElementById("result").classList.remove("hidden")
-      document.getElementById("lds-roller").classList.add("hidden")
-    }).catch ((error) => {
-      clearTimeout(loadingAnimationTimer)
-      const str = error.toString()
-      const message = str.substr(str.indexOf(": ")+2)
-      hideFeedback() // to hide loading animation
-      showSearchError(message)
-    })
-
-    return false
+      reloadResults();
+    }
   })
+  document.getElementById("search").addEventListener("submit", (event) => reloadResults())
 })
+
+const reloadResults = () => {
+  event.preventDefault()
+
+  // Hide all messages that are currently displayed
+  hideFeedback()
+
+  // Error is true if the search query is less than 3 characters
+  const target = document.querySelector("INPUT[name='target']").value
+  const page_num = document.querySelector(".current.selected").innerText
+
+  // Show loading animation after a short delay (see commend above for explanation)
+  const loadingAnimationTimer = setTimeout(showLoadingAnimation, loadingAnimationDelay)
+
+  const url = "/search?" + serialize(event.target) + "&page_num=" + page_num
+
+  fetch(url)
+  .then(async (response) => {  // Check if fetch suceeded and extract the data
+    // Don"t show loading animation
+    clearTimeout(loadingAnimationTimer)
+
+    if (response.ok) {
+      return response.json()
+    } else {
+      const data = await response.json()
+      return Promise.reject(new Error(data.message))
+    }
+  })
+  .then((jsonResp) => {
+    const count = jsonResp['count']
+    const  data = jsonResp['data']
+
+    // Clear body of results field
+    document.getElementById("result-box").innerHTML = ""
+
+    // Show error if there are no results
+    if (data.length === 0){
+      // TODO: Design thing: should we have different UIs for
+      // errors and empty result set?
+      showSearchError("No results found.")
+      return
+    }
+
+    //Rendering the page buttons
+    const BATCH_SIZE = 50
+
+    document.getElementById("pager").innerHTML = ""
+    const allPageButtons = document.createElement("div")
+
+    const listOfButtons = generateButtonChars(page_num, count / BATCH_SIZE)
+    
+    for (const buttonChar of listOfButtons){
+      const singleButton = document.createElement("a")
+      if(buttonChar == page_num){
+        singleButton.setAttribute("class", "current selected")
+        singleButton.setAttribute("aria-current", "true")
+      }
+      else{
+        singleButton.setAttribute("aria-label", "Page " + buttonChar)
+      }
+      singleButton.innerHTML = buttonChar
+      allPageButtons.appendChild(singleButton)
+    }
+
+    document.getElementById("pager").appendChild(allPageButtons)
+
+    // Iterate through every target found and create row
+    for (const ruleset of data) {
+      // Parent row div
+      const result = document.createElement("div")
+      result.setAttribute("class", "Box-row")
+
+      const header = document.createElement("div")
+      header.setAttribute("class", "d-flex flex-items-center")
+
+
+      // Holds ruleset name and file name
+      const row_title = document.createElement("div")
+      row_title.setAttribute("class", "flex-auto")
+
+      // ruleset name
+      const name = document.createElement("strong")
+      name.innerText = ruleset.name
+
+      // ruleset file name
+      const file = document.createElement("div")
+      file.setAttribute("class", "text-small text-gray-light")
+      file.innerText = ruleset.file
+
+      const targets = document.createElement("div")
+      targets.setAttribute("class", "text-small text-gray-light")
+      targets.innerText = ruleset.targets.join(", ")
+
+      // Button to send ruleset id to pr form
+      const button = document.createElement("button")
+      button.addEventListener("click", (e) => btnClick(ruleset.rulesetid))
+      button.setAttribute("type", "button")
+      button.setAttribute("class", "btn btn-sm")
+      button.setAttribute("name", "button")
+      button.innerText = "View"
+
+      header.appendChild(row_title)
+      header.appendChild(button)
+      result.appendChild(header)
+      row_title.appendChild(name)
+      row_title.appendChild(file)
+      result.appendChild(targets)
+
+      document.getElementById("result-box").appendChild(result)
+    }
+
+    // Show results field and hide loading animation
+    document.getElementById("result").classList.remove("hidden")
+    document.getElementById("lds-roller").classList.add("hidden")
+  }).catch ((error) => {
+    clearTimeout(loadingAnimationTimer)
+    const str = error.toString()
+    const message = str.substr(str.indexOf(": ")+2)
+    hideFeedback() // to hide loading animation
+    showSearchError(message)
+  })
+
+  return false
+}
