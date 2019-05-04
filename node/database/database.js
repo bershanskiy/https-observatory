@@ -20,6 +20,8 @@ const punycode = require("punycode")
 const parseStringPromise = promisify(parseString)
 const globPromise = promisify(glob)
 const readFilePromise = promisify(fs.readFile)
+const cheerio = require('cheerio')
+const req = require('request')
 
 /* Custom libraries */
 const updateRecords = require("./git.js")
@@ -374,6 +376,35 @@ const saveProposal = async (proposal) => {
 
 }
 
+const scrapeURL = async (domain) => {
+  const body = await requestPromise(domain)
+  let badLinks = []
+  let parsedHTML = cheerio.load(body)
+  parsedHTML('a').map((i, link) => {
+    let href = cheerio(link).attr("href")
+    if (href && href.match("http") && !href.match("https")) {
+      badLinks.push(href)
+    }
+  })
+  return {
+    domain: domain,
+    badLinks: badLinks
+  }
+}
+
+const requestPromise = async (domain) => {
+  return new Promise((resolve, reject) => {
+    req(domain, (err, response, body) => {
+      if (err) {
+        console.log(err)
+        reject([err, response, body])
+      } else {
+        resolve(body)
+      }
+    })
+  })
+}
+
 module.exports = {
   isOnline: isOnline,
 
@@ -386,5 +417,8 @@ module.exports = {
   // Store and retreive proposals
   saveProposal: saveProposal,
   newProposal: newProposal,
-  deleteProposal: deleteProposal
+  deleteProposal: deleteProposal,
+
+  // Gets html of domain
+  scrapeURL: scrapeURL
 }

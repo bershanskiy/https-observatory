@@ -48,6 +48,21 @@
         </form>
       </div>
 
+      <div class="starter-template container-md">
+        <h1>Test page for insecure links</h1>
+        <form id="scrape" autocomplete="off">
+          <div class="box input-group">
+            <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com">
+            <span class="input-group-button">
+              <input class="btn text-right" type="submit" value="Scrape">
+            </span>
+          </div>
+          <dl class="form-group errored hidden" id="invalid-link">
+            <dd class="error" id="invalid-link-message">Invalid link.</dd>
+          </dl>
+        </form>
+      </div>
+
       <div class="lds-roller text-center hidden" id="lds-roller">
         <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
       </div>

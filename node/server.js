@@ -15,6 +15,7 @@ const path = require("path")
 const express = require("express")
 const compression = require("compression")
 const helmet = require("helmet")
+const validator = require('validator')
 
 /* Custom libraries */
 const database = require("./database/database.js")
@@ -99,6 +100,35 @@ const main = async () => {
       response.status(200)
       response.setHeader("Content-Type", "application/json")
       response.send(JSON.stringify(ruleset))
+    })
+  })
+
+  server.get("/scrape?", (request, response) => {
+    const target = request.query.target
+
+    if (target.length < 2){
+      // Status code 400 "Bad Request"
+      response.status(400)
+      response.setHeader("Content-Type", "application/json")
+      response.send(JSON.stringify({"message" : "Invalid input: Query requires two or more characters."}))
+      return
+    }
+
+    // Makes sure the url is valid, otherwise could crash the server
+    const options = { protocols: ['http','https','ftp'], require_tld: true, require_protocol: true, require_host: true, require_valid_protocol: true, allow_underscores: false, host_whitelist: false, host_blacklist: false, allow_trailing_dot: false, allow_protocol_relative_urls: false, disallow_auth: false }
+    
+    if (!validator.isURL(target, options)) {
+      response.status(400)
+      response.setHeader("Content-Type", "application/json")
+      response.send(JSON.stringify({"message" : "Invalid URL"}))
+      return
+    }
+
+    database.scrapeURL(target)
+    .then ((result) => {
+      response.status(200)      
+      response.setHeader("Content-Type", "application/json")
+      response.send(JSON.stringify(result)) 
     })
   })
 
