@@ -98,7 +98,7 @@ const main = async () => {
       }))
 
       // Serve static content from webui folder
-      const webui = path.join(__dirname, "/../docs")
+      const webui = path.join(__dirname, "/../webui")
       const xml = path.join(__dirname, "/../cache/https-everywhere/src/chrome/content/rules")
       server.use(express.static(webui))
       server.use("/xml/", express.static(xml)) // TODO: add midleware to track release ruleset?
