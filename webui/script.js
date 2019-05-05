@@ -72,6 +72,7 @@ const serialize = (form) => {
 
 const hideFeedback = () => {
   document.getElementById("result").classList.add("hidden")
+  document.getElementById("pager").classList.add("hidden")
   document.getElementById("invalid-input").classList.add("hidden")
   document.getElementById("lds-roller").classList.add("hidden")
 }
@@ -97,7 +98,7 @@ const generateButtonChars = (page_idx, pages) => {
   const lastFew = [pages]
   const middleThree = [page_idx - 1, page_idx, page_idx + 1]
   const all_elems = firstFew.concat(middleThree).concat(lastFew)
-  const uniqueArray = all_elems.filter ((item, pos) => {
+  let   uniqueArray = all_elems.filter ((item, pos) => {
     return all_elems.indexOf(item) == pos
   })
   const indiciesToRemove = [uniqueArray.indexOf(0), uniqueArray.indexOf(pages+1)]
@@ -107,13 +108,25 @@ const generateButtonChars = (page_idx, pages) => {
     }
   }
 
+  uniqueArray = uniqueArray.sort((a,b) => a-b)
 
-  return uniqueArray.sort()
+  if (firstFew[firstFew.length-1] + 1 < middleThree[0]){
+    uniqueArray.splice(firstFew.length, 0, '...')
+  }
+
+  if (middleThree[middleThree.length-1] + 1 < lastFew[0]){
+    uniqueArray.splice(uniqueArray.length - lastFew.length, 0, '...')
+  }
+
+  return uniqueArray
 }
 
 // TODO: use DOMContentLoaded
 window.addEventListener("load", (event) => {
   document.getElementById("pager").addEventListener("click", (event) => {
+    if (event.target.text == "..."){
+      return
+    }
     //Set event.target attributes to selected
     //if we changed the page selected, loop through all the attributes and 
     const pagerChildren = document.getElementById("pager").childNodes[0].childNodes
@@ -185,6 +198,9 @@ const reloadResults = () => {
     if(buttonChar == page_num){
       singleButton.setAttribute("class", "current selected")
       singleButton.setAttribute("aria-current", "true")
+    }
+    else if (buttonChar == "..."){
+      singleButton.setAttribute("class", "disabled")
     }
     else{
       singleButton.setAttribute("aria-label", "Page " + buttonChar)
@@ -263,6 +279,7 @@ const reloadResults = () => {
 
     // Show results field and hide loading animation
     document.getElementById("result").classList.remove("hidden")
+    document.getElementById("pager").classList.remove("hidden")
     document.getElementById("lds-roller").classList.add("hidden")
   }).catch ((error) => {
     clearTimeout(loadingAnimationTimer)
