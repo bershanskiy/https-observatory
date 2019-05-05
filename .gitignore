@@ -10,3 +10,6 @@ node/database/state.json
 
 # Built Web UI files
 webui/css/*.css
+
+# macOS files
+.DS_Store
