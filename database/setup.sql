@@ -17,12 +17,9 @@ USE project;
 
 -- token type
 CREATE TABLE `users` (
-	-- `userid` INT NOT NULL UNIQUE PRIMARY KEY,
---	username VARCHAR(50) NOT NULL UNIQUE,
---	firstname VARCHAR(50),
---	lastname VARCHAR(50),
---	email VARCHAR(100),
-	`github_id` INT UNIQUE PRIMARY KEY,
+	`userid` INT NOT NULL UNIQUE PRIMARY KEY AUTO_INCREMENT
+		COMMENT 'Internal identifier (for database use only)',
+	`github_id` VARCHAR(50) UNIQUE KEY,
 	`github_token` VARCHAR(50)
 ) CHARACTER SET ascii;
 
@@ -168,7 +165,7 @@ CREATE TABLE evidence_hsts_preload (
 	-- True if the site expects Certificate Transparency information to be
 	-- present on requests to |name|.
 	-- expect_ct BOOLEAN DEFAULT NULL,
-	-- 
+	--
 	-- The URI to which reports should be sent when valid Certificate
 	-- Transparency information is not present (optional).
 	-- There is no limit on URI length, but all current values are pretty short.

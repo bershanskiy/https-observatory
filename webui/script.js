@@ -128,12 +128,12 @@ window.addEventListener("load", (event) => {
       return
     }
     //Set event.target attributes to selected
-    //if we changed the page selected, loop through all the attributes and 
+    //if we changed the page selected, loop through all the attributes and
     const pagerChildren = document.getElementById("pager").childNodes[0].childNodes
     if (event.target.class !== "current selected"){
-      //Go through all the page buttons and reset their attributes. 
+      //Go through all the page buttons and reset their attributes.
       for (const page_button of pagerChildren) {
-        //Remove all attributes of the current button 
+        //Remove all attributes of the current button
         page_button.removeAttribute("class")
       }
       event.target.setAttribute("class", "current selected")
@@ -192,7 +192,7 @@ const reloadResults = () => {
   const allPageButtons = document.createElement("div")
 
   const listOfButtons = generateButtonChars(page_num, count / BATCH_SIZE)
-  
+
   for (const buttonChar of listOfButtons){
     const singleButton = document.createElement("a")
     if(buttonChar == page_num){
@@ -292,3 +292,18 @@ const reloadResults = () => {
   return false
 }
 
+document.getElementById("submit").addEventListener("click", (event) => {
+  // JSON
+  const data = readForm()
+  fetch("/user/submit/pr", {
+      method: "PUT",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      referrer: "origin",
+      body: JSON.stringify(data),
+    })
+
+  console.log("Submit! Not implemented yet...")
+});
