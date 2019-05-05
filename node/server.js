@@ -85,7 +85,7 @@ const main = async () => {
   // Serve dynamic content from "/search?" API endpoint
   server.get("/search?", (request, response) => {
     const target = request.query.target
-    const   page_num = parseInt(request.query.page_num)
+    const page_num = parseInt(request.query.page_num)
     const BATCH_SIZE = 50
 
     if (target.length < 2){

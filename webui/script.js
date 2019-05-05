@@ -17,7 +17,7 @@ const loadingAnimationDelay = 500 /* ms */
 const serialize = (form) => {
   if (!form || form.nodeName !== "FORM")
     return
-  let queries = []
+  const queries = []
   for (const formElement of form.elements){
     if (formElement.name === "")
       continue
@@ -93,17 +93,17 @@ const generateButtonChars = (page_idx, pages) => {
   if (pages === 1){
     return [1]
   }
-  let firstFew = [1]
-  let lastFew = [pages]
-  let middleThree = [page_idx - 1, page_idx, page_idx + 1]
-  let all_elems = firstFew.concat(middleThree).concat(lastFew)
-  let uniqueArray = all_elems.filter(function(item, pos) {
-    return all_elems.indexOf(item) == pos;
-})
-  var indiciesToRemove = [uniqueArray.indexOf(0), uniqueArray.indexOf(pages+1)];
+  const firstFew = [1]
+  const lastFew = [pages]
+  const middleThree = [page_idx - 1, page_idx, page_idx + 1]
+  const all_elems = firstFew.concat(middleThree).concat(lastFew)
+  const uniqueArray = all_elems.filter ((item, pos) => {
+    return all_elems.indexOf(item) == pos
+  })
+  const indiciesToRemove = [uniqueArray.indexOf(0), uniqueArray.indexOf(pages+1)]
   for (const index of indiciesToRemove) {
     if (index > -1) {
-      uniqueArray.splice(index, 1);
+      uniqueArray.splice(index, 1)
     }
   }
 
