@@ -291,19 +291,3 @@ const reloadResults = () => {
 
   return false
 }
-
-document.getElementById("submit").addEventListener("click", (event) => {
-  // JSON
-  const data = readForm()
-  fetch("/user/submit/pr", {
-      method: "PUT",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      referrer: "origin",
-      body: JSON.stringify(data),
-    })
-
-  console.log("Submit! Not implemented yet...")
-});
