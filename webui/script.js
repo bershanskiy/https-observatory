@@ -17,7 +17,7 @@ const loadingAnimationDelay = 500 /* ms */
 const serialize = (form) => {
   if (!form || form.nodeName !== "FORM")
     return
-  let queries = []
+  const queries = []
   for (const formElement of form.elements){
     if (formElement.name === "")
       continue
@@ -72,6 +72,7 @@ const serialize = (form) => {
 
 const hideFeedback = () => {
   document.getElementById("result").classList.add("hidden")
+  document.getElementById("pager").classList.add("hidden")
   document.getElementById("invalid-input").classList.add("hidden")
   document.getElementById("lds-roller").classList.add("hidden")
 }
@@ -93,34 +94,46 @@ const generateButtonChars = (page_idx, pages) => {
   if (pages === 1){
     return [1]
   }
-  let firstFew = [1]
-  let lastFew = [pages]
-  let middleThree = [page_idx - 1, page_idx, page_idx + 1]
-  let all_elems = firstFew.concat(middleThree).concat(lastFew)
-  let uniqueArray = all_elems.filter(function(item, pos) {
-    return all_elems.indexOf(item) == pos;
-})
-  var indiciesToRemove = [uniqueArray.indexOf(0), uniqueArray.indexOf(pages+1)];
+  const firstFew = [1]
+  const lastFew = [pages]
+  const middleThree = [page_idx - 1, page_idx, page_idx + 1]
+  const all_elems = firstFew.concat(middleThree).concat(lastFew)
+  let   uniqueArray = all_elems.filter ((item, pos) => {
+    return all_elems.indexOf(item) == pos
+  })
+  const indiciesToRemove = [uniqueArray.indexOf(0), uniqueArray.indexOf(pages+1)]
   for (const index of indiciesToRemove) {
     if (index > -1) {
-      uniqueArray.splice(index, 1);
+      uniqueArray.splice(index, 1)
     }
   }
 
+  uniqueArray = uniqueArray.sort((a,b) => a-b)
 
-  return uniqueArray.sort()
+  if (firstFew[firstFew.length-1] + 1 < middleThree[0]){
+    uniqueArray.splice(firstFew.length, 0, '...')
+  }
+
+  if (middleThree[middleThree.length-1] + 1 < lastFew[0]){
+    uniqueArray.splice(uniqueArray.length - lastFew.length, 0, '...')
+  }
+
+  return uniqueArray
 }
 
 // TODO: use DOMContentLoaded
 window.addEventListener("load", (event) => {
   document.getElementById("pager").addEventListener("click", (event) => {
+    if (event.target.text == "..."){
+      return
+    }
     //Set event.target attributes to selected
-    //if we changed the page selected, loop through all the attributes and 
+    //if we changed the page selected, loop through all the attributes and
     const pagerChildren = document.getElementById("pager").childNodes[0].childNodes
     if (event.target.class !== "current selected"){
-      //Go through all the page buttons and reset their attributes. 
+      //Go through all the page buttons and reset their attributes.
       for (const page_button of pagerChildren) {
-        //Remove all attributes of the current button 
+        //Remove all attributes of the current button
         page_button.removeAttribute("class")
       }
       event.target.setAttribute("class", "current selected")
@@ -179,12 +192,15 @@ const reloadResults = () => {
   const allPageButtons = document.createElement("div")
 
   const listOfButtons = generateButtonChars(page_num, count / BATCH_SIZE)
-  
+
   for (const buttonChar of listOfButtons){
     const singleButton = document.createElement("a")
     if(buttonChar == page_num){
       singleButton.setAttribute("class", "current selected")
       singleButton.setAttribute("aria-current", "true")
+    }
+    else if (buttonChar == "..."){
+      singleButton.setAttribute("class", "disabled")
     }
     else{
       singleButton.setAttribute("aria-label", "Page " + buttonChar)
@@ -263,6 +279,7 @@ const reloadResults = () => {
 
     // Show results field and hide loading animation
     document.getElementById("result").classList.remove("hidden")
+    document.getElementById("pager").classList.remove("hidden")
     document.getElementById("lds-roller").classList.add("hidden")
   }).catch ((error) => {
     clearTimeout(loadingAnimationTimer)
@@ -275,3 +292,18 @@ const reloadResults = () => {
   return false
 }
 
+document.getElementById("submit").addEventListener("click", (event) => {
+  // JSON
+  const data = readForm()
+  fetch("/user/submit/pr", {
+      method: "PUT",
+      cache: "no-cache",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      referrer: "origin",
+      body: JSON.stringify(data),
+    })
+
+  console.log("Submit! Not implemented yet...")
+});
