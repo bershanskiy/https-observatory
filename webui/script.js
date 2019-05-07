@@ -88,6 +88,7 @@ const showSearchError = (message) => {
   document.getElementById("invalid-input-message").innerText = message
   document.getElementById("invalid-input").classList.remove("hidden")
 }
+
 const generateButtonChars = (page_idx, pages) => {
   page_idx = Math.ceil(page_idx)
   pages = Math.ceil(pages)
@@ -291,19 +292,3 @@ const reloadResults = () => {
 
   return false
 }
-
-document.getElementById("submit").addEventListener("click", (event) => {
-  // JSON
-  const data = readForm()
-  fetch("/user/submit/pr", {
-      method: "PUT",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      referrer: "origin",
-      body: JSON.stringify(data),
-    })
-
-  console.log("Submit! Not implemented yet...")
-});
