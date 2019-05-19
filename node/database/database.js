@@ -39,7 +39,7 @@ const connection = sql.createConnection(credentials)
 
 connection.connect((error) => {
   if (error)
-    console.error("Failed to connect to the database");
+    console.error("Failed to connect to the database")
   else
     console.log("Connected to database")
 })
