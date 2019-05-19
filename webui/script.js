@@ -88,6 +88,7 @@ const showSearchError = (message) => {
   document.getElementById("invalid-input-message").innerText = message
   document.getElementById("invalid-input").classList.remove("hidden")
 }
+
 const generateButtonChars = (page_idx, pages) => {
   page_idx = Math.ceil(page_idx)
   pages = Math.ceil(pages)
