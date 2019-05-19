@@ -2,10 +2,10 @@
 
 let state = {
   rulesetid: undefined, // This is null iff the currently displayed data might be incorrect
-                        // E.g., nothing is displayed or data is being loaded
-  user: "TODO",         // This is null iff the user is not logged in
+  // E.g., nothing is displayed or data is being loaded
+  user: "TODO", // This is null iff the user is not logged in
   proposalid: undefined // This is null iff the page displays official ruleset version, form is not editable
-                        // Otherwise it's an integer id proposalid
+  // Otherwise it's an integer id proposalid
 }
 
 const login = () => {
@@ -45,15 +45,15 @@ const displayData = (data) => {
     document.getElementById("default_off").value = data.default_off ? data.default_off : ""
 
     // Ruleset "array" attributes
-    for (const type of types){
+    for (const type of types) {
       const list = document.getElementById(type)
       const array = data[type]
       if (!array)
         continue
-      for (const record of array){
+      for (const record of array) {
         const node = addElement(list)
-        for (const attribute in record){
-          const field = node.querySelector("[name='"+attribute+"']")
+        for (const attribute in record) {
+          const field = node.querySelector("[name='" + attribute + "']")
           if (field)
             field.value = record[attribute]
         }
@@ -78,26 +78,28 @@ const readForm = () => {
     }
 
     // Read array attributes
-    for (const type of types){
+    for (const type of types) {
       const ul = document.getElementById(type)
       const lis = ul.getElementsByTagName("LI")
       let array = []
-      for (const li of lis){
+      for (const li of lis) {
         if (li.getAttribute("id") !== null)
           continue // this is a prototype
         const inputs = li.getElementsByTagName("INPUT")
-	let record = {}
-	for (const input of inputs){
+        let record = {}
+        for (const input of inputs) {
           const key = input.name
           const value = input.value
-	  record[key] = value
+          record[key] = value
         }
-	array.push(record)
+        array.push(record)
       }
       ruleset[type] = array
     }
+    console.log("RULESET incoming")
+    console.log(ruleset)
     return ruleset
-  } catch(e){
+  } catch (e) {
     console.error("Could not parse data")
   }
 }
@@ -110,20 +112,20 @@ const fetchData = (rulesetid) => {
   const url = "/rulesetinfo?rulesetid=" + rulesetid
 
   fetch(url)
-  .then((response) => {   // Check if fetch suceeded and extract the data
-    if (response.ok) {
-      return response.json()
-    } else {
-      return Promise.reject(new Error("Search request failed"))
-    }
-  })
-  .then((data) => {
-    displayData(data)
-    console.log("DATA: ", data)
-    if (data.file)
-      queryXML(data.file)
-  })
-  .catch((error) => console.error("failed to display data", error))
+    .then((response) => { // Check if fetch suceeded and extract the data
+      if (response.ok) {
+        return response.json()
+      } else {
+        return Promise.reject(new Error("Search request failed"))
+      }
+    })
+    .then((data) => {
+      displayData(data)
+      console.log("DATA: ", data)
+      if (data.file)
+        queryXML(data.file)
+    })
+    .catch((error) => console.error("failed to display data", error))
 }
 
 const queryXML = (filename) => {
@@ -133,20 +135,20 @@ const queryXML = (filename) => {
   const url = "/xml/" + filename
 
   fetch(url)
-  .then((response) => {   // Check if fetch suceeded and extract the data
-    if (response.ok) {
-      return response.text()
-    } else {
-      return Promise.reject(new Error("XML unavailable at " + url))
-    }
-  })
-  .then((xml) => {
-    document.getElementById("xml").innerText = xml//response.text()//"some"//xml
-  })
-  .catch((error) => console.error("failed to display XML"))
+    .then((response) => { // Check if fetch suceeded and extract the data
+      if (response.ok) {
+        return response.text()
+      } else {
+        return Promise.reject(new Error("XML unavailable at " + url))
+      }
+    })
+    .then((xml) => {
+      document.getElementById("xml").innerText = xml //response.text()//"some"//xml
+    })
+    .catch((error) => console.error("failed to display XML"))
 }
 
-const loadPage = async () =>{
+const loadPage = async () => {
   const url_string = window.location.href
   const url = new URL(url_string)
   const rulesetid_str = url.searchParams.get("rulesetid")
@@ -164,7 +166,7 @@ const deleteElement = (button) => {
   const ul = li.parentNode
   const minCount = ul.hasAttribute("min-count") ? ul.getAttribute("min-count") : 0
   const currCount = ul.getElementsByTagName("LI").length - 1 // Remember about the prototype node
-  if (currCount > minCount){
+  if (currCount > minCount) {
     li.parentNode.removeChild(li)
   } else {
     console.log("Too few children")
@@ -178,7 +180,7 @@ const addElement = (ul) => {
     node.removeAttribute("id")
     ul.appendChild(node)
     return node
-  } catch (e){
+  } catch (e) {
     console.error("Could not add element")
   }
 }
@@ -202,36 +204,36 @@ const save = () => {
   }
 
   fetch("/save/", {
-    method: "PUT",
-    cache: "no-cache",
-    headers: {
+      method: "PUT",
+      cache: "no-cache",
+      headers: {
         "Content-Type": "application/json",
-    },
-    referrer: "origin",
-    body: JSON.stringify(proposal),
-  })
-  .then(response => {
-    if (response.ok)
-      return response.json()
-    else
-      return Promise.reject(new Error("Failed to submit data"))
+      },
+      referrer: "origin",
+      body: JSON.stringify(proposal),
     })
-  .then((data) => {
-//    displayData(data)
-//    if (data.file)
-//      queryXML(data.file)
-  })
-  .catch((error) => console.error("Pull request failed", error))
+    .then(response => {
+      if (response.ok)
+        return response.json()
+      else
+        return Promise.reject(new Error("Failed to submit data"))
+    })
+    .then((data) => {
+      //    displayData(data)
+      //    if (data.file)
+      //      queryXML(data.file)
+    })
+    .catch((error) => console.error("Pull request failed", error))
 }
 
 
 /* Initialize the document with event handlers */
 const init = () => {
-  logout()
+  //logout()
 
   document.addEventListener("click", (event) => {
     /* "Add" button */
-    if (event.target.classList.contains("btn-add")){
+    if (event.target.classList.contains("btn-add")) {
       event.preventDefault()
       const dl = event.target.parentNode.parentNode.parentNode
       const ul = dl.getElementsByTagName("UL")[0]
@@ -259,26 +261,26 @@ const init = () => {
      * Could do it via URL encoding, but this is easier for now
      */
     fetch("/new/", {
-      method: "POST",
-      cache: "no-cache",
-      headers: {
-            "Content-Type": "application/json",
-      },
-      referrer: "origin",
-      body: JSON.stringify(proposal),
-    })
-    .then(response => {
-      if (response.ok)
-        return response.json()
-      else
-        return Promise.reject(new Error("Failed to create new fork"))
-    })
-    .then((data) => {
-      console.log(data)
-      state.proposalid = data.proposalid
-      edit()
-    })
-    .catch((error) => console.error("Failed to create new fork", error))
+        method: "POST",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        referrer: "origin",
+        body: JSON.stringify(proposal),
+      })
+      .then(response => {
+        if (response.ok)
+          return response.json()
+        else
+          return Promise.reject(new Error("Failed to create new fork"))
+      })
+      .then((data) => {
+        console.log(data)
+        state.proposalid = data.proposalid
+        edit()
+      })
+      .catch((error) => console.error("Failed to create new fork", error))
   })
 
   /* Fork Delete button */
@@ -292,28 +294,39 @@ const init = () => {
     /* Submit query in URL encoded form.
      */
     fetch(url, {
-      method: "DELETE",
-      cache: "no-cache",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      referrer: "origin"
-    })
-    .then(response => {
-      if (response.ok)
-        console.log("Deleted")
-      else
-        return Promise.reject(new Error("Failed to delete"))
-    })
-    .catch((error) => console.error("Failed to delete", error))
+        method: "DELETE",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        referrer: "origin"
+      })
+      .then(response => {
+        if (response.ok)
+          console.log("Deleted")
+        else
+          return Promise.reject(new Error("Failed to delete"))
+      })
+      .catch((error) => console.error("Failed to delete", error))
   })
 
 
   /* Submit button */
   document.getElementById("submit").addEventListener("click", (event) => {
+    // JSON
+    const data = readForm()
+    fetch("/user/submit/pr", {
+        method: "PUT",
+        cache: "no-cache",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        referrer: "origin",
+        body: JSON.stringify(data),
+      })
+
     console.log("Submit! Not implemented yet...")
-    save()
-  })
+  });
 
   document.getElementById("save").addEventListener("click", (event) => {
     console.log("Save!")
@@ -322,7 +335,7 @@ const init = () => {
 }
 
 /* Initialize all scripts upon page load */
-if( document.readyState !== "loading" ) {
+if (document.readyState !== "loading") {
   /* document is already ready, just execute code now */
   init()
   loadPage()

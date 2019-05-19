@@ -434,7 +434,7 @@ module.exports = {
   isOnline: isOnline,
 
   loadData: loadData,
-
+  queryPromise: queryPromise,
   // Get ruleset data
   getRulesetById: getRulesetById,
   searchByTarget: searchRulesetsByTarget,
