@@ -1,15 +1,16 @@
 {
-	"database": {
-		"connection": {
-			"user": "server",
-			"password": "",
-			"server": "localhost",
-			"database": "project",
-			"multipleStatements": true
-		},
-		"state" : "state.json"
-	},
-	"express": {
-		"port": 3000
-	}
+  "database": {
+    "connection": {
+      "user": "server",
+      "password": "",
+      "server": "localhost",
+      "database": "project",
+      "multipleStatements": true
+    },
+    "state" : "state.json"
+  },
+  "express": {
+    "port": 3000,
+    "env": "production"
+  }
 }

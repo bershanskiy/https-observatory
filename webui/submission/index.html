@@ -1,154 +1,154 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="Tool for creating and maintaining HTTPS Everywhere rulesets.">
-        <meta name="author" content="Anton Bershanskiy, Christopher Settles, Dylan Irlbeck, Joshua Park">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tool for creating and maintaining HTTPS Everywhere rulesets.">
+    <meta name="author" content="Anton Bershanskiy, Christopher Settles, Dylan Irlbeck, Joshua Park">
+    <link href="/favicon.png" rel="icon">
 
-        <link href="/favicon.png" rel="icon">
+    <title>HTTPS Observatory</title>
 
-        <title>HTTPS Observatory</title>
+    <!-- Custom styles for this page -->
+    <link href="/css/submission.css" rel="stylesheet">
 
-        <!-- Primer core CSS -->
-        <link href="/css/primer.css" rel="stylesheet">
+    <!-- Custom scripts for this page -->
+    <script type="text/javascript" src="/submission/script.js" async></script>
+  </head>
 
-        <!-- Custom styles for this template -->
-        <link href="/css/custom.css" rel="stylesheet">
-
-        <script type="text/javascript" src="/submission/script.js" async></script>
-        <link href="./style.css" rel="stylesheet">
-    </head>
-    <body>
-        <header role="banner" class="masthead bg-gray-dark">
-            <div class="container container-lg">
-                <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
-                <nav role="navigation" class="masthead-nav">
-                    <a href="/submission/">Submit New PR</a>
-                    <a href="/about/">About Us</a>
-                    <a href="https://github.com/EFForg/https-everywhere">HTTPS Everywhere</a>
-                </nav>
+  <body>
+    <header role="banner" class="masthead bg-gray-dark">
+      <div class="container container-lg">
+        <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
+        <nav role="navigation" class="masthead-nav">
+          <a href="/submission/">Propose Ruleset</a>
+          <a href="/about/">About Us</a>
+          <a href="https://github.com/EFForg/https-everywhere">HTTPS Everywhere</a>
+        </nav>
+      </div>
+    </header>
+    <main role="main" class="container container-lg">
+      <div class="starter-template">
+        <h1 id="title">View a ruleset</h1>
+        <a id="button-fork-create" class="btn btn-outline hidden" href="#url" role="button">Create New Proposal</a>
+        <a id="button-fork-delete" class="btn btn-outline hidden" href="#url" role="button">Delete This Proposal</a>
+        <form>
+          <div class="Subhead">
+            <div class="Subhead-heading">Name</div>
+            <div class="Subhead-description">Ruleset name and file name</div>
+          </div>
+          <dl class="form-group">
+            <dt><label for="name">Ruleset Name</label></dt>
+            <dd><input class="form-control" type="text" autocomplete="off" placeholder="Awesome Ruleset" id="name" required></dd>
+          </dl>
+          <dl class="form-group">
+            <dt><label for="file">File Name</label></dt>
+            <dd><input class="form-control" type="text" autocomplete="off" placeholder="AwesomeRuleset.xml" id="file" required></dd>
+          </dl>
+          <div class="form-checkbox">
+            <label>
+              <input type="checkbox" aria-describedby="help-text-for-mixedcontent-checkbox" id="mixedcontent">
+              Mixed content
+            </label>
+            <p class="note" id="help-text-for-mixedcontent-checkbox">
+              Read more about <code>platform="mixedcontent"</code> in the <a href="https://github.com/EFForg/https-everywhere/blob/master/docs/en_US/rulesets.md#mixed-content-blocking-mcb" target="_blank" rel="noopener nofollow">docs</a>.
+            </p>
+          </div>
+          <dl class="form-group">
+            <dt><label for="name">Disable by default?</label></dt>
+            <dd><input class="form-control" type="text" autocomplete="off" placeholder="Write here if this should be disabled by default" id="default_off" required></dd>
+          </dl>
+          <dl class="form-group pr-block">
+            <div class="Subhead">
+              <div class="Subhead-heading">Targets</div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
+              <div class="Subhead-description">These define the scope of the ruleset, they can be either fully-qualified domain names or wildcards.</div>
             </div>
-        </header>
-        <main role="main" class="container container-lg">
-            <div class="starter-template">
-                <h1>Submit a new pull request</h1>
-                <form>
-                    <div class="Subhead">
-                        <div class="Subhead-heading">Name</div>
-                        <div class="Subhead-description">Ruleset name and file name</div>
-                    </div>
-                    <dl class="form-group">
-                        <dt><label for="name">Ruleset Name</label></dt>
-                        <dd><input class="form-control" type="text" autocomplete="off" placeholder="Awesome Ruleset" id="name" required></dd>
-                    </dl>
-                    <dl class="form-group">
-                        <dt><label for="file">File Name</label></dt>
-                        <dd><input class="form-control" type="text" autocomplete="off" placeholder="AwesomeRuleset.xml" id="file" required></dd>
-                    </dl>
-                    <div class="form-checkbox">
-                        <label>
-                            <input type="checkbox" aria-describedby="help-text-for-mixedcontent-checkbox" id="mixedcontent">
-                            Mixed content
-                        </label>
-                        <p class="note" id="help-text-for-mixedcontent-checkbox">
-                            Read more about <code>platform="mixedcontent"</code> in the <a href="https://github.com/EFForg/https-everywhere/blob/master/docs/en_US/rulesets.md#mixed-content-blocking-mcb" target="_blank" rel="noopener nofollow">docs</a>.
-                        </p>
-                    </div><!--
-                    <dl class="form-group">
-                        <dt><label for="name">Disable by default?</label></dt>
-                        <dd><input class="form-control" type="text" autocomplete="off" placeholder="Write here if this should be disabled by default" id="default_off" required></dd>
-                    </dl>-->
-                    <dl class="form-group pr-block">
-                        <div class="Subhead">
-                            <div class="Subhead-heading">Targets</div>
-                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
-                            <div class="Subhead-description">These define the scope of the ruleset, they can be either fully-qualified domain names or wildcards.</div>
-                        </div>
-                            <ul id="targets" min-count="1">
-                                <li id="prototype-target" class="pr-elem">
-                                    <input class="form-control" type="text" autocomplete="off" placeholder="example.com" name="target">
-	                                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
-                                    <button class="btn btn-sm btn-delete" type="button">Delete</button>
-                                </li>
-                            </ul>
-                    </dl>
-                    <dl class="form-group pr-block">
-                        <div class="Subhead">
-                            <div class="Subhead-heading">Rules</div>
-                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
-                            <div class="Subhead-description">These define the actual redirect behaviors.</div>
-                        </div>
-                        <div class="border box-shadow pr-field" id="rules-field"> 
-                            <ul id="rules" min-count="1">
-                                <li id="prototype-rule" class="pr-elem">
-                                    <input class="form-control" type="text" autocomplete="off" placeholder="^http://*" name="from">
-                                    <input class="form-control" type="text" autocomplete="off" placeholder="https://" name="to">
-	                                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
-                                    <button class="btn btn-sm btn-delete" type="button">Delete</button>
-                                </li>
-                            </ul>
-                        </div>
-                   </dl>
-
-                    <dl class="form-group pr-block">
-                        <div class="Subhead">
-                            <div class="Subhead-heading">Exclusions</div>
-                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
-                            <div class="Subhead-description">These define the URLs that the rule should not apply to.</div>
-                        </div>
-                        <ul id="exclusions" min-count="0">
-                            <li id="prototype-exclusion" class="pr-elem">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="somthing" name="pattern">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
-                                <button class="btn btn-sm btn-delete" type="button">Delete</button>
-                            </li>
-                        </ul>
-                    </dl>
-
-                    <dl class="form-group pr-block">
-                        <div class="Subhead">
-                            <div class="Subhead-heading">Tests</div>
-                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
-                            <div class="Subhead-description">These will be checked by the automated scripts.</div>
-                        </div>
-                        <ul id="tests" min-count="0">
-                            <li id="prototype-exclusion" class="pr-elem">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="[pattern] name=" name="pattern">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="[comment]" name="comment">
-                                <button class="btn btn-sm btn-delete" type="button">Delete</button>
-                            </li>
-                        </ul>
-                    </dl>
-
-
-                    <dl class="form-group pr-block">
-                        <div class="Subhead">
-                            <div class="Subhead-heading">Secure Cookies</div>
-                            <div class="Subhead-actions"><a href="#url" class="btn btn-sm btn-add" role="button">Add</a></div>
-                            <div class="Subhead-description">These define the cookies that should be secured.</div>
-                        </div>
-                        <ul id="securecookies" min-count="0">
-                            <li id="prototype-cookie" class="pr-elem">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="[host] example.com" name="host">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="[name]" name="name">
-                                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
-                                <button class="btn btn-sm btn-delete" type="button">Delete</button>
-                            </li>
-                        </ul>
-                    </dl>
-                    <button class="btn btn-primary" type="button" id="submit">Submit Pull Request</button>
-                </form>
+              <ul id="targets" min-count="1">
+                <li id="prototype-target" class="pr-elem">
+                  <input class="form-control" type="text" autocomplete="off" placeholder="example.com" name="target">
+	                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
+                  <button class="btn btn-sm btn-delete" type="button">Delete</button>
+                </li>
+              </ul>
+          </dl>
+          <dl class="form-group pr-block">
+            <div class="Subhead">
+              <div class="Subhead-heading">Rules</div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
+              <div class="Subhead-description">These define the actual redirect behaviors.</div>
             </div>
-            <div id="xml-section">
-                <dl class="form-group pr-block">
-                    <div class="Subhead">
-                        <div class="Subhead-heading">Current ruleset XML</div>
-                        <div class="Subhead-description">This is the current master branch content</div>
-                    </div>
-                    <code id="xml"></code>
-                </dl>
+            <div class="border box-shadow pr-field" id="rules-field"> 
+              <ul id="rules" min-count="1">
+                <li id="prototype-rule" class="pr-elem">
+                  <input class="form-control" type="text" autocomplete="off" placeholder="^http://*" name="from">
+                  <input class="form-control" type="text" autocomplete="off" placeholder="https://" name="to">
+	                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
+                  <button class="btn btn-sm btn-delete" type="button">Delete</button>
+                </li>
+              </ul>
             </div>
-        </main>
-    </body>
+           </dl>
+
+          <dl class="form-group pr-block">
+            <div class="Subhead">
+              <div class="Subhead-heading">Exclusions</div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
+              <div class="Subhead-description">These define the URLs that the rule should not apply to.</div>
+            </div>
+            <ul id="exclusions" min-count="0">
+              <li id="prototype-exclusion" class="pr-elem">
+                <input class="form-control" type="text" autocomplete="off" placeholder="somthing" name="pattern">
+                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
+                <button class="btn btn-sm btn-delete" type="button">Delete</button>
+              </li>
+            </ul>
+          </dl>
+
+          <dl class="form-group pr-block">
+            <div class="Subhead">
+              <div class="Subhead-heading">Tests</div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
+              <div class="Subhead-description">These will be checked by the automated scripts.</div>
+            </div>
+            <ul id="tests" min-count="0">
+              <li id="prototype-exclusion" class="pr-elem">
+                <input class="form-control" type="text" autocomplete="off" placeholder="test URL" name="url">
+                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
+                <button class="btn btn-sm btn-delete" type="button">Delete</button>
+              </li>
+            </ul>
+          </dl>
+
+
+          <dl class="form-group pr-block">
+            <div class="Subhead">
+              <div class="Subhead-heading">Secure Cookies</div>
+              <div class="Subhead-actions"><button class="btn btn-sm btn-add" role="button">Add</button></div>
+              <div class="Subhead-description">These define the cookies that should be secured.</div>
+            </div>
+            <ul id="securecookies" min-count="0">
+              <li id="prototype-cookie" class="pr-elem">
+                <input class="form-control" type="text" autocomplete="off" placeholder="[host] example.com" name="host">
+                <input class="form-control" type="text" autocomplete="off" placeholder="[name]" name="name">
+                <input class="form-control" type="text" autocomplete="off" placeholder="comment" name="comment">
+                <button class="btn btn-sm btn-delete" type="button">Delete</button>
+              </li>
+            </ul>
+          </dl>
+          <button class="btn btn-primary" type="button" id="save">Save changes</button>
+          <button class="btn btn-primary" type="button" id="submit">Submit Pull Request</button>
+        </form>
+      </div>
+      <div id="xml-section">
+        <dl class="form-group pr-block">
+          <div class="Subhead">
+            <div class="Subhead-heading">Current ruleset XML</div>
+            <div class="Subhead-description">This is the current master branch content</div>
+          </div>
+          <code id="xml"></code>
+        </dl>
+      </div>
+    </main>
+  </body>
 </html>

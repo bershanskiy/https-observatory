@@ -1,0 +1,48 @@
+/* Submission page */
+
+@import "./common.scss";
+
+li > input {
+  margin: 2px;
+}
+
+ul > li{
+  list-style: none;
+}
+
+li {
+  margin: 5px;
+}
+
+form {
+  text-align: left;
+}
+
+[id^="prototype-"] {
+  display: none;
+}
+
+#submit {
+  float: right;
+}
+
+.pr-elem {
+  margin-left: 0px;
+}
+
+.pr-btn {
+  margin-left: 2px;
+}
+
+.pr-block {
+  min-height: 200px;
+}
+
+.pr-field {
+  overflow-y: scroll; 
+  height: 200px; 
+  width: 100%; 
+  padding: 5px;
+  margin: 15px; 
+  margin-left: 0px;
+}

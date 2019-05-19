@@ -1,0 +1,36 @@
+/* Search page */
+
+@import "./common.scss";
+
+@import "./animation-loading.scss";
+
+#search {
+  margin: 15px;
+}
+
+#result {
+  height: 100%;
+  overflow: hidden;
+  padding: 5px;
+  margin: 15px;
+}
+
+#result-box {
+  overflow: auto;
+}
+
+/* Labels */
+/* Primer CSS labels */
+/* NOTE: Make sure to import Primer labels
+ * @import "@primer/css/labels/labels.scss";
+ * Currently we import them in common.scss
+ */
+
+.labels {
+  cursor: default;
+  padding-right: 20px;
+}
+
+.labels > span {
+  margin-right: 4px;
+}

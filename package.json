@@ -1,0 +1,34 @@
+{
+  "name": "name",
+  "version": "0.0.0",
+  "description": "",
+  "main": "node/server.js",
+  "scripts": {
+    "start": "npm run build-webui; npm run server;",
+    "build-webui": "npm run build-webui-sass; npm run build-webui-uncss;",
+    "build-webui-sass": "node-sass --output-style compressed --include-path node_modules webui/scss/search.scss webui/css/search.css; node-sass --output-style compressed --include-path node_modules webui/scss/submission.scss webui/css/submission.css; node-sass --output-style compressed --include-path node_modules webui/scss/about.scss webui/css/about.css;",
+    "build-webui-uncss": "uncss --htmlroot webui/ webui/index.html > webui/css/min.search.css; mv webui/css/min.search.css webui/css/search.css; uncss --htmlroot webui/ webui/submission/index.html > webui/css/min.submission.css; mv webui/css/min.submission.css webui/css/submission.css; uncss --htmlroot webui/ webui/about/index.html > webui/css/min.about.css; mv webui/css/min.about.css webui/css/about.css;",
+    "server": "node node/server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "glob": "^7.1.3",
+    "helmet": "^3.16.0",
+    "json5": "^2.1.0",
+    "mysql": "^2.16.0",
+    "node-fetch": "^2.5.0",
+    "punycode": "^2.1.1",
+    "uncss": "^0.16.2",
+    "util": "^0.11.1",
+    "xml2js": "^0.4.19"
+  },
+  "devDependencies": {
+    "@primer/css": "^12.2.3",
+    "node-sass": "^4.11.0"
+  }
+}

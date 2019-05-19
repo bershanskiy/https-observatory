@@ -1,0 +1,36 @@
+/* Header */
+
+header {
+  padding: 16px;
+}
+
+.masthead {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.masthead a {
+  color: rgba(255, 255, 255, 0.5);
+  text-decoration: none;
+}
+
+.masthead .masthead-logo {
+  float: left;
+  font-size: 1.5rem;
+  color: rgba(255, 255, 255, 1);
+}
+
+.masthead .masthead-nav {
+  float: right;
+  font-size: 1rem;
+  margin-top: 0.5rem;
+}
+
+.masthead .masthead-nav a:hover {
+  color: rgba(255, 255, 255, 1);
+}
+
+.masthead .masthead-nav a:not(:last-child) {
+  margin-right: 1.25rem;
+}

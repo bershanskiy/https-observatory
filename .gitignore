@@ -1,6 +1,17 @@
-cache
+# npm files
+package-lock.json
+node_modules/
 
-docs/ER.erdplus
-docs/ER.png
+# The data cache
+cache/
+
+# Database state record
 node/database/state.json
-node/package-lock.json
+
+# Built Web UI files
+webui/css/*.css
+
+# macOS files
+.DS_Store
+
+node/configuration.json

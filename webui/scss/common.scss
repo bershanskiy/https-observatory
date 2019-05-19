@@ -1,0 +1,29 @@
+/* This is CSS used throughout the site */
+
+/* Primer CSS imports */
+/* TODO: import only what we actually need? */
+@import "@primer/css/index.scss";
+
+/* Header and navigation options */
+@import "./header.scss";
+
+.starter-template {
+  padding: 3rem 1.5rem;
+}
+
+h1 {
+  text-align: center;
+}
+
+.container {
+  width: 100%;
+}
+
+body {
+  height: 100%;
+  margin: 0px;
+}
+
+.hidden {
+  display: none !important;
+}

@@ -1,54 +1,87 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="description" content="Tool for creating and maintaining HTTPS Everywhere rulesets.">
-        <meta name="author" content="Anton Bershanskiy, Christopher Settles, Dylan Irlbeck, Joshua Park">
-        <link href="/favicon.png" rel="icon">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Tool for creating and maintaining HTTPS Everywhere rulesets.">
+    <meta name="author" content="Anton Bershanskiy, Christopher Settles, Dylan Irlbeck, Joshua Park">
+    <link href="/favicon.png" rel="icon">
 
-        <title>HTTPS Observatory</title>
+    <title>HTTPS Observatory</title>
 
-        <!-- Primer core CSS -->
-        <link href="/css/primer.css" rel="stylesheet">
+    <!-- Custom styles for this page -->
+    <link href="/css/search.css" rel="stylesheet">
 
-        <!-- Custom styles for this template -->
-        <link href="/css/custom.css" rel="stylesheet">
+    <!-- Custom scripts for this page -->
+    <script type="text/javascript" src="script.js" async></script>
+  </head>
 
-        <!-- Custom scripts for this page -->
-        <script type="text/javascript" src="/script.js" async></script>
-    </head>
-    <body>
-        <header role="banner" class="masthead bg-gray-dark">
-            <div class="container container-lg">
-                <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
-                <nav role="navigation" class="masthead-nav">
-                    <a href="/submission/">Submit New PR</a>
-                    <a href="/about/">About Us</a>
-                    <a href="https://github.com/EFForg/https-everywhere">HTTPS Everywhere</a>
-                </nav>
+  <body>
+    <header role="banner" class="masthead bg-gray-dark">
+      <div class="container container-lg">
+        <a href="/" class="masthead-logo">HTTPS Observatory Explorer</a>
+        <nav role="navigation" class="masthead-nav">
+          <a href="/submission/">Submit New PR</a>
+          <a href="/about/">About Us</a>
+
+          <!-- Adding this here for testing Github login -->
+          <a href="/user/signin/callback">Callback</a>
+
+          <a href="https://github.com/EFForg/https-everywhere">HTTPS Everywhere</a>
+        </nav>
+      </div>
+    </header>
+    <main role="main" class="container container-lg">
+      <div class="starter-template container-md">
+        <h1>Search by target</h1>
+        <form id="search" autocomplete="off">
+          <div class="box input-group">
+            <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com">
+            <span class="input-group-button">
+              <input class="btn text-right" type="submit" value="Search">
+            </span>
+          </div>
+          <dl class="form-group errored hidden" id="invalid-input">
+            <dd class="error" id="invalid-input-message">Invalid input.</dd>
+          </dl>
+        </form>
+      </div>
+      <!-- Adding this here for testing Github login -->
+      <a href="https://github.com/login/oauth/authorize?client_id=d2ca1b154f386bebe395&scope=repo">Sign in with Github</a>
+
+      <div class="lds-roller text-center hidden" id="lds-roller">
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+      </div>
+
+      <div class="border hidden" id="result">
+        <div class="Box" id="result-box">
+          <!-- Template -->
+          <div class="Box-row">
+            <div class="d-flex flex-items-center">
+              <div class="flex-auto"><strong>Name</strong><div class="text-small text-gray-light">FileName</div></div>
+              <div class="labels">
+                <span class="Label Label--orange" title="failed ruleset test">off</span>
+                <span class="Label Label--gray-darker" title="See docs for details">mixedcontent</span>
+              </div>
+              <a href="/submission/?rulesetid=19533" class="btn btn-sm" role="button">View</a>
             </div>
-        </header>
-        <main role="main" class="container container-lg">
-            <div class="starter-template container-md">
-                <h1>Search by target</h1>
-                <form id="search" autocomplete="off">
-                    <div class="box input-group">
-                        <input class="form-control input-block" type="text" name="target" placeholder="example.com" aria-label="example.com">
-                        <span class="input-group-button">
-                            <input class="btn text-right" type="submit" value="Search">
-                        </span>
-                    </div>
-                    <dl class="form-group errored hidden" id="invalid-input">
-                        <dd class="error" id="invalid-input-message">Invalid input.</dd>
-                    </dl>
-                </form>
-
-            </div>
-            <div class="lds-roller text-center hidden" id="lds-roller"><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>
-            <div class="border hidden" id="result">
-                <div class="Box" id="result-box"></div>
-            </div>
-        </main>
-    </body>
+            <div class="text-small text-gray-light">example.com, www.example.com</div>
+          </div>
+        </div>
+      </div>
+      <nav class="paginate-container" aria-label="Pagination">
+        <div id="pager" class="pagination hidden">
+          <span class="previous_page disabled">Previous</span>
+            <em class="current selected" aria-current="true">1</em>
+            <a aria-label="Page 2">2</a>
+            <a href="#url" aria-label="Page 3">3</a>
+            <span class="gap">…</span>
+            <a href="#url" aria-label="Page 8">8</a>
+            <a href="#url" aria-label="Page 9">9</a>
+            <a href="#url" aria-label="Page 10">10</a>
+            <a class="next_page" rel="next" href="#url" aria-label="Next Page">Next</a>
+          </div>
+      </nav>
+    </main>
+  </body>
 </html>
