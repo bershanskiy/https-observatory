@@ -1,8 +1,8 @@
 {
   "database": {
     "connection": {
-      "user": "root",
-      "password": "dylan",
+      "user": "server",
+      "password": "",
       "server": "localhost",
       "database": "project",
       "multipleStatements": true
